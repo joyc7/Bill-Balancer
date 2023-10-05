@@ -12,13 +12,13 @@
 
 - This is where the user can login or sign up.
 
-### Events Page With Add Events Pop Up
+### Home Page
 
-- This is where the user can add a new event and add people to this event.
+- The user will be able to see their monthly total spending and a list of their joined groups here.
 
-### All Events Page
+### Home Page with Show More Pop Up
 
-- This is where the user can see a list of all their events as well as their current balance. The balance will also include how much the user owes and how much is owed to them.
+- If you click show more in the groups section, it will display all the groups.
 
 ### Friends Page
 
@@ -28,9 +28,13 @@
 
 - The user will be able to add new friends here.
 
-### Home Page
+### All Events Page
 
-- The user will be able to see their monthly total spending and a list of their joined groups here.
+- This is where the user can see a list of all their events as well as their current balance. The balance will also include how much the user owes and how much is owed to them.
+
+### Events Page With Add Events Pop Up
+
+- This is where the user can add a new event and add people to this event.
 
 ### Specific Event
 
@@ -47,10 +51,6 @@
 ### Account Page
 
 - User's basic information will be displayed here. You will also have options to rate and contact the team.
-
-### Home Page with Show More Pop Up
-
-- If you click show more in the groups section, it will display all the groups.
 
 ###
 
