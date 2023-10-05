@@ -1,6 +1,8 @@
 # User Experience Design
 
-<!-- ![Chart](./ux-design/app_map.png) -->
+## Prototype
+
+This is our [Prototype Link.](https://www.figma.com/community/file/1291775374734419469) Click in to show how our app transitions from screen to screen!
 
 ## App Map
 
