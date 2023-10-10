@@ -1,19 +1,31 @@
-# Project Repository
+# The Group Bill Splitting App
 
-This repository will be used for team projects.
+## Description of Project
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+The Group Bill Splitting App is designed to streamline the process of splitting bills among groups of people. In today's social and financial landscape, individuals often find themselves sharing expenses in various settings, such as dining out, traveling, or living together. This application aims to provide an efficient and user-friendly solution for managing shared expenses, ensuring that everyone pays their fair share effortlessly.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+### Product Vision Statement
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+In a world where coming together and sharing moments are core to our daily lives - whether it's traveling abroad, dining out with friends, going on work trips with colleagues, or handling routine household bills with family - dealing with shared financial responsibilities should be simple and straightforward. Our vision is to introduce a unified platform where handling and dividing shared expenses is as easy as a single click. We aim for an app that makes group financial transactions clear-cut while prioritizing clarity, adaptability, and user comfort. The Group Bill Splitting App is designed to enable users to easily track, manage, and clear their shared expenses, fostering trust and enhancing the pleasure of shared moments without the monetary hassle.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+## Core Team Members
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+- [Allison Ji](https://github.com/Allison67)
+- [Joy Chen](https://github.com/joyc7)
+- [Cindy Liang](https://github.com/cindyliang01)
+- [Laura Zhao](https://github.com/HedwigO)
+- [Elaine Zhang](https://github.com/elaineZhang67)
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
+## Contribution
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+## Instructions for Building and Testing
+
+To be updated
+
+## Additional Links
+
+- [User Experience Design](UX-DESIGN.md)
+
+## Notes
