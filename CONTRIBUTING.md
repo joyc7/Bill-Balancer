@@ -39,3 +39,60 @@ Our Group Bill Splitting App, makes splitting bills in a group super easy. In to
 - Always pull from master branch before working
 - Push each commit with a meaningful message
 - Before we incorporate changes into our main branch, a pull request must be made and must be approved by another member.
+
+
+## Rules of Contribution
+Before you start contributing, please keep the following considerations in mind:
+
+- **Adhere to Team Values**: All contributors must adhere to the team values. Any form of inappropriate behavior will not be tolerated.
+
+- **Pull Requests**: Ensure that your pull requests(PRs) are small enough to be reviewed easily. Always provide a concise and informative description.
+
+- **Issues**: If you're working on a particular issue, please comment on it to prevent multiple contributors working on the same problem.
+
+- **Commit Messages**: Write meaningful commit messages that clearly explain the changes made. This helps in understanding the history and purpose of changes.
+
+- **Coding Standards**: Adhere to the coding standards established in this project for consistency.
+
+#### What to Contribute?
+- **Bug Fixes**: If you've discovered a bug and know how to fix it, please submit a PR. Make sure to describe the problem and solution in the PR's description.
+
+- **Features**: New features can be proposed by opening an issue. Once it's discussed and approved, you or someone else can start working on it.
+
+- **Documentation**: Improving or correcting the project's documentation is always appreciated.
+
+## Setting up a Local Development Environment
+To set up a local development environment, follow these steps: 
+
+(Note: Now, we assume that we will have a 'package.json' and the project will use separate npm scripts to launch the back-end and front-end servers. This may change later on. )
+
+1. **Install Dependencies**:
+   
+   After cloning the repository and navigating to the project directory, run the following command to install all the necessary dependencies:
+   
+   ```bash
+   npm install
+   ```
+
+2. **Launch the Back-End Server**:
+   
+   To start the back-end server, run:
+   
+   ```bash
+   npm run start-backend
+   ```
+
+3. **Launch the Front-End (React.js) Server**:
+   
+   To start the front-end server, use:
+   
+   ```bash
+   npm run start-frontend
+   ```
+
+---
+
+More to add: More instructions will be added as we develop further.
+
+## Building and Testing the Project
+To be determined … This would be updated as we develop the application further throughout the semester. 
