@@ -20,7 +20,7 @@ For our project, we have decided that a sprint should last 2 weeks. It's enough 
 
 ## Daily Standups
 
-Our daily standups will happen on every Tuesday and Thursday at 10am. Each standup will last 15 minutes and we expect all team memebers to be present synchronously, ready to share their progress and or any blockers. Active participation is key so members will not cover for other members who do not participate. If someone consistently doesn't contribute for two consecutive standups, we'll report this concern to management.
+Our daily standups will happen on every Tuesday and Thursday at 1:45pm. Each standup will last 15 minutes and we expect all team memebers to be present synchronously, ready to share their progress and or any blockers. Active participation is key so members will not cover for other members who do not participate. If someone consistently doesn't contribute for two consecutive standups, we'll report this concern to management.
 
 ## Coding Standards
 
