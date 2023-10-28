@@ -1,0 +1,111 @@
+.page-title {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.balance-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E5E5E5;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.balance-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.balance-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.friends-list h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+.friend-avatar {
+    border-radius: 50%; 
+    margin-right: 10px; 
+    width: 50px;
+    height: 50px;
+}
+
+.positive-balance {
+    color: green;
+}
+
+.negative-balance {
+    color: red;
+}
+
+
+.navbar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #E5E5E5;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.add-friends-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
