@@ -1,0 +1,24 @@
+.home-container {
+  @apply p-6 rounded-lg shadow-md bg-white max-w-2xl;
+  @apply mx-auto my-8;
+  @apply min-h-[80vh] p-6 rounded-lg shadow-md bg-white max-w-4xl mx-auto;
+}
+.box {
+  @apply p-4 rounded-md bg-blue-100 my-4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box h2 {
+  @apply text-2xl font-semibold text-blue-800;
+}
+
+.home-money {
+  @apply font-medium;
+}
+
+.home-title {
+  @apply text-center font-extrabold text-2xl;
+}

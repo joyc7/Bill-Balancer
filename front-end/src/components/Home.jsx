@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import "../styles/Home.css";
 
 const Home = () => {
-  const [currentSpending, setCurrentSpending] = useState(1000);
+  const [totalSpending, setTotalSpending] = useState(1000);
 
   return (
-    <div>
-      <h2>Current Spending</h2>
-      <p>Your current spending: ${currentSpending}</p>
+    <div className="home-container">
+      <div className="box">
+        <h2 className="total-spending">Total Spending</h2>
+        <p className="home-money">${totalSpending}</p>
+      </div>
+      <div className="box">
+        <h2>Groups</h2>
+      </div>
     </div>
   );
 };
 
 export default Home;
-
-//home
