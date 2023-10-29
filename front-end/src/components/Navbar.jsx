@@ -10,17 +10,20 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <ul>
-        <li className={pathName === "/" ? "active" : "normal"}>
-          <Link to="/">Home</Link>
+        <li className={pathName === "/home" ? "active" : "normal"}>
+          <Link to="/home">Home</Link>
         </li>
-        <li className={pathName === "/about" ? "active" : "normal"}>
-          <Link to="/about">About</Link>
-        </li>
-        <li className={pathName === "/contact" ? "active" : "normal"}>
-          <Link to="/contact">Contact</Link>
+        <li className={pathName === "/event" ? "active" : "normal"}>
+          <Link to="/event">Events</Link>
         </li>
         <li className={pathName === "/friends" ? "active" : "normal"}>
           <Link to="/friends">Friends</Link>
+        </li>
+        <li className={pathName === "/user-info" ? "active" : "normal"}>
+          <Link to="/user-info">User Info</Link>
+        </li>
+        <li className={pathName === "/contact" ? "active" : "normal"}>
+          <Link to="/contact">Contact</Link>
         </li>
       </ul>
     </nav>

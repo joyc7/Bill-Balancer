@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Home.css";
+import Navbar from "./Navbar";
 
 const Home = () => {
   const [totalSpending, setTotalSpending] = useState(1000);
@@ -13,6 +14,7 @@ const Home = () => {
       <div className="box">
         <h2>Groups</h2>
       </div>
+      <Navbar />
     </div>
   );
 };
