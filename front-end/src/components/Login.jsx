@@ -3,7 +3,6 @@ import "../styles/Login.css";
 import userImage from "../images/user.png";
 import { useNavigate } from "react-router-dom";
 
-// function Login() {
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
