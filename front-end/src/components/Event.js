@@ -2,6 +2,7 @@ import axios from "axios"
 import React, { useState, useEffect } from "react"
 import '../styles/Event.css';
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Event = props => {
 
@@ -94,7 +95,9 @@ const Event = props => {
               ))}
             </section>
 
-            <button className="addExpenseBtn" onClick={() => setIsModalOpen(true)}>Add Expense</button>
+            <div className="addExpenseBtnDiv">
+              <button className="addExpenseBtn" onClick={() => setIsModalOpen(true)}>Add Expense</button>
+            </div>
             {isModalOpen && (
               <div id="addExpense">
                 <h2>Add New Expense</h2>
@@ -124,6 +127,8 @@ const Event = props => {
                 </form>
               </div>
             )}
+
+            <Navbar />
 
         </div>
       )

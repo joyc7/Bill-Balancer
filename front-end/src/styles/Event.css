@@ -42,8 +42,12 @@ header {
     @apply w-12 p-1 rounded-2xl bg-slate-100 break-words text-center opacity-60;
 }
 
+.addExpenseBtnDiv {
+    @apply flex justify-end;
+}
+
 .addExpenseBtn {
-    @apply w-24 h-16 rounded-full bg-cyan-100 border-cyan-500 hover:bg-orange-100 active:bg-orange-200 fixed bottom-10 right-10;
+    @apply w-24 h-16 rounded-full bg-cyan-100 border-cyan-500 hover:bg-orange-100 active:bg-orange-200;
 }
 
 #addExpense {
