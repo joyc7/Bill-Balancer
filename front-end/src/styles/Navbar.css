@@ -1,5 +1,5 @@
 .navbar {
-  @apply pb-4;
+  @apply pb-4 fixed bottom-5;
 }
 
 .navbar ul {

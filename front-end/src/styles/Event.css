@@ -1,0 +1,63 @@
+header {
+    @apply text-2xl font-bold;
+}
+
+.description {
+    @apply h-20 w-full text-center p-4 mt-3 mb-6 rounded-lg;
+}
+
+.operations {
+    @apply flex space-x-4 place-content-center mb-6;
+}
+
+.operations button {
+    @apply w-24 h-8 rounded-full justify-items-center bg-cyan-50 hover:bg-orange-100 active:bg-orange-200;
+}
+
+.expenses {
+    @apply mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
+}
+
+.expenseItem {
+    @apply grid grid-cols-6 w-full p-1 mb-4 rounded-lg;
+}
+
+.name {
+    @apply col-span-3 hover:text-orange-200;
+}
+
+.date, .name, .amount, .checkbox {
+    @apply inline-block m-auto;
+}
+
+.name {
+    @apply ml-2;
+}
+
+.amount, .checkbox {
+    @apply mr-0;
+}
+
+.date {
+    @apply w-12 p-1 rounded-2xl bg-slate-100 break-words text-center opacity-60;
+}
+
+.addExpenseBtnDiv {
+    @apply flex justify-end;
+}
+
+.addExpenseBtn {
+    @apply w-24 h-16 rounded-full bg-cyan-100 border-cyan-500 hover:bg-orange-100 active:bg-orange-200;
+}
+
+#addExpense {
+    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-200 rounded-2xl p-8;
+}
+
+form {
+    @apply flex flex-col space-y-3 mt-3;
+}
+
+.formBtn button {
+    @apply w-24 h-8 rounded-full justify-items-center bg-cyan-50 hover:bg-orange-100 active:bg-orange-200 mt-2;
+}

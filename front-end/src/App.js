@@ -1,24 +1,30 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Event from "./components/Event";
+import './index.css';
+import './App.css';
 import Login from "./components/Login";
 import Navbar from "./components/Navbar"; // Import the Navbar component
 import Home from "./components/Home"; // Import your Home component
 
 function App() {
+
+  // used to keep track of which specific event the user choose to see
+  const [event, setEvent] = useState({})
+
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul></ul>
-        </nav>
+    <div className="container">
+      <Router>
         <Routes>
-          {" "}
+
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path="/event" element={<Event event={event} />} />
+
         </Routes>
         <Navbar />
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 
