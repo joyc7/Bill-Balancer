@@ -4,7 +4,6 @@ import Event from "./components/Event";
 import './index.css';
 import './App.css';
 import Login from "./components/Login";
-import Navbar from "./components/Navbar"; // Import the Navbar component
 import Home from "./components/Home"; // Import your Home component
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
           <Route path="/event" element={<Event event={event} />} />
 
         </Routes>
-        <Navbar />
       </Router>
     </div>
   );
