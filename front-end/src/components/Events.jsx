@@ -7,7 +7,7 @@ function Events() {
     const[eventData, setEventData] = useState([])
     const[addEvent, setaddEvent] = useState(false)
     const[friendsList, setfriendsList] = useState([])
-    const[selectedFriends, setselectedFriends] = useState([])
+    const[selectedFriends, setselectedFriends] = useState(false)
     const[loading, setLoading] = useState(false)
     
     const backupData_events = {"id":1, "name": "Karlotte Flewett", "email": "kflewett0@skyrock.com", "phone": "669-280-7758", 
@@ -43,9 +43,7 @@ function Events() {
         dataFetch();
     })
 
-    const backupData_friends = {"friends":[{"id":1,"name":"Gaby Coupar","avatar":"https://robohash.org/temporererumomnis.png?size=50x50\u0026set=set1","phone":"435-715-2899","email":"gcoupar0@rakuten.co.jp"},
-    {"id":2,"name":"Mamie Cornwell","avatar":"https://robohash.org/fugitconsequaturrem.png?size=50x50\u0026set=set1","phone":"465-677-9187","email":"mcornwell1@meetup.com"},
-    {"id":3,"name":"Trish Braunstein","avatar":"https://robohash.org/maximevoluptatemqui.png?size=50x50\u0026set=set1","phone":"354-366-7048","email":"tbraunstein2@surveymonkey.com"}]};
+    const backupData_friends = {"friends":[{"id":1,"name":"Gaby Coupar","avatar":"https://robohash.org/temporererumomnis.png?size=50x50\u0026set=set1","phone":"435-715-2899","email":"gcoupar0@rakuten.co.jp"}]}
 
     //fetch mock data about a user's events list
     async function friendsCL(){
@@ -63,8 +61,9 @@ function Events() {
 
         }catch(error){
             console.error("There was an error fetching the data:", error);
-            console.log(backupData_friends)
             setfriendsList(backupData_friends)
+        }
+        finally{
             setLoading(false);
         }
     }
@@ -79,11 +78,11 @@ function Events() {
     function EventClick(eventId){
         console.log('Event ${eventId} was clicked')
     }
-    function friendsClick(friendId){
-        if(selectedFriends.includes(friendId.toString())){
-            setselectedFriends(prev => prev.filter(id => id !== friendId.toString()));
+    function friendsClick(friendName){
+        if(friendsList.includes(friendName.toString())){
+            setfriendsList(prev => prev.filter(name => name !== friendName.toString()));
         }else{
-            setselectedFriends(prev => [...prev, friendId.toString()]);
+            setfriendsList(prev => [...prev, friendName.toString()]);
         }
     }
     
@@ -134,20 +133,37 @@ function Events() {
                         <input type="text" placeholder="Event Name" />
                         <input type="date" placeholder="Event Date"/>
                         <input type="text" placeholder="Event Description"/>
-                        <input type="text" placeholder="Members Name"></input>
-                        <div className="select-members-popup">
-                            <div className="select-members-content">
-                                <span className="close" onClick={() => setfriendsList(false)}>&times;</span>
-                                <input type="text" placeholder="Friend's Name" className="select-member-content"/>
-                                {loading && friendsList (
-                                    <div className="friend">
-                                        <img src={friendsList.avatar} alt={`${friendsList.name}'s avatar`}/>
-                                        <span>{friendsList.name}</span>
-                                    </div>
-                                )}
-                                <button onClick={() => {setfriendsList(false)}}>Done</button>
+                        <button onClick={() => {
+                            setselectedFriends(true)
+                        }}
+                        >
+                            Select Members
+                        </button>
+                        {selectedFriends && (
+                            <div className="select-members-popup">
+                                <div className="select-members-content">
+                                    <span className="close" onClick={() => setselectedFriends(false)}>&times;</span>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Member's Name" 
+                                        className="member-name"     
+                                    />
+                                    <button onClick={friendsCL}>Search</button>
+                                    {loading && friendsList && friendsList.friends && friendsList.friends.map(friend => (
+                                        <div className="friend" key={friend.name}>
+                                            <img src={friend.avatar} alt={`&{friend.name}'s avatar`}></img>
+                                            <span>{friend.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button onClick={() => {
+                                        setselectedFriends(false)
+                                        }}
+                                >
+                                        done
+                                </button>
                             </div>
-                        </div> 
+                        )}
                         <div className="formBtn">
                             <button onClick={() => {setaddEvent(false)}}>Add</button>
                         </div>
