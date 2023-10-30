@@ -1,0 +1,58 @@
+.Event_main {
+    @apply flex flex-col items-center space-y-5 p-4;
+    @apply bg-cyan-50 min-h-screen p-6 font-mono;
+}
+
+.title {
+    @apply text-3xl font-bold px-4 py-2 bg-gray-200 border-b;
+}
+
+.add_events_button {
+    @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+    @apply absolute top-5 right-32;
+}
+
+.add-event-content {
+    @apply flex flex-col space-y-4 p-6 bg-white rounded-lg shadow-lg;
+    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-100 rounded-2xl p-8;
+}
+
+.select-members-popup{
+    @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+}
+
+.add-members-content{
+    @apply flex flex-col space-y-4 p-6 bg-white rounded-lg shadow-lg;
+}
+
+.close {
+    @apply cursor-pointer;
+}
+
+.Total_Balance_Section {
+    @apply flex space-x-4 items-center p-4 bg-cyan-100 rounded-lg;
+}
+
+.avatar {
+    @apply w-20 h-20 rounded-full border-4 border-cyan-300;
+}
+
+.title {
+    @apply text-2xl font-medium;
+}
+
+.balance_details {
+    @apply text-lg;
+}
+
+.events_list {
+    @apply w-full flex flex-col space-y-4 mt-6;
+}
+
+.event-list {
+    @apply flex justify-between items-center p-4 border-b border-gray-200;
+}
+
+.event-list button {
+    @apply w-28 h-8 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+}
