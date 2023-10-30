@@ -1,0 +1,73 @@
+.friends-page {
+    @apply bg-white min-h-screen p-6 font-mono; 
+}
+
+.page-title {
+    @apply text-2xl font-bold mb-5 p-2;
+}
+
+.balance-section {
+    @apply flex items-center justify-center bg-cyan-100 p-4 rounded-md mb-5; 
+}
+
+.avatar {
+    @apply rounded-full w-12 h-12 mr-5; 
+}
+
+.balance-title {
+    @apply font-bold mb-2.5; 
+}
+
+.balance-details {
+    @apply flex flex-col; 
+}
+
+.friends-list {
+    @apply flex items-center justify-center p-4 bg-cyan-100 rounded-md mb-5; 
+}
+
+.friends-list h3 {
+    @apply mt-5 mb-2.5; 
+}
+
+.friend-item {
+    @apply flex items-center space-x-2.5; 
+}
+
+.friend-avatar {
+    @apply rounded-full mr-2.5 w-12 h-12; 
+}
+
+.positive-balance {
+    @apply text-green-500; 
+}
+
+.negative-balance {
+    @apply text-red-500; 
+}
+
+.add-friends-btn {
+    @apply absolute top-2.5 right-2.5 p-1 px-2.5 border-none rounded-sm cursor-pointer; 
+}
+
+/* Add styling for the pop-up window for add friends*/
+
+.input-content {
+    @apply w-full p-2.5 rounded-full border border-gray-200 text-lg mb-5; 
+}
+
+.modal {
+    @apply flex justify-center items-center fixed inset-0 z-50; 
+}
+
+.modal-content {
+    @apply bg-cyan-300 rounded-lg w-4/5 p-5 shadow-md; 
+}
+
+.modal-content h2 {
+    @apply text-lg leading-6 font-medium text-gray-900 mb-4 mt-0; 
+}
+
+.modal-content button {
+    @apply w-full p-3 rounded-full border border-slate-100 bg-cyan-100 mb-4; 
+}
