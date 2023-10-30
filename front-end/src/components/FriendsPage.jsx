@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/FriendsPage.css';
 import AddFriendModal from './AddFriendModal';
+import Navbar from "./Navbar";
 
 function FriendsPage() {
     const [userData, setUserData] = useState(null);
@@ -70,6 +71,8 @@ function FriendsPage() {
             {showModal && (
                 <AddFriendModal showModal={showModal} onClose={() => setShowModal(false)} />
             )}
+
+            <Navbar />
 
         </div>
     );
