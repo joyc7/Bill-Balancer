@@ -7,7 +7,7 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import FriendsPage from "./components/FriendsPage";
-import Event_main from "./components/Event_main"
+import Events from "./components/Events"
 
 function App() {
   // used to keep track of which specific event the user choose to see
@@ -19,9 +19,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/event/:id" element={<Event event={event} />} />
+          <Route path="/event" element={<Event event={event} />} />
           <Route path="/friends" element={<FriendsPage />} />
-          <Route path="/event_main" element={<Event_main />} />
+          <Route path="/events" element={<Events />} />
         </Routes>
       </Router>
     </div>
