@@ -1,0 +1,45 @@
+.expense-page {
+    @apply bg-cyan-50 min-h-screen p-6 font-mono;
+}
+
+.header {
+    @apply flex justify-between items-center mb-6;
+}
+
+.expense-list {
+    @apply bg-white p-4 rounded-md shadow-lg flex flex-col w-full;
+}
+
+.participant-item {
+    @apply flex justify-between items-center py-2 border-b border-gray-200 w-full flex-nowrap;
+}
+
+.participant-share {
+    @apply text-blue-500;
+}
+
+.settled-up {
+    @apply text-gray-500;
+}
+
+.add-expense-btn {
+    @apply bg-blue-500 text-white py-2 px-4 rounded-md shadow-md;
+}
+
+.expense-container {
+    @apply relative;
+}
+
+.balance-buttons {
+    @apply absolute top-2.5 left-1/2 -translate-x-1/2 flex gap-2.5;
+}
+
+.balance-btn,
+.total-btn {
+    @apply px-3.5 py-2.5 bg-green-500 text-white rounded-md cursor-pointer transition-colors duration-300;
+}
+
+.balance-btn:hover,
+.total-btn:hover {
+    @apply bg-green-600;
+}

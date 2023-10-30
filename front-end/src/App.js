@@ -4,10 +4,12 @@ import Event from "./components/Event";
 import "./index.css";
 import "./App.css";
 import Login from "./components/Login";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar"; // If you're using this, ensure you integrate it in the return JSX
 import Home from "./components/Home";
 import FriendsPage from "./components/FriendsPage";
 import Event_main from "./components/Event_main"
+import Expense from "./components/Expense"; 
+import UserInfo from "./components/UserInfo";
 
 function App() {
   // used to keep track of which specific event the user choose to see
@@ -22,6 +24,8 @@ function App() {
           <Route path="/event/:id" element={<Event event={event} />} />
           <Route path="/friends" element={<FriendsPage />} />
           <Route path="/event_main" element={<Event_main />} />
+          <Route path="/expense" element={<Expense />} />
+          <Route path="/user-info" element={<UserInfo />} />
         </Routes>
       </Router>
     </div>
