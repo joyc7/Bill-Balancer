@@ -16,7 +16,7 @@ const Navbar = () => {
           <Link to="/home">Home</Link>
         </li>
         <li className={pathName === "/events" ? "active" : "normal"}>
-          <Link to="/events">Event</Link>
+          <Link to="/events">Events</Link>
         </li>
         <li className={pathName === "/friends" ? "active" : "normal"}>
           <Link to="/friends">Friends</Link>

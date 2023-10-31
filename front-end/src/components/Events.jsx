@@ -78,13 +78,6 @@ function Events() {
     function EventClick(eventId){
         console.log('Event ${eventId} was clicked')
     }
-    function friendsClick(friendName){
-        if(friendsList.includes(friendName.toString())){
-            setfriendsList(prev => prev.filter(name => name !== friendName.toString()));
-        }else{
-            setfriendsList(prev => [...prev, friendName.toString()]);
-        }
-    }
     
 
     return(
