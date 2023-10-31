@@ -1,70 +1,47 @@
-/* Expense.css - styling of Expense Page */
-
-.add-expense-btn {
-    @apply bg-blue-500 text-white py-2 px-4 rounded-full cursor-pointer absolute top-8 right-8;
-}
-
+/* Expense.css */
 .expense-page {
-    @apply bg-cyan-50 min-h-screen p-6 font-mono flex flex-col justify-center items-center;
-}
-
-.event-title {
-    @apply text-xl font-bold text-left pl-4 w-full mt-4;
-}
-
-.header {
-    @apply flex flex-col justify-start items-start mb-6;
+    @apply bg-white min-h-screen p-6 font-mono; 
 }
 
 .page-title {
-    @apply text-xl font-bold mb-2;
-}
-
-.header-info {
-    @apply flex justify-between items-center mb-6 w-full max-w-xl gap-4;
-}
-
-.owed-amount {
-    @apply text-xl font-semibold mb-6;
+    @apply text-2xl font-bold mb-5 p-2;
 }
 
 .buttons {
-    @apply flex gap-4 mb-6;
+    @apply flex justify-center my-4; 
 }
 
-.btn-settle, .btn-balance, .btn-total {
-    @apply py-2 px-4 rounded-full shadow-md cursor-pointer; 
+.buttons > button {
+    @apply py-2 px-4 rounded-full font-bold mr-2; 
+    transition: background-color 0.2s;
+    @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
 }
 
-.btn-settle {
-    @apply bg-red-500 text-white;
-}
-
-.btn-balance, .btn-total {
-    @apply bg-light-blue-200 text-light-blue-800; 
+.expense-container {
+    @apply w-full flex flex-col space-y-4 mt-6;
+    @apply bg-cyan-100 rounded-2xl p-8;
 }
 
 .expense-list {
-    @apply bg-white p-4 rounded-md shadow-lg flex flex-col w-full max-w-xl; 
+    @apply flex flex-col space-y-4;
 }
 
-.participant-item {
-    @apply flex justify-between items-center py-2 border-b border-gray-200 w-full flex-nowrap;
-    margin-right: 1rem; 
+.expense-section {
+    @apply w-full flex flex-col space-y-4 mt-6;
 }
 
-.participant-share {
-    @apply text-blue-500;
+.expense-title {
+    @apply font-bold mb-2.5;
 }
 
-.settled-up {
-    @apply text-gray-500;
+.expense-details {
+    @apply flex flex-col;
 }
 
-.bg-light-blue-200 {
-    background-color: #b3d4fc; 
+.expenses-list h3 {
+    @apply w-full flex flex-col space-y-4 mt-6;
 }
 
-.text-light-blue-800 {
-    color: #
+.expense-item {
+    @apply flex justify-between items-center p-4 border-b border-gray-200;
 }

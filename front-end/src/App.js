@@ -11,6 +11,7 @@ import Events from "./components/Events"
 import Expense from "./components/Expense"; 
 import UserInfo from "./components/UserInfo"; 
 
+
 function App() {
   // used to keep track of which specific event the user choose to see
   const [event, setEvent] = useState({});
@@ -24,7 +25,7 @@ function App() {
           <Route path="/event" element={<Event event={event} />} />
           <Route path="/friends" element={<FriendsPage />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/expense" element={<Expense />} />
+          <Route path="/expense/" element={<Expense />} />
           <Route path="/user-info" element={<UserInfo />} />
           
 
@@ -35,3 +36,4 @@ function App() {
 }
 
 export default App;
+// <Route path="/expense" element={<Expense />} />

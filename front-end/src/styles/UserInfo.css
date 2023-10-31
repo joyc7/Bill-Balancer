@@ -1,71 +1,36 @@
 /* UserInfo.css - styling of User Info(Account) Page */
 /* More features to add for the User Info Page (the buttons will be clickable and direct to relevant pages if we have time to implement those features)*/
 
-.UserInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #e6fff9;
-    min-height: 100vh;
-    font-family: 'Arial', sans-serif;
+.user-info-page {
+    @apply bg-white min-h-screen p-6 font-mono; 
 }
 
-.title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    font-weight: bold;
+.page-title {
+    @apply text-2xl font-bold mb-5 p-2;
 }
 
-.User_Detail_Section {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 15px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    margin-bottom: 20px;
+.user-detail-section {
+    @apply flex items-center justify-center bg-cyan-100 p-4 rounded-md mb-5; 
 }
 
 .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    margin-right: 15px;
+    @apply rounded-full w-12 h-12 mr-5;
 }
 
 .user-name-email {
-    display: flex;
-    flex-direction: column;
+    @apply font-bold mb-2.5; 
 }
 
-.name, .email {
-    font-size: 16px;
-    margin-bottom: 5px;
+.name, 
+.email {
+    @apply font-bold mb-2.5; 
 }
 
 .settings-list {
-    width: 100%;
+    @apply flex items-center justify-center p-4 bg-cyan-100 rounded-md mb-5; 
 }
 
 .setting-item {
-    background-color: #ffffff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    font-size: 18px;
-    color: #333;
+    @apply flex items-center space-x-2.5; 
 }
 
-/* customize colors and classes because I need them here. Might be added to tailwind.config.js */
-.bg-e6fff9 {
-    background-color: #e6fff9;
-}
-
-.bg-f0f0f0 {
-    background-color: #f0f0f0;
-}
-
-.text-333 {
-    color: #333;
-}
