@@ -6,25 +6,24 @@ import Navbar from "./Navbar";
 
 function UserInfo() {
     return (
-        <div className="UserInfo">
-            <h1 className="title">Account</h1>
+        <div className="flex flex-col items-center p-20 bg-e6fff9 min-h-screen font-sans">
+            <h1 className="text-4xl mb-20 font-bold">Account</h1>
 
-            <div className="User_Detail_Section">
-                <img src="https://robohash.org/pariaturipsumculpa.png?size=50x50&set=set1" alt="User's Avatar" className="avatar" /> 
-                <div className="user-name-email">
-                    <div className="name">Mary </div> {/* the user's name (hardcode here) */}
-                    <div className="email">mary0917@gmail.com</div> {/* the user's email (hardcode here) */}
+            <div className="flex items-center w-full p-4 bg-f0f0f0 rounded-xl mb-20">
+                <img src="avatar-url" alt="User's Avatar" className="w-12 h-12 rounded-full mr-4" /> 
+                <div className="flex flex-col">
+                    <div className="text-xl mb-2">User Name</div>
+                    <div className="text-xl mb-2">user@email.com</div>
                 </div>
             </div>
 
-            <div className="settings-list">
-                {/* the buttons in the User Info Page, will be clickable with additional components later */}
+            <div className="w-full">
                 <ul>
-                    <li className="setting-item">Preferences</li>
-                    <li className="setting-item">Passcode</li>
-                    <li className="setting-item">Language</li>
-                    <li className="setting-item">Feedback</li>
-                    <li className="setting-item">Contact us</li>
+                    <li className="bg-white p-4 mb-2 rounded-md text-xl text-333">Preference</li>
+                    <li className="bg-white p-4 mb-2 rounded-md text-xl text-333">Passcode</li>
+                    <li className="bg-white p-4 mb-2 rounded-md text-xl text-333">Language</li>
+                    <li className="bg-white p-4 mb-2 rounded-md text-xl text-333">Feedback</li>
+                    <li className="bg-white p-4 mb-2 rounded-md text-xl text-333">Contact us</li>
                 </ul>
             </div>
 

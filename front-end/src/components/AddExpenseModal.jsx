@@ -35,11 +35,11 @@ function AddExpenseModal({ showModal, onClose }) {
 
                 <h2>Add a new expense</h2>
 
-                <input type="text" placeholder="Expense description" className='input-content'/>
+                <input type="text" placeholder="People" className='input-content'/>
                 <input type="text" placeholder="Amount" className='input-content'/>
                 
                 <button 
-                onClick={handleAddClick}>Add
+                onClick={handleAddClick}>Done
                 </button>
 
                 {loading && <div>Loading...</div>}

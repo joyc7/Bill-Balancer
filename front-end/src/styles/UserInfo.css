@@ -1,4 +1,5 @@
 /* UserInfo.css - styling of User Info(Account) Page */
+/* More features to add for the User Info Page (the buttons will be clickable and direct to relevant pages if we have time to implement those features)*/
 
 .UserInfo {
     display: flex;
@@ -53,5 +54,18 @@
     margin-bottom: 10px;
     border-radius: 5px;
     font-size: 18px;
+    color: #333;
+}
+
+/* customize colors and classes because I need them here. Might be added to tailwind.config.js */
+.bg-e6fff9 {
+    background-color: #e6fff9;
+}
+
+.bg-f0f0f0 {
+    background-color: #f0f0f0;
+}
+
+.text-333 {
     color: #333;
 }
