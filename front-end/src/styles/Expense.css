@@ -1,0 +1,47 @@
+/* Expense.css */
+.expense-page {
+    @apply bg-white min-h-screen p-6 font-mono; 
+}
+
+.page-title {
+    @apply text-2xl font-bold mb-5 p-2;
+}
+
+.buttons {
+    @apply flex justify-center my-4; 
+}
+
+.buttons > button {
+    @apply py-2 px-4 rounded-full font-bold mr-2; 
+    transition: background-color 0.2s;
+    @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+}
+
+.expense-container {
+    @apply w-full flex flex-col space-y-4 mt-6;
+    @apply bg-cyan-100 rounded-2xl p-8;
+}
+
+.expense-list {
+    @apply flex flex-col space-y-4;
+}
+
+.expense-section {
+    @apply w-full flex flex-col space-y-4 mt-6;
+}
+
+.expense-title {
+    @apply font-bold mb-2.5;
+}
+
+.expense-details {
+    @apply flex flex-col;
+}
+
+.expenses-list h3 {
+    @apply w-full flex flex-col space-y-4 mt-6;
+}
+
+.expense-item {
+    @apply flex justify-between items-center p-4 border-b border-gray-200;
+}
