@@ -37,7 +37,7 @@ function Expense() {
 
 
     return (
-        <div className="expense-page">
+        <div className="expense">
             <h1 className="page-title">Expenses</h1>
             <div className="buttons">
                     <button className="balance-btn">Balance</button>
@@ -47,13 +47,14 @@ function Expense() {
                 
                 {/* All expenses are positive */}
                 <div className="expense-list">
-                    {expensesData.map(item => (
-                        <div key={item.id} className="expense-item">
-                            <span>{item.name}</span>
-                            <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span>
+                    {/* Assume a headcount limit to split the bill */}
+                    {expensesData.slice(0, 7).map(item => (
+                    <div key={item.id} className="expense-item">
+                        <span>{item.name}</span>
+                        <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span>
                         </div>
-                    ))}
-                </div>
+                        ))}
+                        </div>
             </div>
             <Navbar />
         </div>
