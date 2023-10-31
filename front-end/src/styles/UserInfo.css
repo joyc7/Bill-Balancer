@@ -1,0 +1,36 @@
+/* UserInfo.css - styling of User Info(Account) Page */
+/* More features to add for the User Info Page (the buttons will be clickable and direct to relevant pages if we have time to implement those features)*/
+
+.user-info-page {
+    @apply bg-white min-h-screen p-6 font-mono; 
+}
+
+.page-title {
+    @apply text-2xl font-bold mb-5 p-2;
+}
+
+.user-detail-section {
+    @apply flex items-center justify-center bg-cyan-100 p-4 rounded-md mb-5; 
+}
+
+.avatar {
+    @apply rounded-full w-12 h-12 mr-5;
+}
+
+.user-name-email {
+    @apply font-bold mb-2.5; 
+}
+
+.name, 
+.email {
+    @apply font-bold mb-2.5; 
+}
+
+.settings-list {
+    @apply flex items-center justify-center p-4 bg-cyan-100 rounded-md mb-5; 
+}
+
+.setting-item {
+    @apply flex items-center space-x-2.5; 
+}
+
