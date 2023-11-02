@@ -1,10 +1,13 @@
+/* Expense.jsx - components of Expense Page */
+
 import React, { useState, useEffect } from 'react';
 import '../styles/Expense.css';
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // useNavigate is used to direct the user to the previous page
 
 function Expense() {
     const [expensesData, setExpensesData] = useState([]);
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         try {
@@ -35,17 +38,22 @@ function Expense() {
         ]
     };
 
-
+    // navigates to the previous page
+    const handleTitleClick = () => {
+        navigate(-1); 
+    };
+    
     return (
         <div className="expense">
-            <h1 className="page-title">Expenses</h1>
+            <h1 className="page-title" onClick={handleTitleClick}>LA Roadtrip | Flights to LA</h1> {/* click the title to direct to the previous page */}
             <div className="buttons">
-                    <button className="balance-btn">Balance</button>
-                    <button className="total-btn">Total</button>
+                <button className="settleup-btn">Settle&nbsp;Up</button> {/* use non-breaking space to prevent wrapping */}
+                <button className="balance-btn">Balance</button>
+                <button className="total-btn">Total</button>
                 </div>
             <div className="expense-container">
                 
-                {/* All expenses are positive */}
+                {/* Default: assume all expenses are positive */}
                 <div className="expense-list">
                     {/* Assume a headcount limit to split the bill */}
                     {expensesData.slice(0, 7).map(item => (

@@ -1,7 +1,7 @@
 /* UserInfo.css - styling of User Info(Account) Page */
 /* More features to add for the User Info Page (the buttons will be clickable and direct to relevant pages if we have time to implement those features)*/
 
-.user-info-page {
+.UserInfo {
     @apply bg-white min-h-screen p-6 font-mono; 
 }
 
@@ -26,11 +26,26 @@
     @apply font-bold mb-2.5; 
 }
 
-.settings-list {
-    @apply flex items-center justify-center p-4 bg-cyan-100 rounded-md mb-5; 
+.settings-list-general,
+.settings-list-feedback {
+    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5; 
 }
 
 .setting-item {
-    @apply flex items-center space-x-2.5; 
+    @apply flex items-center space-x-2.5 mb-4; 
+    padding: 0.75rem 0;  /* adjust the padding value to add some spacing between items otherwise it will be too crowded */
 }
 
+/* Dark Mode Styles (but this can only controls the styling of the current page, needs to figure out how to change the styling of the whole app) */
+.dark-mode {
+    @apply bg-gray-800 text-white;
+}
+
+.dark-mode .user-detail-section {
+    @apply bg-gray-700;
+}
+
+.dark-mode .settings-list-general,
+.dark-mode .settings-list-feedback {
+    @apply bg-gray-700;
+}

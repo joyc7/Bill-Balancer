@@ -7,6 +7,12 @@ import Navbar from "./Navbar";
 function UserInfo() {
     const [userData, setUserData] = useState(null);
     const [randomUser, setRandomUser] = useState(null);
+    const [isDarkMode, setIsDarkMode] = useState(false); // new state for managing dark mode
+
+    // function to toggle dark mode
+    const toggleDarkMode = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
 
     const backupData = {
         "id": 1,
@@ -51,7 +57,7 @@ function UserInfo() {
     }, []);
 
     return (
-        <div className="UserInfo">
+        <div className={`UserInfo ${isDarkMode ? 'dark-mode' : ''}`}> 
             <h1 className="page-title">Account</h1>
             {randomUser && (
                 <>
@@ -62,11 +68,15 @@ function UserInfo() {
                             <div className="email">{randomUser.email}</div>
                         </div>
                     </div>
-                    <div className="settings-list">
+                    <div className="settings-list-general">
                         <ul>
-                            <li className="setting-item">Preference</li>
+                            <li className="setting-item" onClick={toggleDarkMode}>Preference</li> {/* added onClick handler to Preference */}
                             <li className="setting-item">Passcode</li>
-                            <li className="setting-item">Language</li>
+                        </ul>
+                    </div>
+                    
+                    <div className="settings-list-feedback">
+                        <ul>
                             <li className="setting-item">Feedback</li>
                             <li className="setting-item">Contact us</li>
                         </ul>
@@ -76,6 +86,9 @@ function UserInfo() {
             <Navbar />
         </div>
     );
+
+   
+   
 }
 
 export default UserInfo;
