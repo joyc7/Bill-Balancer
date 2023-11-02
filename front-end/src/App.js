@@ -4,12 +4,12 @@ import Event from "./components/Event";
 import "./index.css";
 import "./App.css";
 import Login from "./components/Login";
-import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import FriendsPage from "./components/FriendsPage";
 import Events from "./components/Events"
 import Expense from "./components/Expense"; 
 import UserInfo from "./components/UserInfo"; 
+import AddExpense from "./components/AddExpense";
 
 
 function App() {
@@ -27,6 +27,7 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/expense/" element={<Expense />} />
           <Route path="/user-info" element={<UserInfo />} />
+          <Route path="/add-expense" element={<AddExpense />} />
           
 
         </Routes>

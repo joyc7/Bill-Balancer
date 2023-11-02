@@ -7,12 +7,6 @@ import Navbar from "./Navbar";
 const Event = props => {
 
     const [data, setData] = useState([])
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // handle the form
-    const handleAddExpense = () => {
-      setIsModalOpen(false);
-    };
 
     function reformatDate(dateStr) {
       const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -96,38 +90,9 @@ const Event = props => {
             </section>
 
             <div className="addExpenseBtnDiv">
-              <button className="addExpenseBtn" onClick={() => setIsModalOpen(true)}>Add Expense</button>
+              <Link to='/add-expense' className="addExpenseBtn">Add Expense</Link> 
             </div>
-            {isModalOpen && (
-              <div id="addExpense">
-                <h2>Add New Expense</h2>
-                <form onSubmit={e => { e.preventDefault(); handleAddExpense(); }}>
-                  <div id="nameInput">
-                    <label>Name:</label><br/>
-                    <input name="name" placeholder="Enter a name"/>
-                  </div>
-                  <div id="amountInput">
-                    <label>Amount:</label><br/>
-                    <input name="amount" placeholder="Enter the amount"/>
-                  </div>
-                  <div id="dateInput">
-                    <label>Date:</label><br/>
-                    <input type="date" name="date"/>
-                  </div>
-                  <div id="selectInput">
-                    <label for="people">Select people:</label><br/>
-                    <select name="people" multiple size="5">
-                        
-                    </select>
-                  </div>
-                  <div className="formBtn">
-                    <button type="submit">Submit</button>
-                    <button onClick={() => {setIsModalOpen(false)}}>Close</button>
-                  </div>
-                </form>
-              </div>
-            )}
-
+            
             <Navbar />
 
         </div>
