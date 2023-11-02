@@ -4,7 +4,7 @@
   @apply min-h-[80vh] p-6 rounded-lg shadow-md bg-white max-w-4xl mx-auto;
 }
 .box {
-  @apply p-4 rounded-md bg-blue-100 my-4;
+  @apply p-4 rounded-md bg-cyan-100 my-4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +12,7 @@
 }
 
 .box h2 {
-  @apply text-2xl font-semibold text-blue-800;
+  @apply text-2xl font-semibold text-black;
 }
 
 .home-money {
