@@ -90,9 +90,9 @@ const Event = props => {
             </section>
 
             <div className="addExpenseBtnDiv">
-              <Link to='/add-expense' className="addExpenseBtn">Add Expense</Link> 
+              <Link to='/add-expense' className="btn addExpenseBtn">Add Expense</Link> 
             </div>
-            
+
             <Navbar />
 
         </div>
