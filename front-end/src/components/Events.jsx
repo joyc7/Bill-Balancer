@@ -22,9 +22,10 @@ function Events() {
     useEffect(()=>{
         //fetch mock data about a user's events list
         async function dataFetch(){
+            const API_mock_event = "https://my.api.mockaroo.com/users.json?key=0413d6f0";
             try{
                 //requesting data from the mock API endpoint
-                const response = await fetch("https://my.api.mockaroo.com/users.json?key=0413d6f0");
+                const response = await fetch(API_mock_event);
 
                 if(!response.ok){
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -40,16 +41,17 @@ function Events() {
             }
         }
         dataFetch();
-    },[])
+    })
 
     const backupData_friends = {"friends":[{"id":1,"name":"Gaby Coupar","avatar":"https://robohash.org/temporererumomnis.png?size=50x50\u0026set=set1","phone":"435-715-2899","email":"gcoupar0@rakuten.co.jp"}]}
 
     //fetch mock data about a user's events list
     async function friendsCL(){
         setLoading(true);
+        const API_mock_friends = "https://my.api.mockaroo.com/users.json?key=0413d6f0";
         try{
             //requesting data from the mock API endpoint
-            const response = await fetch("https://my.api.mockaroo.com/users.json?key=0413d6f0");
+            const response = await fetch(API_mock_friends);
             if(!response.ok){
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -60,7 +62,8 @@ function Events() {
         }catch(error){
             console.error("There was an error fetching the data:", error);
             setfriendsList(backupData_friends)
-        }finally{
+        }
+        finally{
             setLoading(false);
         }
     }
@@ -140,7 +143,7 @@ function Events() {
                                     />
                                     <button onClick={friendsCL}>Search</button>
                                     {loading && friendsList && friendsList.friends && friendsList.friends.map(friend => (
-                                        <div className="friend">
+                                        <div className="friend" key={friend.name}>
                                             <img src={friend.avatar} alt={`&{friend.name}'s avatar`}></img>
                                             <span>{friend.name}</span>
                                         </div>
@@ -150,7 +153,7 @@ function Events() {
                                         setselectedFriends(false)
                                         }}
                                 >
-                                    done
+                                        done
                                 </button>
                             </div>
                         )}
