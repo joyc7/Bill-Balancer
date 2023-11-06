@@ -21,22 +21,20 @@ const Event = props => {
     useEffect(() => {
         // fetch some mock data about expense 
         console.log("fetching the event")
-        axios("https://my.api.mockaroo.com/event/123.json?key=483e37e0")
-          .then(response => {
-            // extract the data from the server response
-            setData(response.data)
-          })
-          .catch(err => {
-            console.log(`Sorry, buster.  No more requests allowed today!`)
+        const fetchEvent = async () => {
+          try {
+            const result = await axios.get("http://localhost:3001/event");
+            setData(result.data)
+          } catch (err) {
             console.error(err) 
     
             // make some backup fake data
             const backupData = {
-                id: 1,
+                id: 2,
                 name: "LA Road Trip",
                 expenses: [
                   {"id":1,
-                  "name":"Dinner",
+                  "name":"Lunch",
                   "amount":358,
                   "creator":"Jane",
                   "date":"06/16/2023"},
@@ -54,7 +52,9 @@ const Event = props => {
             }
             
             setData(backupData)
-          })
+          }
+        }
+        fetchEvent();
       }, []) 
 
       return (
