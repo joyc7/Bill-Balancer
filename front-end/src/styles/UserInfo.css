@@ -36,6 +36,10 @@
     padding: 0.75rem 0;  /* adjust the padding value to add some spacing between items otherwise it will be too crowded */
 }
 
+.setting-title {
+    @apply flex items-center justify-start mb-4 text-lg font-bold p-4; /* Adjusted for left alignment and added text styling */
+}
+
 /* Dark Mode Styles (but this can only controls the styling of the current page, needs to figure out how to change the styling of the whole app) */
 .dark-mode {
     @apply bg-gray-800 text-white;
@@ -49,3 +53,88 @@
 .dark-mode .settings-list-feedback {
     @apply bg-gray-700;
 }
+
+.chatbox-container {
+    @apply flex flex-col w-full; /* Stack children vertically and take full width */
+}
+
+.chatbox-input {
+    @apply w-full px-4 py-2 bg-gray-200 rounded-md text-gray-700 border border-transparent focus:outline-none focus:border-gray-400; /* Styling for text area */
+    resize: none; /* Prevent resizing */
+}
+
+.send-button {
+    @apply mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full; /* Full width button */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+/* Add dark mode styles for chatbox and button */
+.dark-mode .chatbox-input {
+    @apply bg-gray-600 text-white border-gray-500;
+}
+
+.dark-mode .send-button {
+    @apply bg-blue-700 hover:bg-blue-800;
+}
+
+/* Slider Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  

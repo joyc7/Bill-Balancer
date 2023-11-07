@@ -8,10 +8,19 @@ function UserInfo() {
     const [userData, setUserData] = useState(null);
     const [randomUser, setRandomUser] = useState(null);
     const [isDarkMode, setIsDarkMode] = useState(false); // new state for managing dark mode
+    const [message, setMessage] = useState(''); // for sending messages in chatbox
 
     // function to toggle dark mode
     const toggleDarkMode = () => {
         setIsDarkMode(prevMode => !prevMode);
+    };
+
+    // Handler for sending a message (you can expand this with actual logic)
+    const sendMessage = () => {
+        console.log(message);
+        // You could add an API call here to send the message to the backend
+        // Reset the message input after sending
+        setMessage('');
     };
 
     const backupData = {
@@ -70,16 +79,34 @@ function UserInfo() {
                     </div>
                     <div className="settings-list-general">
                         <ul>
-                            <li className="setting-item" onClick={toggleDarkMode}>Preference</li> {/* added onClick handler to Preference */}
+                            <li className="setting-title">Settings</li>
+                            <li className="setting-item">
+                                Dark Mode  
+                                <label className="switch">
+                                    <input type="checkbox" checked={isDarkMode} onChange={toggleDarkMode} />
+                                    <span className="slider round"></span>
+                                    </label>
+                                    </li>
                             <li className="setting-item">Passcode</li>
                         </ul>
                     </div>
                     
                     <div className="settings-list-feedback">
-                        <ul>
-                            <li className="setting-item">Feedback</li>
-                            <li className="setting-item">Contact us</li>
-                        </ul>
+                    <ul>
+                    <li className="setting-title">Feedback</li>
+                    <li className="setting-item">
+                        Contact us
+                        <div className="chatbox-container">
+                            <textarea
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                placeholder="Type your message here..."
+                                className="chatbox-input"
+                            />
+                            <button onClick={sendMessage} className="send-button">Send</button>
+                        </div>
+                    </li>
+                </ul>
                     </div>
                 </>
             )}

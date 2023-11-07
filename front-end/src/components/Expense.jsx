@@ -47,7 +47,6 @@ function Expense() {
         <div className="expense">
             <h1 className="page-title" onClick={handleTitleClick}>LA Roadtrip | Flights to LA</h1> {/* click the title to direct to the previous page */}
             <div className="buttons">
-                <button className="settleup-btn">Settle&nbsp;Up</button> {/* use non-breaking space to prevent wrapping */}
                 <button className="balance-btn">Balance</button>
                 <button className="total-btn">Total</button>
                 </div>
@@ -60,8 +59,10 @@ function Expense() {
                     <div key={item.id} className="expense-item">
                         <span>{item.name}</span>
                         <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span>
+                        <div className="checkbox"><input type="checkbox" name={item.id} /></div> {/* add checkbox to settle up */}
                         </div>
                         ))}
+                        
                         </div>
             </div>
             <Navbar />
