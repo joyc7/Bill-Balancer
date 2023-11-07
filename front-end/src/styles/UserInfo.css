@@ -28,7 +28,7 @@
 
 .settings-list-general,
 .settings-list-feedback {
-    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5; 
+    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5 overflow-auto max-h-96;
 }
 
 .setting-item {

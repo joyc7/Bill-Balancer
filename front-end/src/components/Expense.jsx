@@ -57,9 +57,9 @@ function Expense() {
                     {/* Assume a headcount limit to split the bill */}
                     {expensesData.slice(0, 7).map(item => (
                     <div key={item.id} className="expense-item">
-                        <span>{item.name}</span>
-                        <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span>
-                        <div className="checkbox"><input type="checkbox" name={item.id} /></div> {/* add checkbox to settle up */}
+                        <span>{item.name}</span> {/* This is the first child */}
+                        <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span> {/* This is the second child */}
+                        <div className="checkbox"><input type="checkbox" name={item.id} /></div> {/* This is the third child */}
                         </div>
                         ))}
                         

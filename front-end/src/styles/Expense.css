@@ -25,7 +25,7 @@
 }
 
 .expense-list {
-    @apply flex flex-col space-y-4;
+    @apply flex flex-col space-y-4 overflow-auto h-96;
 }
 
 .expense-section {
@@ -46,4 +46,16 @@
 
 .expense-item {
     @apply flex justify-between items-center p-4 border-b border-gray-200;
+}
+
+.expense-item span:first-child {
+    @apply flex-1 text-left;
+}
+
+.expense-item span:nth-child(2) {
+    @apply shrink-0;
+}
+
+.expense-item .checkbox {
+    @apply shrink-0;
 }
