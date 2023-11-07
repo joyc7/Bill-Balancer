@@ -15,7 +15,7 @@ header {
 }
 
 .expenses {
-    @apply mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
+    @apply h-96 overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
 }
 
 .expenseItem {
@@ -47,17 +47,6 @@ header {
 }
 
 .addExpenseBtn {
-    @apply w-24 h-16 rounded-full bg-cyan-100 border-cyan-500 hover:bg-orange-100 active:bg-orange-200;
+    @apply w-24 h-16 rounded-full text-center p-1 bg-cyan-100 border-cyan-500 hover:bg-orange-100 active:bg-orange-200;
 }
 
-#addExpense {
-    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-200 rounded-2xl p-8;
-}
-
-form {
-    @apply flex flex-col space-y-3 mt-3;
-}
-
-.formBtn button {
-    @apply w-24 h-8 rounded-full justify-items-center bg-cyan-50 hover:bg-orange-100 active:bg-orange-200 mt-2;
-}

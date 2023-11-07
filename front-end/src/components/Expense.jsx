@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Expense.css';
 import Navbar from "./Navbar";
-import { Link, useNavigate } from "react-router-dom"; // useNavigate is used to direct the user to the previous page
+import { Link, useNavigate } from "react-router-dom"; {/* useNavigate is used to direct the user to the previous page */}
 
 function Expense() {
     const [expensesData, setExpensesData] = useState([]);
@@ -19,7 +19,7 @@ function Expense() {
             setExpensesData(data);
         } catch (error) {
             console.error("Error fetching data:", error);
-            // Using backup data when API call fails
+            {/* using backup data when API call fails */}
             setExpensesData(backupData_expenses.expense);
         }
     };
@@ -38,7 +38,7 @@ function Expense() {
         ]
     };
 
-    // navigates to the previous page
+    {/* navigates to the previous page */}
     const handleTitleClick = () => {
         navigate(-1); 
     };

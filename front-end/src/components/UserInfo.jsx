@@ -6,20 +6,20 @@ import Navbar from "./Navbar";
 
 function UserInfo() {
     const [userData, setUserData] = useState(null);
-    const [randomUser, setRandomUser] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState(false); // new state for managing dark mode
-    const [message, setMessage] = useState(''); // for sending messages in chatbox
+    const [randomUser, setRandomUser] = useState(null); {/* to fetch random user info */}
+    const [isDarkMode, setIsDarkMode] = useState(false); {/* to control dark mode */}
+    const [message, setMessage] = useState(''); {/* to input contact us messages */}
 
-    // function to toggle dark mode
+    {/* dark mode function */}
     const toggleDarkMode = () => {
         setIsDarkMode(prevMode => !prevMode);
     };
 
-    // Handler for sending a message (you can expand this with actual logic)
+    {/* contact us function */}
     const sendMessage = () => {
         console.log(message);
-        // You could add an API call here to send the message to the backend
-        // Reset the message input after sending
+        {/* can add an API call here to send the message to the backend */}
+        {/* reset the message input after sending */}
         setMessage('');
     };
 
@@ -51,13 +51,13 @@ function UserInfo() {
                 }
                 const data = await response.json();
                 setUserData(data);
-                // Pick a random user from the user array
+                {/* pick a random user from the user array */}
                 const randomIdx = Math.floor(Math.random() * data.user.length);
                 setRandomUser(data.user[randomIdx]);
             } catch (error) {
                 console.error("Error fetching user data:", error);
                 setUserData(backupData);
-                // Pick a random user from the backup data
+                {/* pick a random user from the backup data */}
                 const randomIdx = Math.floor(Math.random() * backupData.user.length);
                 setRandomUser(backupData.user[randomIdx]);
             }

@@ -37,7 +37,7 @@
 }
 
 .setting-title {
-    @apply flex items-center justify-start mb-4 text-lg font-bold p-4; /* Adjusted for left alignment and added text styling */
+    @apply flex items-center justify-start mb-4 text-lg font-bold p-4; /* adjust for left alignment and added text styling */
 }
 
 /* Dark Mode Styles (but this can only controls the styling of the current page, needs to figure out how to change the styling of the whole app) */
@@ -55,7 +55,7 @@
 }
 
 .chatbox-container {
-    @apply flex flex-col w-full; /* Stack children vertically and take full width */
+    @apply flex flex-col w-full; 
 }
 
 .chatbox-input {
@@ -64,11 +64,11 @@
 }
 
 .send-button {
-    @apply mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full; /* Full width button */
-    cursor: pointer; /* Change cursor on hover */
+    @apply mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full;
+    cursor: pointer;
 }
 
-/* Add dark mode styles for chatbox and button */
+/* add dark mode styles for chatbox and button */
 .dark-mode .chatbox-input {
     @apply bg-gray-600 text-white border-gray-500;
 }
@@ -77,7 +77,7 @@
     @apply bg-blue-700 hover:bg-blue-800;
 }
 
-/* Slider Switch */
+/* slider switch for dark mode */
 .switch {
     position: relative;
     display: inline-block;
@@ -129,7 +129,7 @@
     transform: translateX(26px);
   }
   
-  /* Rounded sliders */
+  /* rounded sliders */
   .slider.round {
     border-radius: 34px;
   }
