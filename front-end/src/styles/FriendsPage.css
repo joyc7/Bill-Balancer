@@ -23,7 +23,8 @@
 }
 
 .friends-list {
-    @apply flex items-center justify-center p-4 bg-cyan-100 rounded-md mb-5; 
+    
+    @apply h-96 overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50; 
 }
 
 .friends-list h3 {
