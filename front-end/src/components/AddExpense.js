@@ -8,9 +8,39 @@ const AddExpense = props => {
 
     const navigate = useNavigate();
 
-    const handleAddExpense = () => {
-        // submit the form information
-        navigate('/event');
+    const [formData, setFormData] = useState({
+        name: '',
+        amount: '',
+        date: '',
+        personPaid: '',   
+        peopleSplit: []   
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "peopleSplit" && e.target.multiple) {
+            // Handle the selection of multiple options for 'peopleSplit'
+            const selectedOptions = [...e.target.options].filter(o => o.selected).map(o => o.value);
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                peopleSplit: selectedOptions
+            }));
+        } else {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                [name]: value
+            }));
+        }
+    };
+
+    const handleAddExpense = async () => {
+        try {
+            const response = await axios.post('http://localhost:3001/add-expense', formData);
+            console.log(response.data);
+            navigate('/event');
+        } catch (error) {
+            console.error('Failed to submit expense:', error);
+        }
     };
 
     return (
@@ -22,25 +52,25 @@ const AddExpense = props => {
             <form onSubmit={e => { e.preventDefault(); handleAddExpense(); }}>
                 <div id="nameInput">
                     <label>Name:</label><br/>
-                    <input name="name" placeholder="Enter a name"/>
+                    <input name="name" placeholder="Enter a name" value={formData.name} onChange={handleInputChange}/>
                 </div>
                 <div id="amountInput">
                     <label>Amount:</label><br/>
-                    <input name="amount" placeholder="Enter the amount"/>
+                    <input name="amount" placeholder="Enter the amount" value={formData.amount} onChange={handleInputChange}/>
                 </div>
                 <div id="dateInput">
                     <label>Date:</label><br/>
-                    <input type="date" name="date"/>
+                    <input type="date" name="date" value={formData.date} onChange={handleInputChange}/>
                 </div>
                 <div id="paid">
                     <label>Paid by:</label><br/>
-                    <select name="people">
+                    <select name="personPaid" value={formData.personPaid} onChange={handleInputChange}>
                         {/* fetch data to get the list of people participated in this event */}
                     </select>
                 </div>
                 <div id="split">
                     <label>Split by:</label><br/>
-                    <select name="people" multiple size="5">
+                    <select name="peopleSplit" multiple size="5" value={formData.peopleSplit} onChange={handleInputChange}>
                         {/* fetch data to get the list of people participated in this event */}
                     </select>
                 </div>
