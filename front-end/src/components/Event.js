@@ -60,7 +60,7 @@ const Event = props => {
       return (
         <div id="event-page">
             <header>
-                <h2><Link to='events'>Events</Link>|{data.name}</h2>
+                <h2><Link to='/events'>Events</Link>|{data.name}</h2>
             </header>
 
             <section className="description">
