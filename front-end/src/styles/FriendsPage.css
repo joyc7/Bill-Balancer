@@ -1,5 +1,5 @@
 .friends-page {
-    @apply bg-white min-h-screen p-6 font-mono; 
+    @apply bg-white font-mono; 
 }
 
 .page-title {
@@ -7,7 +7,11 @@
 }
 
 .balance-section {
-    @apply flex items-center justify-center bg-cyan-100 p-4 rounded-md mb-5; 
+    @apply flex space-x-4 items-center p-4 bg-cyan-100 rounded-lg rounded-md mb-5; 
+}
+
+.user-avatar {
+    @apply w-20 h-20 rounded-full border-4 border-cyan-300;
 }
 
 .avatar {
@@ -23,8 +27,7 @@
 }
 
 .friends-list {
-    
-    @apply h-96 overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50; 
+    @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50; 
 }
 
 .friends-list h3 {
@@ -32,7 +35,11 @@
 }
 
 .friend-item {
-    @apply flex items-center space-x-2.5; 
+    @apply flex justify-between items-center p-4 border-b border-gray-200; 
+}
+
+.item-name-avatar {
+    @apply flex items-center; 
 }
 
 .friend-avatar {
@@ -48,6 +55,7 @@
 }
 
 .add-friends-btn {
+    @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
     @apply absolute top-2.5 right-2.5 p-1 px-2.5 border-none rounded-sm cursor-pointer; 
 }
 
@@ -71,4 +79,12 @@
 
 .modal-content button {
     @apply w-full p-3 rounded-full border border-slate-100 bg-cyan-100 mb-4; 
+}
+
+.add-friend-name {
+    @apply flex-grow text-left px-4; 
+}
+
+.add-friend-item {
+    @apply flex justify-between items-center p-4 border-b border-gray-200 bg-cyan-100; 
 }
