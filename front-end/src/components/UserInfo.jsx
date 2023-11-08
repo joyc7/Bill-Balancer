@@ -23,6 +23,7 @@ function UserInfo() {
         setMessage('');
     };
 
+    {/* backup data */}
     const backupData = {
         "id": 1,
         "name": "Bryn",
@@ -85,36 +86,35 @@ function UserInfo() {
                                 <label className="switch">
                                     <input type="checkbox" checked={isDarkMode} onChange={toggleDarkMode} />
                                     <span className="slider round"></span>
-                                    </label>
-                                    </li>
+                                </label>
+                            </li>
                             <li className="setting-item">Passcode</li>
                         </ul>
                     </div>
                     
                     <div className="settings-list-feedback">
                     <ul>
-                    <li className="setting-title">Feedback</li>
-                    <li className="setting-item">
-                        Contact us
-                        <div className="chatbox-container">
-                            <textarea
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                placeholder="Type your message here..."
-                                className="chatbox-input"
-                            />
-                            <button onClick={sendMessage} className="send-button">Send</button>
-                        </div>
-                    </li>
-                </ul>
+                        <li className="setting-title">Feedback</li>
+                        <li className="setting-item setting-item-feedback">
+                            <div className="contact-us-title">Contact us</div>
+                            <div className="chatbox-container">
+                                <textarea
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    placeholder="Type your message here..." /* store messages in backend */
+                                    className="chatbox-input"
+                                />
+                                <button onClick={sendMessage} className="send-button">Send</button>
+                            </div>
+                        </li>
+                    </ul>
                     </div>
                 </>
             )}
             <Navbar />
         </div>
     );
-
-   
+       
    
 }
 

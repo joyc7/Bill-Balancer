@@ -53,7 +53,7 @@
 }
 
 .expense-item span:nth-child(2) {
-    @apply shrink-0;
+    @apply shrink-0 mr-8; /* add margin to the right of the expense amount */
 }
 
 .expense-item .checkbox {

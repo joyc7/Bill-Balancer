@@ -28,19 +28,25 @@
 
 .settings-list-general,
 .settings-list-feedback {
-    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5 overflow-auto max-h-96;
+    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5 overflow-auto;
+    max-height: 20rem;
+}
+
+.setting-item-feedback {
+    @apply flex-col items-start;
 }
 
 .setting-item {
-    @apply flex items-center space-x-2.5 mb-4; 
-    padding: 0.75rem 0;  /* adjust the padding value to add some spacing between items otherwise it will be too crowded */
+    @apply flex items-center mb-4 pl-4;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
 .setting-title {
-    @apply flex items-center justify-start mb-4 text-lg font-bold p-4; /* adjust for left alignment and added text styling */
+    @apply flex items-start justify-start text-lg font-bold py-4 px-4 w-full;
 }
 
-/* Dark Mode Styles (but this can only controls the styling of the current page, needs to figure out how to change the styling of the whole app) */
+/* Dark Mode Styles */
 .dark-mode {
     @apply bg-gray-800 text-white;
 }
@@ -54,21 +60,26 @@
     @apply bg-gray-700;
 }
 
+.contact-us-title {
+    @apply block text-left w-full;
+}
+
 .chatbox-container {
-    @apply flex flex-col w-full; 
+    @apply block w-full my-4;
 }
 
 .chatbox-input {
-    @apply w-full px-4 py-2 bg-gray-200 rounded-md text-gray-700 border border-transparent focus:outline-none focus:border-gray-400; /* Styling for text area */
-    resize: none; /* Prevent resizing */
+    @apply px-4 py-2 bg-gray-200 rounded-md text-gray-700 border border-transparent focus:outline-none focus:border-gray-400;
+    width: calc(100% - 1em); /* adjust the size of right margin */
 }
 
 .send-button {
     @apply mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full;
     cursor: pointer;
+    width: calc(100% - 1em); /* adjust the size of right margin */
 }
 
-/* add dark mode styles for chatbox and button */
+/* Dark mode styles for chatbox its button */
 .dark-mode .chatbox-input {
     @apply bg-gray-600 text-white border-gray-500;
 }
@@ -77,21 +88,22 @@
     @apply bg-blue-700 hover:bg-blue-800;
 }
 
-/* slider switch for dark mode */
+/* Styling for the dark mode switch */
 .switch {
+    @apply ml-2; /* add some margin to the left of the switch */
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  .switch input { 
+    width: 40px;
+    height: 20px; 
+}
+
+.switch input { 
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -99,42 +111,50 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+    border-radius: 20px;
+}
+
+.slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 16px;
+    width: 16px; 
+    left: 2px;
+    bottom: 2px;
     background-color: white;
-    -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
     border-radius: 50%;
-  }
-  
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Styling for the container for the dark mode toggle */
+.dark-mode-toggle {
+    @apply flex items-center;
+}
+
+.setting-item .dark-mode-text {
+    @apply mr-2;
+}
