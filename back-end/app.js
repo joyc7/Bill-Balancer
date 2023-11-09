@@ -5,8 +5,8 @@ const cors = require("cors");
 
 const eventRoute = require("./routes/eventRoute");
 const homeRoute = require("./routes/homeRoute");
-const FriendsPageRoute = require('./routes/FriendsPageRoute'); 
-const AddFriendRoute = require('./routes/AddFriendRoute'); 
+const FriendsPageRoute = require('./routes/friendsPageRoute'); 
+const AddFriendRoute = require('./routes/addFriendRoute'); 
 
 app.use(cors());
 
