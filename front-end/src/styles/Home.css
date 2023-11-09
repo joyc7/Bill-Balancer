@@ -38,3 +38,23 @@
 .home-expense-amount {
   @apply text-gray-600;
 }
+
+.center {
+  @apply flex justify-between items-center;
+}
+
+.heading2 {
+  @apply text-center text-2xl mb-4;
+}
+
+.border {
+  @apply box bg-white p-6 rounded-md shadow-md;
+}
+
+.main {
+  @apply home-container bg-gray-100 min-h-screen p-4;
+}
+
+.small {
+  @apply mb-4;
+}

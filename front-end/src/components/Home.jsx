@@ -55,10 +55,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home-container bg-gray-100 min-h-screen p-4">
-      <div className="box bg-white p-6 rounded-md shadow-md">
+    <div className="main">
+      <div className="border">
         <div>
-          <h2 className="text-center text-2xl mb-4">
+          <h2 className="heading2">
             {backendData &&
               Array.isArray(backendData.expenses) &&
               backendData.expenses.length > 0 && (
@@ -73,8 +73,8 @@ const Home = () => {
             backendData.expenses &&
             backendData.expenses.length > 0 ? (
               backendData.expenses.map((expense) => (
-                <li key={expense.id} className="home-list-item mb-4">
-                  <div className="flex justify-between items-center">
+                <li key={expense.id} className="small">
+                  <div className="center">
                     <p className="home-expense-text">{expense.name}</p>
                     <p className="home-expense-amount">${expense.amount}</p>
                   </div>
