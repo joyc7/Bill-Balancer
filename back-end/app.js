@@ -5,6 +5,8 @@ const cors = require("cors");
 
 const eventRoute = require("./routes/eventRoute");
 const homeRoute = require("./routes/homeRoute");
+const FriendsPageRoute = require('./routes/FriendsPageRoute'); 
+const AddFriendRoute = require('./routes/AddFriendRoute'); 
 
 app.use(cors());
 
@@ -14,6 +16,8 @@ app.use(cors());
 
 app.use("/event", eventRoute);
 app.use("/home", homeRoute);
+app.use('/friends', FriendsPageRoute); 
+app.use('/addFriends', AddFriendRoute); 
 
 // export the express app we created to make it available to other modules
 module.exports = app;
