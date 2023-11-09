@@ -9,7 +9,7 @@ let userData = {
         "avatar": "https://robohash.org/eligendiquiased.png?size=50x50&set=set1",
       }
 
-// Endpoint to get user data with friends
+// Endpoint to get user data after search
 router.get('/', (req, res) => {
   res.json(userData);
 });
