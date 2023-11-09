@@ -22,19 +22,3 @@
 .home-title {
   @apply text-center font-extrabold text-2xl;
 }
-
-.home-list {
-  @apply rounded-lg p-4 mt-4;
-}
-
-.home-list2 {
-  @apply py-4 border-b border-gray-300 flex justify-between;
-}
-
-.home-expense-text {
-  @apply text-lg font-semibold;
-}
-
-.home-expense-amount {
-  @apply text-gray-600;
-}
