@@ -1,7 +1,7 @@
 /* UserInfo.css - styling of User Info(Account) Page */
 /* More features to add for the User Info Page (the buttons will be clickable and direct to relevant pages if we have time to implement those features)*/
 
-.user-info-page {
+.UserInfo {
     @apply bg-white min-h-screen p-6 font-mono; 
 }
 
@@ -26,11 +26,135 @@
     @apply font-bold mb-2.5; 
 }
 
-.settings-list {
-    @apply flex items-center justify-center p-4 bg-cyan-100 rounded-md mb-5; 
+.settings-list-general,
+.settings-list-feedback {
+    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5 overflow-auto;
+    max-height: 20rem;
+}
+
+.setting-item-feedback {
+    @apply flex-col items-start;
 }
 
 .setting-item {
-    @apply flex items-center space-x-2.5; 
+    @apply flex items-center mb-4 pl-4;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
+.setting-title {
+    @apply flex items-start justify-start text-lg font-bold py-4 px-4 w-full;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    @apply bg-gray-800 text-white;
+}
+
+.dark-mode .user-detail-section {
+    @apply bg-gray-700;
+}
+
+.dark-mode .settings-list-general,
+.dark-mode .settings-list-feedback {
+    @apply bg-gray-700;
+}
+
+.contact-us-title {
+    @apply block text-left w-full;
+}
+
+.chatbox-container {
+    @apply block w-full my-4;
+}
+
+.chatbox-input {
+    @apply px-4 py-2 bg-gray-200 rounded-md text-gray-700 border border-transparent focus:outline-none focus:border-gray-400;
+    width: calc(100% - 1em); /* adjust the size of right margin */
+}
+
+.send-button {
+    @apply mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full;
+    cursor: pointer;
+    width: calc(100% - 1em); /* adjust the size of right margin */
+}
+
+/* Dark mode styles for chatbox its button */
+.dark-mode .chatbox-input {
+    @apply bg-gray-600 text-white border-gray-500;
+}
+
+.dark-mode .send-button {
+    @apply bg-blue-700 hover:bg-blue-800;
+}
+
+/* Styling for the dark mode switch */
+.switch {
+    @apply ml-2; /* add some margin to the left of the switch */
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px; 
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px; 
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Styling for the container for the dark mode toggle */
+.dark-mode-toggle {
+    @apply flex items-center;
+}
+
+.setting-item .dark-mode-text {
+    @apply mr-2;
+}

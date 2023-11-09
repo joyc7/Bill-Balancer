@@ -6,8 +6,24 @@ import Navbar from "./Navbar";
 
 function UserInfo() {
     const [userData, setUserData] = useState(null);
-    const [randomUser, setRandomUser] = useState(null);
+    const [randomUser, setRandomUser] = useState(null); {/* to fetch random user info */}
+    const [isDarkMode, setIsDarkMode] = useState(false); {/* to control dark mode */}
+    const [message, setMessage] = useState(''); {/* to input contact us messages */}
 
+    {/* dark mode function */}
+    const toggleDarkMode = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
+
+    {/* contact us function */}
+    const sendMessage = () => {
+        console.log(message);
+        {/* can add an API call here to send the message to the backend */}
+        {/* reset the message input after sending */}
+        setMessage('');
+    };
+
+    {/* backup data */}
     const backupData = {
         "id": 1,
         "name": "Bryn",
@@ -36,13 +52,13 @@ function UserInfo() {
                 }
                 const data = await response.json();
                 setUserData(data);
-                // Pick a random user from the user array
+                {/* pick a random user from the user array */}
                 const randomIdx = Math.floor(Math.random() * data.user.length);
                 setRandomUser(data.user[randomIdx]);
             } catch (error) {
                 console.error("Error fetching user data:", error);
                 setUserData(backupData);
-                // Pick a random user from the backup data
+                {/* pick a random user from the backup data */}
                 const randomIdx = Math.floor(Math.random() * backupData.user.length);
                 setRandomUser(backupData.user[randomIdx]);
             }
@@ -51,7 +67,7 @@ function UserInfo() {
     }, []);
 
     return (
-        <div className="UserInfo">
+        <div className={`UserInfo ${isDarkMode ? 'dark-mode' : ''}`}> 
             <h1 className="page-title">Account</h1>
             {randomUser && (
                 <>
@@ -62,20 +78,44 @@ function UserInfo() {
                             <div className="email">{randomUser.email}</div>
                         </div>
                     </div>
-                    <div className="settings-list">
+                    <div className="settings-list-general">
                         <ul>
-                            <li className="setting-item">Preference</li>
+                            <li className="setting-title">Settings</li>
+                            <li className="setting-item">
+                                Dark Mode  
+                                <label className="switch">
+                                    <input type="checkbox" checked={isDarkMode} onChange={toggleDarkMode} />
+                                    <span className="slider round"></span>
+                                </label>
+                            </li>
                             <li className="setting-item">Passcode</li>
-                            <li className="setting-item">Language</li>
-                            <li className="setting-item">Feedback</li>
-                            <li className="setting-item">Contact us</li>
                         </ul>
+                    </div>
+                    
+                    <div className="settings-list-feedback">
+                    <ul>
+                        <li className="setting-title">Feedback</li>
+                        <li className="setting-item setting-item-feedback">
+                            <div className="contact-us-title">Contact us</div>
+                            <div className="chatbox-container">
+                                <textarea
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    placeholder="Type your message here..." /* store messages in backend */
+                                    className="chatbox-input"
+                                />
+                                <button onClick={sendMessage} className="send-button">Send</button>
+                            </div>
+                        </li>
+                    </ul>
                     </div>
                 </>
             )}
             <Navbar />
         </div>
     );
+       
+   
 }
 
 export default UserInfo;
