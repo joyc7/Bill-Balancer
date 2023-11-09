@@ -1,11 +1,10 @@
 .navbar {
-  @apply pb-4 fixed bottom-5;
+  @apply pb-4 fixed bottom-0 left-1/2 bg-white; 
+  transform: translateX(-50%);
 }
 
 .navbar ul {
-  list-style: none;
-  @apply flex justify-around;
-  padding: 0;
+  @apply list-none flex justify-around p-0;
 }
 
 .navbar li {
@@ -13,13 +12,14 @@
 }
 
 .app-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  @apply min-h-screen flex flex-col;
+  padding-bottom: 4rem; 
 }
+
 .active {
   @apply text-blue-500 px-4 py-2 font-extrabold;
 }
+
 .normal {
   @apply text-black no-underline px-4 py-2 font-extrabold;
 }
