@@ -32,9 +32,6 @@ function FriendsPage() {
     return (
         <div className="friends-page">
             <h1 className="page-title">Friends</h1>
-            <button className="add-friends-btn" onClick={() => setShowModal(true)}>
-                Add Friends
-            </button>
             <div className="balance-section">
                 <img src={userData.avatar} alt="User Avatar" className="user-avatar"/>
                 <div>
@@ -68,7 +65,12 @@ function FriendsPage() {
                     ))}
                 </ul>
             </div>
-
+            
+            <div className='add-friends-btn-div'>
+                <button className="add-friends-btn" onClick={() => setShowModal(true)}>
+                    Add Friends
+                </button>
+            </div>
 
             {showModal && (
                 <AddFriendModal showModal={showModal} onClose={() => setShowModal(false)} />

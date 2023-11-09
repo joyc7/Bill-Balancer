@@ -30,30 +30,7 @@ function AddFriendModal({ showModal, onClose }) {
         }
     }
 
-    // Function to handle adding a friend
-    const handleAddFriend = async () => {
-        // Logic to add a friend, perhaps making a POST request to your server
-        try {
-            const response = await fetch('/api/addFriend', { // Adjust the URL as needed
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ friendId: userData.id }), // Assuming you need to send the friend's ID
-            });
 
-            if (response.ok) {
-                // Handle a successful friend addition here
-                console.log('Friend added successfully!');
-                // Optionally, refresh the list of friends or update the UI accordingly
-            } else {
-                // Handle errors, like showing a message to the user
-                console.error('Failed to add friend');
-            }
-        } catch (error) {
-            console.error('Error adding friend:', error);
-        }
-    };
 
     return (
         <div className="modal">
@@ -72,7 +49,6 @@ function AddFriendModal({ showModal, onClose }) {
                             alt="Add friend"
                             className="add-friend-button"
                             style={{ width: "50px", height: "50px" }}
-                            onClick={handleAddFriend} 
                         />
                     </div>
                 )}
