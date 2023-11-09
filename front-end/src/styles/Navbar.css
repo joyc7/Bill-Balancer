@@ -1,5 +1,5 @@
 .navbar {
-  @apply pb-4 fixed bottom-0 left-1/2 bg-white; /* Fixes navbar to bottom and centers it */
+  @apply pb-4 fixed bottom-0 left-1/2 bg-white; 
   transform: translateX(-50%);
 }
 
@@ -13,7 +13,7 @@
 
 .app-container {
   @apply min-h-screen flex flex-col;
-  padding-bottom: 4rem; /* Adjust this value based on the height of your navbar */
+  padding-bottom: 4rem; 
 }
 
 .active {
