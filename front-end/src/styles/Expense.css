@@ -1,4 +1,5 @@
-/* Expense.css */
+/* Expense.css - styling of Expense Page */
+
 .expense-page {
     @apply bg-white min-h-screen p-6 font-mono; 
 }
@@ -12,9 +13,10 @@
 }
 
 .buttons > button {
-    @apply py-2 px-4 rounded-full font-bold mr-2; 
-    transition: background-color 0.2s;
+    @apply py-2 px-4 rounded-full font-bold mr-2;
     @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+    display: inline-block;  
+    transition: background-color 0.2s;
 }
 
 .expense-container {
@@ -23,7 +25,7 @@
 }
 
 .expense-list {
-    @apply flex flex-col space-y-4;
+    @apply flex flex-col space-y-4 overflow-auto h-96;
 }
 
 .expense-section {
@@ -44,4 +46,16 @@
 
 .expense-item {
     @apply flex justify-between items-center p-4 border-b border-gray-200;
+}
+
+.expense-item span:first-child {
+    @apply flex-1 text-left;
+}
+
+.expense-item span:nth-child(2) {
+    @apply shrink-0 mr-8; /* add margin to the right of the expense amount */
+}
+
+.expense-item .checkbox {
+    @apply shrink-0;
 }
