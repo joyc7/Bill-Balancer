@@ -10,7 +10,6 @@ router.post("/", async (req, res) => {
       password: req.body.password,
     },
   };
-  // ... then send a response of some kind to client
   res.json(response);
 });
 
