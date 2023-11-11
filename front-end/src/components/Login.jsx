@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/Login.css";
 import userImage from "../images/user.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,9 +20,54 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   navigate("/home");
+  // };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:3001/add-expense",
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status === 200) {
+  //       navigate("/home");
+  //     } else {
+  //       console.error("Login failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error: " + error.message);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/home");
+
+    try {
+      const response = await axios.post("http://localhost:3001/", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        navigate("/home");
+        console.log("Successful!");
+        console.log(response.data);
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error: " + error.message);
+    }
   };
 
   return (
