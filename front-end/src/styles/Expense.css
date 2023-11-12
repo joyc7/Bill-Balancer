@@ -59,13 +59,3 @@
 .expense-item .checkbox {
     @apply shrink-0;
 }
-
-/* Regular style */
-.expense {
-    @apply bg-white text-black;
-  }
-  
-  /* Dark mode style */
-  .dark .expense {
-    @apply bg-gray-800 text-white;
-  }  
