@@ -28,7 +28,6 @@
 
 .friends-list {
     @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50; 
-    height: 490px;
 }
 
 .friends-list h3 {
