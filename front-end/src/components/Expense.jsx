@@ -1,11 +1,13 @@
 /* Expense.jsx - components of Expense Page */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Expense.css';
 import Navbar from "./Navbar";
+import { DarkModeContext } from "../App";
 import { Link, useNavigate } from "react-router-dom"; {/* useNavigate is used to direct the user to the previous page */}
 
 function Expense() {
+    const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
     const [expensesData, setExpensesData] = useState([]);
     const navigate = useNavigate();
 

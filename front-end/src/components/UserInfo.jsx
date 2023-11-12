@@ -1,19 +1,15 @@
 /* UserInfo.jsx - components of User Info(Account) Page */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import '../styles/UserInfo.css';
 import Navbar from "./Navbar";
+import { DarkModeContext } from "../App";
 
 function UserInfo() {
     const [userData, setUserData] = useState(null);
     const [randomUser, setRandomUser] = useState(null); {/* to fetch random user info */}
-    const [isDarkMode, setIsDarkMode] = useState(false); {/* to control dark mode */}
+    const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext); {/* use DarkModeContext for dark mode state and toggle function */}
     const [message, setMessage] = useState(''); {/* to input contact us messages */}
-
-    {/* dark mode function */}
-    const toggleDarkMode = () => {
-        setIsDarkMode(prevMode => !prevMode);
-    };
 
     {/* contact us function */}
     const sendMessage = () => {
@@ -93,29 +89,27 @@ function UserInfo() {
                     </div>
                     
                     <div className="settings-list-feedback">
-                    <ul>
-                        <li className="setting-title">Feedback</li>
-                        <li className="setting-item setting-item-feedback">
-                            <div className="contact-us-title">Contact us</div>
-                            <div className="chatbox-container">
-                                <textarea
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    placeholder="Type your message here..." /* store messages in backend */
-                                    className="chatbox-input"
-                                />
-                                <button onClick={sendMessage} className="send-button">Send</button>
-                            </div>
-                        </li>
-                    </ul>
+                        <ul>
+                            <li className="setting-title">Feedback</li>
+                            <li className="setting-item setting-item-feedback">
+                                <div className="contact-us-title">Contact us</div>
+                                <div className="chatbox-container">
+                                    <textarea
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        placeholder="Type your message here..."
+                                        className="chatbox-input"
+                                    />
+                                    <button onClick={sendMessage} className="send-button">Send</button>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </>
             )}
             <Navbar />
         </div>
     );
-       
-   
 }
 
 export default UserInfo;

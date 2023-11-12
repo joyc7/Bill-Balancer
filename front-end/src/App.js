@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Event from "./components/Event";
 import "./index.css";
@@ -11,12 +11,26 @@ import Expense from "./components/Expense";
 import UserInfo from "./components/UserInfo"; 
 import AddExpense from "./components/AddExpense";
 
+export const DarkModeContext = createContext();
+
 
 function App() {
   // used to keep track of which specific event the user choose to see
   const [event, setEvent] = useState({});
+  // used to control Dark Mode for each page
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode); // Toggle the dark mode state
+    if (isDarkMode) {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  };
+
 
   return (
+    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
     <div className="container">
       <Router>
         <Routes>
@@ -33,6 +47,7 @@ function App() {
         </Routes>
       </Router>
     </div>
+    </DarkModeContext.Provider>
   );
 }
 
