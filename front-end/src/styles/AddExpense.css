@@ -6,14 +6,14 @@
     @apply ml-6;
 }
 
-#addExpense form .formBtn {
+#addExpense form .submitBtn {
     @apply m-auto;
 }
 
-.formBtn button {
-    @apply w-24 h-8 rounded-full bg-cyan-100 hover:bg-orange-100 active:bg-orange-200 mt-2;
+.submitBtn button {
+    @apply w-24 h-8 rounded-full bg-cyan-100 hover:bg-orange-100 active:bg-orange-200 mt-10;
 }
 
-#splitOptions {
-    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-200 rounded-2xl p-8;
+.splitMethods button {
+    @apply w-60 h-8 rounded-sm shadow-lg active:bg-cyan-100;
 }

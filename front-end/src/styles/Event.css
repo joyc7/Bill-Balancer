@@ -15,7 +15,11 @@ header {
 }
 
 .expenses {
-    @apply h-96 overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
+    @apply overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
+}
+
+.expenses {
+    height: 50vh;
 }
 
 .expenseItem {
