@@ -23,8 +23,6 @@ function UserInfo() {
         setMessage('');
     };
 
-    // check
-
     {/* backup data */}
     const backupData = {
         "id": 1,
@@ -114,7 +112,7 @@ function UserInfo() {
                     </div>
                 </>
             )}
-            <Navbar />
+            <Navbar isDarkMode={isDarkMode} /> {/* set dark mode for Navbar */}
         </div>
         </div>
     );

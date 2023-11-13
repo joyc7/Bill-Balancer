@@ -10,7 +10,7 @@
     overflow: auto; /* if content exceeds height, let the user scroll the section */
 }
 
-/* Full height container for dark mode */
+/* full height container for dark mode, otherwise there are uncolored gaps between section boxes */
 .UserInfo-full-height {
     min-height: 100vh; /* make sure it covers full viewport height */
 }
@@ -59,7 +59,7 @@
 
 /* Dark Mode Styles */
 .dark-mode {
-    @apply bg-gray-800 text-white; /* this applies the dark background and text color to the entire UserInfo component */
+    @apply bg-gray-800 text-white;
 }
 
 .dark-mode .user-detail-section {
@@ -69,7 +69,7 @@
 .dark-mode .user-detail-section,
 .dark-mode .settings-list-general,
 .dark-mode .settings-list-feedback {
-    @apply bg-gray-700; /* Slightly lighter dark background for these sections */
+    @apply bg-gray-700; /* slightly lighter dark background for these sections, 800 is darker */
 }
 
 .contact-us-title {
@@ -77,11 +77,11 @@
 }
 
 .dark-mode .page-title {
-    @apply bg-gray-800 text-white; /* this will apply the dark background to the page title specifically */
+    @apply bg-gray-800 text-white; 
 }
 
 .dark-mode .UserInfo {
-    background-color: #121212; /* Dark mode background color */
+    background-color: #121212; /* dark mode background color, about 800 */
 }
 
 
