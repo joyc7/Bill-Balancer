@@ -38,7 +38,6 @@ function AddEvent({addEvent, onClose}){
         <div className="add-event">
             <div className="add-event-content">
                 <span className="close" onClick={onClose}>&times;</span>
-                <h2>Add Event</h2>
                 <input type="text" placeholder="Event Name" />
                 <input type="date" placeholder="Event Date"/>
                 <input type="text" placeholder="Event Description"/>

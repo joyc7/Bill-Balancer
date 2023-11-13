@@ -83,7 +83,6 @@ function Events() {
 
                 //return the data
                 setEventData(response.data)
-                console.log(response.data)
 
             }catch(error){
                 console.error("There was an error fetching the data:", error);
@@ -143,12 +142,6 @@ function Events() {
                         </li>
                     ))}
                 </ul>
-            </div>
-
-            <div className='add-event-but'>
-                <button className="add-events-but" onClick={() => setaddEvent(true)}>
-                    Add Events
-                </button>
             </div>
 
             {addEvent && (
