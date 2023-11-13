@@ -2,18 +2,50 @@ import axios from "axios"
 import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import SplitModal from "./SplitModal";
 import '../styles/AddExpense.css';
 
 const AddExpense = props => {
 
     const navigate = useNavigate();
 
+    const [showModal, setShowModal] = useState(false);
+    const [splitMethod, setSplitMethod] = useState('Choose Split Method');
+
     const [formData, setFormData] = useState({
         name: '',
         amount: '',
         date: '',
-        personPaid: '',   
-        peopleSplit: []   
+        personPaid: '',  
+        // remove this after we can fetch api from backend to get the peopleSplit in the form 
+        peopleSplit: [
+            {
+                "id": 1,
+                "first_name": "Maressa",
+                "avatar": "https://robohash.org/quiaperiamrem.png?size=50x50&set=set1"
+            }, 
+            {
+                "id": 2,
+                "first_name": "Fredric",
+                "avatar": "https://robohash.org/quaeetcorrupti.png?size=50x50&set=set1"
+            }, 
+            {
+                "id": 3,
+                "first_name": "Rosina",
+                "avatar": "https://robohash.org/officiismaximecorrupti.png?size=50x50&set=set1"
+            }, 
+            {
+                "id": 4,
+                "first_name": "Sim",
+                "avatar": "https://robohash.org/animidoloribusomnis.png?size=50x50&set=set1"
+            }, 
+            {
+                "id": 5,
+                "first_name": "Olenka",
+                "avatar": "https://robohash.org/rerumsaepeculpa.png?size=50x50&set=set1"
+            }
+        ],
+        splitMethod: ''   
     });
 
     const handleInputChange = (e) => {
@@ -25,12 +57,23 @@ const AddExpense = props => {
                 ...prevFormData,
                 peopleSplit: selectedOptions
             }));
+
         } else {
             setFormData(prevFormData => ({
                 ...prevFormData,
                 [name]: value
             }));
         }
+    };
+
+    // function handle the split method
+    const handleMethodChange = (method) => {
+        setSplitMethod(method);
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            splitMethod: method
+        }));
+        setShowModal(false); 
     };
 
     const handleAddExpense = async () => {
@@ -75,13 +118,15 @@ const AddExpense = props => {
                     </select>
                 </div>
                 <div className="splitMethods">
-                    Equally
+                    <button onClick={(e) => {e.preventDefault(); setShowModal(true)}}>{splitMethod === "equally" ? "Equally": "By "+splitMethod}</button>
                 </div>
-                <div className="formBtn">
+                <div className="submitBtn">
                     <button type="submit">Done</button>
                 </div>
             </form>
             </div>
+
+            <SplitModal onMethodChange={handleMethodChange} showModal={showModal} totalAmount={formData.amount} participants={formData.peopleSplit} onClose={() => setShowModal(false)} />
 
             <Navbar />
         </div>

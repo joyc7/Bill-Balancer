@@ -10,12 +10,13 @@ const friendsPageRoute = require('./routes/friendsPageRoute');
 const addFriendRoute = require('./routes/addFriendRoute'); 
 const eventsRoute = require('./routes/eventsRoute');
 const addEventRoute = require('./routes/addEventRoute')
+const loginRoute = require("./routes/loginRoute");
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Hello!")
+  res.send("Hello!");
 });
 
 app.use("/add-expense", addExpenseRoute);
@@ -25,6 +26,7 @@ app.use('/friends', friendsPageRoute);
 app.use('/addFriends', addFriendRoute); 
 app.use('/events', eventsRoute);
 app.use('/addEvent', addEventRoute);
+app.use("/", loginRoute);
 
 // export the express app we created to make it available to other modules
 module.exports = app;
