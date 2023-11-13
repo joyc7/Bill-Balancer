@@ -17,34 +17,7 @@ const AddExpense = props => {
         amount: '',
         date: '',
         personPaid: '',  
-        // remove this after we can fetch api from backend to get the peopleSplit in the form 
-        peopleSplit: [
-            {
-                "id": 1,
-                "first_name": "Maressa",
-                "avatar": "https://robohash.org/quiaperiamrem.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 2,
-                "first_name": "Fredric",
-                "avatar": "https://robohash.org/quaeetcorrupti.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 3,
-                "first_name": "Rosina",
-                "avatar": "https://robohash.org/officiismaximecorrupti.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 4,
-                "first_name": "Sim",
-                "avatar": "https://robohash.org/animidoloribusomnis.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 5,
-                "first_name": "Olenka",
-                "avatar": "https://robohash.org/rerumsaepeculpa.png?size=50x50&set=set1"
-            }
-        ],
+        peopleSplit: [],
         splitMethod: ''   
     });
 
@@ -77,6 +50,10 @@ const AddExpense = props => {
     };
 
     const handleAddExpense = async () => {
+        const submissionData = {
+            ...formData,
+            peopleSplit: formData.peopleSplit.map(person => person.id)
+        };
         try {
             const response = await axios.post('http://localhost:3001/add-expense', formData);
             console.log(response.data);
@@ -85,6 +62,66 @@ const AddExpense = props => {
             console.error('Failed to submit expense:', error);
         }
     };
+
+    const [people, setPeople] = useState([]); 
+
+    useEffect(() => {
+        const fetchPeople = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/addExpensePayer'); 
+                setPeople(response.data);
+            } catch (error) {
+                console.error('Failed to fetch people:', error);
+            }
+        };
+
+        fetchPeople();
+    }, []);
+
+    const handlePaidByChange = (event) => {
+        // Update your form data state accordingly
+        setFormData({ ...formData, personPaid: event.target.value });
+    };
+
+    const [selectedPeople, setSelectedPeople] = useState([]); 
+    const [availablePeople, setAvailablePeople] = useState([]); 
+
+    useEffect(() => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            peopleSplit: selectedPeople
+        }));
+    }, [selectedPeople]);
+
+    useEffect(() => {
+        const fetchAvailablePeople = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/addExpensePayer'); 
+                setAvailablePeople(response.data);
+            } catch (error) {
+                console.error('Failed to fetch people:', error);
+            }
+        };
+        fetchAvailablePeople();
+    }, []);
+
+
+    const handleSelectPerson = personId => {
+        const person = availablePeople.find(p => p.id === personId);
+        if (person) {
+            setAvailablePeople(availablePeople.filter(p => p.id !== personId));
+            setSelectedPeople([...selectedPeople, person]);
+        }
+    };
+    
+    const handleRemovePerson = personId => {
+        const person = selectedPeople.find(p => p.id === personId);
+        if (person) {
+            setSelectedPeople(selectedPeople.filter(p => p.id !== personId));
+            setAvailablePeople([...availablePeople, person]);
+        }
+    };
+
 
     return (
         <div>
@@ -107,15 +144,38 @@ const AddExpense = props => {
                 </div>
                 <div id="paid">
                     <label>Paid by:</label><br/>
-                    <select name="personPaid" value={formData.personPaid} onChange={handleInputChange}>
-                        {/* fetch data to get the list of people participated in this event */}
+                    <select name="personPaid" value={formData.personPaid} onChange={handlePaidByChange}>
+                        <option value="">Select who paid</option>
+                        {people.map(person => (
+                            <option key={person.id} value={person.id}>
+                                {person.first_name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div id="split">
-                    <label>Split by:</label><br/>
-                    <select name="peopleSplit" multiple size="5" value={formData.peopleSplit} onChange={handleInputChange}>
-                        {/* fetch data to get the list of people participated in this event */}
+                    <label>Available People:</label><br/>
+                    <div>
+                    <select id="available-container" size="5">
+                        {availablePeople.map(person => (
+                            <option key={person.id} onClick={() => handleSelectPerson(person.id)}>
+                                {person.first_name}
+                            </option>
+                        ))}
                     </select>
+                    </div>
+                </div>
+                <div>
+                    <label>Selected People:</label><br/>
+                    <div id="selected-container">
+                        {selectedPeople.map(person => (
+                            <div key={person.id} style={{ display: 'flex', alignItems: 'center', margin: '5px' }}>
+                                <img src={person.avatar} alt={person.first_name} style={{ width: '30px', height: '30px', marginRight: '10px' }} />
+                                <span>{person.first_name}</span>
+                                <button className="remove-button" onClick={() => handleRemovePerson(person.id)}> x </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="splitMethods">
                     <button onClick={(e) => {e.preventDefault(); setShowModal(true)}}>{splitMethod === "equally" ? "Equally": "By "+splitMethod}</button>
@@ -127,6 +187,8 @@ const AddExpense = props => {
             </div>
 
             <SplitModal onMethodChange={handleMethodChange} showModal={showModal} totalAmount={formData.amount} participants={formData.peopleSplit} onClose={() => setShowModal(false)} />
+            
+            <div className="space-to-scroll"></div>
 
             <Navbar />
         </div>

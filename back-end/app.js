@@ -11,6 +11,7 @@ const addFriendRoute = require('./routes/addFriendRoute');
 const eventsRoute = require('./routes/eventsRoute');
 const addEventRoute = require('./routes/addEventRoute')
 const loginRoute = require("./routes/loginRoute");
+const addExpensePayerRoute = require("./routes/addExpensePayerRoute"); 
 
 app.use(cors());
 app.use(express.json());
@@ -19,8 +20,9 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+app.use("/addExpensePayer", addExpensePayerRoute); 
 app.use("/add-expense", addExpenseRoute);
-app.use("/event", eventRoute);
+app.use("/event", eventRoute); 
 app.use("/home", homeRoute);
 app.use('/friends', friendsPageRoute); 
 app.use('/addFriends', addFriendRoute); 
