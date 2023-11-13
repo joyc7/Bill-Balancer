@@ -17,34 +17,7 @@ const AddExpense = props => {
         amount: '',
         date: '',
         personPaid: '',  
-        // remove this after we can fetch api from backend to get the peopleSplit in the form 
-        peopleSplit: [
-            {
-                "id": 1,
-                "first_name": "Maressa",
-                "avatar": "https://robohash.org/quiaperiamrem.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 2,
-                "first_name": "Fredric",
-                "avatar": "https://robohash.org/quaeetcorrupti.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 3,
-                "first_name": "Rosina",
-                "avatar": "https://robohash.org/officiismaximecorrupti.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 4,
-                "first_name": "Sim",
-                "avatar": "https://robohash.org/animidoloribusomnis.png?size=50x50&set=set1"
-            }, 
-            {
-                "id": 5,
-                "first_name": "Olenka",
-                "avatar": "https://robohash.org/rerumsaepeculpa.png?size=50x50&set=set1"
-            }
-        ],
+        peopleSplit: [],
         splitMethod: ''   
     });
 
