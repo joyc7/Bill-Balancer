@@ -34,6 +34,10 @@ const AddExpense = props => {
     };
 
     const handleAddExpense = async () => {
+        const submissionData = {
+            ...formData,
+            peopleSplit: formData.peopleSplit.map(person => person.id)
+        };
         try {
             const response = await axios.post('http://localhost:3001/add-expense', formData);
             console.log(response.data);
@@ -42,6 +46,82 @@ const AddExpense = props => {
             console.error('Failed to submit expense:', error);
         }
     };
+
+    const [people, setPeople] = useState([]); 
+
+    useEffect(() => {
+        const fetchPeople = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/addExpensePayer'); 
+                setPeople(response.data);
+            } catch (error) {
+                console.error('Failed to fetch people:', error);
+            }
+        };
+
+        fetchPeople();
+    }, []);
+
+    const handlePaidByChange = (event) => {
+        // Update your form data state accordingly
+        setFormData({ ...formData, personPaid: event.target.value });
+    };
+
+    const renderPaidBySelection = () => {
+        const selectedPerson = people.find(p => p.id.toString() === formData.personPaid);
+        if (!selectedPerson) return null;
+
+        return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img 
+                    src={selectedPerson.avatar} 
+                    alt={selectedPerson.first_name} 
+                    style={{ width: '30px', height: '30px', marginRight: '10px' }} 
+                />
+                <span>{selectedPerson.first_name}</span>
+            </div>
+        );
+    };
+
+    const [selectedPeople, setSelectedPeople] = useState([]); 
+    const [availablePeople, setAvailablePeople] = useState([]); 
+
+    useEffect(() => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            peopleSplit: selectedPeople
+        }));
+    }, [selectedPeople]);
+
+    useEffect(() => {
+        const fetchAvailablePeople = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/addExpensePayer'); 
+                setAvailablePeople(response.data);
+            } catch (error) {
+                console.error('Failed to fetch people:', error);
+            }
+        };
+        fetchAvailablePeople();
+    }, []);
+
+
+    const handleSelectPerson = personId => {
+        const person = availablePeople.find(p => p.id === personId);
+        if (person) {
+            setAvailablePeople(availablePeople.filter(p => p.id !== personId));
+            setSelectedPeople([...selectedPeople, person]);
+        }
+    };
+    
+    const handleRemovePerson = personId => {
+        const person = selectedPeople.find(p => p.id === personId);
+        if (person) {
+            setSelectedPeople(selectedPeople.filter(p => p.id !== personId));
+            setAvailablePeople([...availablePeople, person]);
+        }
+    };
+
 
     return (
         <div>
@@ -64,15 +144,39 @@ const AddExpense = props => {
                 </div>
                 <div id="paid">
                     <label>Paid by:</label><br/>
-                    <select name="personPaid" value={formData.personPaid} onChange={handleInputChange}>
-                        {/* fetch data to get the list of people participated in this event */}
+                    <select name="personPaid" value={formData.personPaid} onChange={handlePaidByChange}>
+                        <option value="">Select who paid</option>
+                        {people.map(person => (
+                            <option key={person.id} value={person.id}>
+                                {person.first_name}
+                            </option>
+                        ))}
                     </select>
+                    {renderPaidBySelection()}
                 </div>
                 <div id="split">
-                    <label>Split by:</label><br/>
-                    <select name="peopleSplit" multiple size="5" value={formData.peopleSplit} onChange={handleInputChange}>
-                        {/* fetch data to get the list of people participated in this event */}
+                    <label>Available People:</label><br/>
+                    <div>
+                    <select id="available-container" size="5">
+                        {availablePeople.map(person => (
+                            <option key={person.id} onClick={() => handleSelectPerson(person.id)}>
+                                {person.first_name}
+                            </option>
+                        ))}
                     </select>
+                    </div>
+                </div>
+                <div>
+                    <label>Selected People:</label><br/>
+                    <div id="selected-container">
+                        {selectedPeople.map(person => (
+                            <div key={person.id} style={{ display: 'flex', alignItems: 'center', margin: '5px' }}>
+                                <img src={person.avatar} alt={person.first_name} style={{ width: '30px', height: '30px', marginRight: '10px' }} />
+                                <span>{person.first_name}</span>
+                                <button className="remove-button" onClick={() => handleRemovePerson(person.id)}> x </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="splitMethods">
                     Equally
