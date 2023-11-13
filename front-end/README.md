@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Getting Started with Our App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to our application! This guide will walk you through the steps to set up and run the front-end of our app on your local machine.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+Before you begin, ensure that you have [Node.js](https://nodejs.org/) installed on your system. This will provide you with the necessary tools like `npm` (Node Package Manager) to install dependencies and run the application.
 
-### `npm start`
+## Setting Up the Front-End
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Follow these simple steps to get the front-end up and running:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Step 1: Clone the Repository
 
-### `npm test`
+If you haven't already, clone the main repository to your local machine. Use the following command in your terminal:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/agiledev-students-fall2023/4-final-project-group-bill-splitting-app.git
+```
 
-### `npm run build`
+Navigate to the front-end directory:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+cd front-end
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Step 2: Install Dependencies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install the required packages using npm. These packages are essential for the app to function correctly:
 
-### `npm run eject`
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Step 3: Start the Application
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+With all the dependencies in place, start the application by running:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Accessing the App
 
-## Learn More
+Once the app is running, it will be available in development mode. Open your web browser and go to [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- The page will automatically reload if you make any changes to the code.
+- Any lint errors will be displayed in the console for easy debugging.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Additional Notes
 
-### Code Splitting
+- **Backend Integration:** Our app includes a backend component as well. For the application to function fully, please ensure that you also set up the backend. You can find the instructions in the [Backend README](../back-end/README.md).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Happy coding!
