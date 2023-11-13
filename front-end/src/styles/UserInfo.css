@@ -3,9 +3,16 @@
 
 .UserInfo {
     @apply bg-white font-mono;
+    @apply min-h-screen;
+    background-color: #fff; 
     padding: 4px;
     max-height: calc(100vh - 60px); /* this value can be adjusted based on navbar height */
     overflow: auto; /* if content exceeds height, let the user scroll the section */
+}
+
+/* Full height container for dark mode */
+.UserInfo-full-height {
+    min-height: 100vh; /* make sure it covers full viewport height */
 }
 
 .page-title {
@@ -52,28 +59,38 @@
 
 /* Dark Mode Styles */
 .dark-mode {
-    @apply bg-gray-800 text-white;
+    @apply bg-gray-800 text-white; /* this applies the dark background and text color to the entire UserInfo component */
 }
 
 .dark-mode .user-detail-section {
-    @apply bg-gray-700;
+    @apply bg-gray-800;
 }
 
+.dark-mode .user-detail-section,
 .dark-mode .settings-list-general,
 .dark-mode .settings-list-feedback {
-    @apply bg-gray-700;
+    @apply bg-gray-700; /* Slightly lighter dark background for these sections */
 }
 
 .contact-us-title {
     @apply block text-left w-full;
 }
 
+.dark-mode .page-title {
+    @apply bg-gray-800 text-white; /* this will apply the dark background to the page title specifically */
+}
+
+.dark-mode .UserInfo {
+    background-color: #121212; /* Dark mode background color */
+}
+
+
 .chatbox-container {
     @apply block w-full my-4;
 }
 
 .chatbox-input {
-    @apply px-4 py-2 bg-gray-200 rounded-md text-gray-700 border border-transparent focus:outline-none focus:border-gray-400;
+    @apply px-4 py-2 bg-gray-200 rounded-md text-gray-800 border border-transparent focus:outline-none focus:border-gray-400;
     width: calc(100% - 1em); 
 }
 
@@ -89,7 +106,7 @@
 }
 
 .dark-mode .send-button {
-    @apply bg-blue-700 hover:bg-blue-800;
+    @apply bg-blue-800 hover:bg-blue-800;
 }
 
 /* Styling for the dark mode switch */

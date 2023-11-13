@@ -69,7 +69,8 @@ function UserInfo() {
     }, []);
 
     return (
-        <div className={`UserInfo ${isDarkMode ? 'dark-mode' : ''}`}> 
+        <div className={`UserInfo-full-height ${isDarkMode ? 'dark-mode' : ''}`}>
+            <div className="UserInfo"> 
             <h1 className="page-title">Account</h1>
             {randomUser && (
                 <>
@@ -114,6 +115,7 @@ function UserInfo() {
                 </>
             )}
             <Navbar />
+        </div>
         </div>
     );
        
