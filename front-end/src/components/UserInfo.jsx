@@ -114,7 +114,7 @@ function UserInfo() {
                     </div>
                 </>
             )}
-            <Navbar isDarkMode={isDarkMode} />
+            <Navbar />
         </div>
         </div>
     );

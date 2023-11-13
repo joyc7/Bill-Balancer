@@ -27,22 +27,3 @@
 .user-image {
   @apply flex items-center flex-col mb-2;
 }
-
-/* Apply dark mode styles to the navbar */
-.dark-mode {
-  @apply bg-gray-800; /* Dark background for the navbar */
-}
-
-/* You might want to change the color of the text and icons in the navbar as well */
-.dark-mode .navbar ul {
-  @apply text-white; /* Light text color for the navbar links */
-}
-
-/* Update the active and normal class to have visible colors in dark mode */
-.dark-mode .active {
-  @apply text-blue-300; /* Lighter blue for better visibility in dark mode */
-}
-
-.dark-mode .normal {
-  @apply text-gray-300; /* Lighter text color for better visibility in dark mode */
-}

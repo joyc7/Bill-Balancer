@@ -7,14 +7,14 @@ import group from "../images/group.png";
 import home from "../images/home.png";
 import person from "../images/person.png";
 
-const Navbar = ({ isDarkMode }) => {
+const Navbar = () => {
   const location = useLocation();
   const pathName = location.pathname;
 
   //changed up the events route and removed contact page
 
   return (
-    <nav className={`navbar ${isDarkMode ? 'dark-mode' : ''}`}>
+    <nav className="navbar">
       <ul>
         <li className={pathName === "/home" ? "active" : "normal"}>
           <img
