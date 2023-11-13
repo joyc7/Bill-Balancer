@@ -1,5 +1,5 @@
 #addExpense form {
-    @apply flex flex-col space-y-3 mt-10 bg-cyan-50 rounded-2xl p-8;
+    @apply flex flex-col space-y-3 mt-5 bg-cyan-50 rounded-2xl p-8;
 }
 
 #addExpense form div {
@@ -19,14 +19,14 @@
 }
 
 #selected-container {
-    height: 110px; 
+    height: 100px; 
     overflow-y: auto;
     margin-bottom: 10px;
     padding: 5px;
 }
 
 #available-container {
-    height: 70px; 
+    height: 65px; 
     width: 150px;
     overflow-y: auto;
     margin-bottom: 10px;
@@ -47,4 +47,8 @@
 
 .remove-button:hover {
     background-color: #d32f2f;
+}
+
+.space-to-scroll {
+    height: 60px;
 }

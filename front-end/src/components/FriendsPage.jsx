@@ -72,6 +72,8 @@ function FriendsPage() {
                 </button>
             </div>
 
+            <div className="space-to-scroll"></div>
+
             {showModal && (
                 <AddFriendModal showModal={showModal} onClose={() => setShowModal(false)} />
             )}

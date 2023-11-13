@@ -91,3 +91,7 @@
 .add-friend-item {
     @apply flex justify-between items-center p-4 border-b border-gray-200 bg-cyan-100; 
 }
+
+.space-to-scroll {
+    height: 60px;
+}

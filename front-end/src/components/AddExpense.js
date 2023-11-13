@@ -83,22 +83,6 @@ const AddExpense = props => {
         setFormData({ ...formData, personPaid: event.target.value });
     };
 
-    const renderPaidBySelection = () => {
-        const selectedPerson = people.find(p => p.id.toString() === formData.personPaid);
-        if (!selectedPerson) return null;
-
-        return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img 
-                    src={selectedPerson.avatar} 
-                    alt={selectedPerson.first_name} 
-                    style={{ width: '30px', height: '30px', marginRight: '10px' }} 
-                />
-                <span>{selectedPerson.first_name}</span>
-            </div>
-        );
-    };
-
     const [selectedPeople, setSelectedPeople] = useState([]); 
     const [availablePeople, setAvailablePeople] = useState([]); 
 
@@ -168,7 +152,6 @@ const AddExpense = props => {
                             </option>
                         ))}
                     </select>
-                    {renderPaidBySelection()}
                 </div>
                 <div id="split">
                     <label>Available People:</label><br/>
@@ -204,6 +187,8 @@ const AddExpense = props => {
             </div>
 
             <SplitModal onMethodChange={handleMethodChange} showModal={showModal} totalAmount={formData.amount} participants={formData.peopleSplit} onClose={() => setShowModal(false)} />
+            
+            <div className="space-to-scroll"></div>
 
             <Navbar />
         </div>
