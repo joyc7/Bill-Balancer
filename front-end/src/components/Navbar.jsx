@@ -2,27 +2,60 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useLocation } from "react-router-dom";
+import calendar from "../images/calendar.png";
+import group from "../images/group.png";
+import home from "../images/home.png";
+import person from "../images/person.png";
 
-const Navbar = () => {
+const Navbar = ({ isDarkMode }) => {
   const location = useLocation();
   const pathName = location.pathname;
 
   //changed up the events route and removed contact page
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isDarkMode ? 'dark-mode' : ''}`}>
       <ul>
         <li className={pathName === "/home" ? "active" : "normal"}>
-          <Link to="/home">Home</Link>
+          <img
+            src={home}
+            alt="User Icon"
+            style={{ width: "30px", height: "30px" }}
+            className="user-image"
+          />
+          <Link to="/home" className="pl-2">
+            {" "}
+            Home{" "}
+          </Link>
         </li>
-        <li className={pathName === "/events" ? "active" : "normal"}>
+        <li className={pathName === "/events" ? "active " : "normal"}>
+          <img
+            src={calendar}
+            alt="User Icon"
+            style={{ width: "30px", height: "30px" }}
+            className="user-image"
+          />
           <Link to="/events">Events</Link>
         </li>
         <li className={pathName === "/friends" ? "active" : "normal"}>
+          <img
+            src={group}
+            alt="User Icon"
+            style={{ width: "30px", height: "30px" }}
+            className="user-image"
+          />
           <Link to="/friends">Friends</Link>
         </li>
         <li className={pathName === "/user-info" ? "active" : "normal"}>
-          <Link to="/user-info">User Info</Link>
+          <img
+            src={person}
+            alt="User Icon"
+            style={{ width: "30px", height: "30px" }}
+            className="user-image"
+          />
+          <Link to="/user-info" className="pl-2">
+            User
+          </Link>
         </li>
       </ul>
     </nav>

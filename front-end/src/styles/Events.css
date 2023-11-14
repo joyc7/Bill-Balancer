@@ -46,7 +46,7 @@
 }
 
 .events_list {
-    @apply w-full flex flex-col space-y-4 mt-6;
+    @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50;
 }
 
 .event-list {

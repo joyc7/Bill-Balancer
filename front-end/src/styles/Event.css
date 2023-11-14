@@ -15,7 +15,11 @@ header {
 }
 
 .expenses {
-    @apply h-96 overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
+    @apply overflow-auto mb-4 p-2 rounded-lg bg-cyan-100 bg-opacity-50;
+}
+
+.expenses {
+    height: 50vh;
 }
 
 .expenseItem {
@@ -50,3 +54,6 @@ header {
     @apply w-24 h-16 rounded-full text-center p-1 bg-cyan-100 border-cyan-500 hover:bg-orange-100 active:bg-orange-200;
 }
 
+.space-to-scroll {
+    height: 60px;
+}

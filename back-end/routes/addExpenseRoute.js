@@ -11,7 +11,9 @@ router.post("/", async (req, res) => {
           amount: req.body.amount,
           date: req.body.date,
           personPaid: req.body.personPaid,   
-          peopleSplit: req.body.peopleSplit 
+          peopleSplit: req.body.peopleSplit, 
+          splitMethod: req.body.splitMethod,
+          amountDetails: req.body.amountDetails
         },
       };
       // ... then send a response of some kind to client
