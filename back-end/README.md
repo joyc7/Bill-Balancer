@@ -43,6 +43,38 @@ Run the following command to start the Express.js server:
 npm start
 ```
 
+### Step 4: Unit Testing with Mocha, Chai, and c8
+
+Unit testing is crucial for maintaining the quality of our application. We use Mocha as our test framework, Chai for assertions, and c8 to track test coverage. 
+
+### Prerequisites for Testing
+
+Ensure you have the following testing tools installed:
+
+- [Mocha](https://mochajs.org/): A feature-rich JavaScript test framework running on Node.js, making asynchronous testing simple and fun.
+- [Chai](https://www.chaijs.com/): A BDD/TDD assertion library for node and the browser that can be paired with any JavaScript testing framework.
+- [c8](https://github.com/bcoe/c8): A tool for generating test coverage reports.
+
+These should already be included in your `package.json` dependencies. 
+
+### Running Unit Tests
+
+To run the unit tests, execute the following command:
+
+```bash
+npm test
+```
+
+This command will run all tests written in the `test` directory.
+
+### Generating Test Coverage Report
+
+To see how well our tests cover the code, we use c8 to generate coverage reports. Run the following command:
+
+```bash
+npm run coverage
+```
+
 The server will start, typically on `http://localhost:3001`. 
 
 Thank you for contributing to our project!
