@@ -93,6 +93,8 @@ const Event = props => {
               <Link to='/add-expense' className="btn addExpenseBtn">Add Expense</Link> 
             </div>
 
+            <div className="space-to-scroll"></div>
+
             <Navbar />
 
         </div>
