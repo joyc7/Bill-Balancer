@@ -75,8 +75,6 @@ To see how well our tests cover the code, we use c8 to generate coverage reports
 npm run coverage
 ```
 
-This command will execute the tests and generate a coverage report. The report is typically found in the `coverage` directory at the root of the backend project.
-
 The server will start, typically on `http://localhost:3001`. 
 
 Thank you for contributing to our project!
