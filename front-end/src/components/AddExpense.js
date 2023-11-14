@@ -49,12 +49,20 @@ const AddExpense = props => {
         setShowModal(false); 
     };
 
+    const handleAmountsChange = (amounts) => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            amountDetails: amounts
+        }));
+    };
+
     const handleAddExpense = async () => {
         const submissionData = {
             ...formData,
             peopleSplit: formData.peopleSplit.map(person => person.id)
         };
         try {
+            console.log(formData);
             const response = await axios.post('http://localhost:3001/add-expense', formData);
             console.log(response.data);
             navigate('/event');
@@ -186,9 +194,14 @@ const AddExpense = props => {
             </form>
             </div>
 
-            <SplitModal onMethodChange={handleMethodChange} showModal={showModal} totalAmount={formData.amount} participants={formData.peopleSplit} onClose={() => setShowModal(false)} />
-            
-            <div className="space-to-scroll"></div>
+            <SplitModal 
+                onMethodChange={handleMethodChange} 
+                onAmountsChange={handleAmountsChange}
+                showModal={showModal} 
+                totalAmount={formData.amount} 
+                participants={formData.peopleSplit} 
+                onClose={() => setShowModal(false)} 
+            />
 
             <Navbar />
         </div>
