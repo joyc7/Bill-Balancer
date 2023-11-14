@@ -5,7 +5,7 @@ const app = require('../app');
 
 chai.use(chaiHttp);
 
-describe('Add Friend Route', function() {
+describe('Add Potential payer list Route', function() {
   describe('GET /addExpensePayer', function() {
     it('should return a list of people with their id, name and avatar', function(done) {
       chai.request(app)
