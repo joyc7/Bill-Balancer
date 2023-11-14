@@ -40,12 +40,13 @@ const AddExpense = props => {
                 "avatar": "https://robohash.org/animidoloribusomnis.png?size=50x50&set=set1"
             }, 
             {
-                "id": 5,
+                "id": 9,
                 "first_name": "Olenka",
                 "avatar": "https://robohash.org/rerumsaepeculpa.png?size=50x50&set=set1"
             }
         ],
-        splitMethod: ''   
+        splitMethod: '',
+        amountDetails: []   
     });
 
     const handleInputChange = (e) => {
@@ -76,8 +77,16 @@ const AddExpense = props => {
         setShowModal(false); 
     };
 
+    const handleAmountsChange = (amounts) => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            amountDetails: amounts
+        }));
+    };
+
     const handleAddExpense = async () => {
         try {
+            console.log(formData);
             const response = await axios.post('http://localhost:3001/add-expense', formData);
             console.log(response.data);
             navigate('/event');
@@ -126,7 +135,14 @@ const AddExpense = props => {
             </form>
             </div>
 
-            <SplitModal onMethodChange={handleMethodChange} showModal={showModal} totalAmount={formData.amount} participants={formData.peopleSplit} onClose={() => setShowModal(false)} />
+            <SplitModal 
+                onMethodChange={handleMethodChange} 
+                onAmountsChange={handleAmountsChange}
+                showModal={showModal} 
+                totalAmount={formData.amount} 
+                participants={formData.peopleSplit} 
+                onClose={() => setShowModal(false)} 
+            />
 
             <Navbar />
         </div>

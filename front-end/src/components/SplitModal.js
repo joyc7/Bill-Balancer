@@ -1,24 +1,49 @@
-import axios from "axios"
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import '../styles/SplitModal.css';
 
-function SplitModal({ onMethodChange, showModal, totalAmount, participants, onClose }) {
+function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, participants, onClose }) {
     const [activeTab, setActiveTab] = useState('equally'); // Default to 'equally'
     const [participantPercentages, setParticipantPercentages] = useState({});
+    const [participantAmounts, setParticipantAmounts] = useState({});
 
     const handlePercentageChange = (event, participantId) => {
         const newPercentages = { ...participantPercentages, [participantId]: parseFloat(event.target.value) };
         setParticipantPercentages(newPercentages);
-      };
-      
-    const handleAmountChange = (event, participant) => {
-    // Update the state to reflect the new amount for this participant
+    };
+
+    const handleAmountChange = (event, participantId) => {
+        const newAmounts = { ...participantAmounts, [participantId]: parseFloat(event.target.value) };
+        setParticipantAmounts(newAmounts);
     };
 
     const calculateAmount = (participantId, totalAmount, percentages) => {
         const percentage = percentages[participantId] || 0;
         return (totalAmount * (percentage / 100));
     };
+
+    const handleSave = () => {
+        if (activeTab === 'equally') {
+            const equalAmount = parseFloat(totalAmount) / participants.length;
+            const amounts = participants.reduce((acc, participant) => {
+                acc[participant.id] = equalAmount;
+                participantAmounts[participant.id] = equalAmount;
+                return acc;
+            }, {});
+            onAmountsChange(amounts);
+        } else if (activeTab === 'percentage') {
+            const amounts = Object.keys(participantPercentages).reduce((acc, participantId) => {
+                const amount = calculateAmount(participantId, totalAmount, participantPercentages);
+                acc[participantId] = amount;
+                participantAmounts[participantId] = amount;
+                return acc;
+            }, {});
+            onAmountsChange(amounts);
+        } else {
+            onAmountsChange(participantAmounts);
+        }
+        onMethodChange(activeTab);
+    };
+    
   
     return (
       showModal && (
@@ -51,13 +76,13 @@ function SplitModal({ onMethodChange, showModal, totalAmount, participants, onCl
                     }
                     {activeTab === 'amount' && 
                         <div>
-                            $ <input type="number" onChange={(e) => handleAmountChange(e, participant)} />
+                            $ <input type="number" onChange={(e) => handleAmountChange(e, participant.id)} />
                         </div>
                     }
                 </div>
               ))}
             </div>
-            <button onClick={() => onMethodChange(activeTab)}>Save</button>
+            <button onClick={() => {handleSave();}}>Save</button>
           </div>
         </div>
       )
