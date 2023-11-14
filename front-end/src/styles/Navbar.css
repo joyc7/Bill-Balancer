@@ -1,6 +1,5 @@
 .navbar {
-  @apply pb-4 fixed bottom-0 left-1/2 bg-white;
-  transform: translateX(-50%);
+  @apply pb-4 fixed bottom-0 left-0 right-0 bg-white;
 }
 
 .navbar ul {
@@ -26,4 +25,22 @@
 
 .user-image {
   @apply flex items-center flex-col mb-2;
+}
+
+/* Apply dark mode styles to the navbar */
+.dark-mode {
+  @apply bg-gray-800; 
+}
+
+/* Might need to change the color for icons in the Navbar as well */
+.dark-mode .navbar ul {
+  @apply text-white;
+}
+
+.dark-mode .active {
+  @apply text-blue-300; 
+}
+
+.dark-mode .normal {
+  @apply text-gray-300;
 }

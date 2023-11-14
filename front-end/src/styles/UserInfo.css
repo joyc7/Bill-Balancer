@@ -2,34 +2,45 @@
 /* More features to add for the User Info Page (the buttons will be clickable and direct to relevant pages if we have time to implement those features)*/
 
 .UserInfo {
-    @apply bg-white min-h-screen p-6 font-mono; 
+    @apply bg-white font-mono;
+    @apply min-h-screen;
+    background-color: #fff; 
+    padding: 4px;
+    max-height: calc(100vh - 60px); /* this value can be adjusted based on navbar height */
+    overflow: auto; /* if content exceeds height, let the user scroll the section */
+}
+
+/* full height container for dark mode, otherwise there are uncolored gaps between section boxes */
+.UserInfo-full-height {
+    min-height: 100vh; /* make sure it covers full viewport height */
 }
 
 .page-title {
-    @apply text-2xl font-bold mb-5 p-2;
+    @apply text-xl md:text-2xl font-bold mb-4 p-2;
 }
 
 .user-detail-section {
-    @apply flex items-center justify-center bg-cyan-100 p-4 rounded-md mb-5; 
+    @apply flex items-center bg-cyan-100 p-4 rounded-md mb-5;
 }
 
 .avatar {
-    @apply rounded-full w-12 h-12 mr-5;
+    @apply rounded-full w-16 h-16 md:w-20 md:h-20;
+    margin-right: 16px;
 }
 
 .user-name-email {
-    @apply font-bold mb-2.5; 
+    @apply flex flex-1 flex-col justify-center; 
 }
 
 .name, 
 .email {
-    @apply font-bold mb-2.5; 
+    @apply font-bold mb-2.5 text-left;
 }
 
 .settings-list-general,
 .settings-list-feedback {
-    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-5 overflow-auto;
-    max-height: 20rem;
+    @apply flex flex-col items-start p-4 bg-cyan-100 rounded-md mb-3;
+    max-height: 18rem;
 }
 
 .setting-item-feedback {
@@ -37,13 +48,13 @@
 }
 
 .setting-item {
-    @apply flex items-center mb-4 pl-4;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    @apply flex items-center mb-2 pl-4; 
+    padding-top: 0.5rem; 
+    padding-bottom: 0.5rem; 
 }
 
 .setting-title {
-    @apply flex items-start justify-start text-lg font-bold py-4 px-4 w-full;
+    @apply flex items-start justify-start text-lg font-bold py-2 px-4 w-full;
 }
 
 /* Dark Mode Styles */
@@ -52,31 +63,41 @@
 }
 
 .dark-mode .user-detail-section {
-    @apply bg-gray-700;
+    @apply bg-gray-800;
 }
 
+.dark-mode .user-detail-section,
 .dark-mode .settings-list-general,
 .dark-mode .settings-list-feedback {
-    @apply bg-gray-700;
+    @apply bg-gray-700; /* slightly lighter dark background for these sections, 800 is darker */
 }
 
 .contact-us-title {
     @apply block text-left w-full;
 }
 
+.dark-mode .page-title {
+    @apply bg-gray-800 text-white; 
+}
+
+.dark-mode .UserInfo {
+    background-color: #121212; /* dark mode background color, about 800 */
+}
+
+
 .chatbox-container {
     @apply block w-full my-4;
 }
 
 .chatbox-input {
-    @apply px-4 py-2 bg-gray-200 rounded-md text-gray-700 border border-transparent focus:outline-none focus:border-gray-400;
-    width: calc(100% - 1em); /* adjust the size of right margin */
+    @apply px-4 py-2 bg-gray-200 rounded-md text-gray-800 border border-transparent focus:outline-none focus:border-gray-400;
+    width: calc(100% - 1em); 
 }
 
 .send-button {
     @apply mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full;
     cursor: pointer;
-    width: calc(100% - 1em); /* adjust the size of right margin */
+    width: calc(100% - 1em); 
 }
 
 /* Dark mode styles for chatbox its button */
@@ -85,7 +106,7 @@
 }
 
 .dark-mode .send-button {
-    @apply bg-blue-700 hover:bg-blue-800;
+    @apply bg-blue-800 hover:bg-blue-800;
 }
 
 /* Styling for the dark mode switch */
@@ -157,4 +178,20 @@ input:checked + .slider:before {
 
 .setting-item .dark-mode-text {
     @apply mr-2;
+}
+
+@media only screen and (max-width: 600px) {
+    .avatar {
+        @apply w-12 h-12; /* adjust profile pic size for small screens */
+    }
+
+    .settings-list-general,
+    .settings-list-feedback {
+        @apply flex-col;
+        max-height: none;
+    }
+
+    .setting-item {
+        @apply mb-1;
+    }
 }
