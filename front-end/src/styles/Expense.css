@@ -61,6 +61,10 @@
 }
 
 /* Dark Mode for Expense Page */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+  }
+  
 .dark-mode .expense {
     @apply bg-gray-800 text-white;
     min-height: 100vh;

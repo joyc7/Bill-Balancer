@@ -29,7 +29,7 @@
 
 /* Apply dark mode styles to the navbar */
 .dark-mode .navbar {
-  @apply bg-gray-800;
+  @apply bg-gray-700; /* 400~900, the smaller the lighter */
 }
 
 /* Change the color for icons and text in the Navbar in dark mode */

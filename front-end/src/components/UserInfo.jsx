@@ -35,6 +35,19 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         ]
     };
 
+    // This effect runs when the `isDarkMode` value changes
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        // if not in dark mode, remove this effect
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+    }, [isDarkMode]);
+
     useEffect(() => {
         async function fetchData() {
             try {

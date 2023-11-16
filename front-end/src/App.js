@@ -16,7 +16,7 @@ function App() {
   // used to keep track of which specific event the user choose to see
   const [event, setEvent] = useState({});
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () => setIsDarkMode(prevMode => !prevMode);
+  const toggleDarkMode = () => setIsDarkMode(prevMode => !prevMode); /* global Dark Mode switch, controls for isDarkMode state */
 
   return (
     <div className={`container ${isDarkMode ? 'dark-mode' : ''}`}>
@@ -24,10 +24,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
-          <Route path="/event" element={<Event event={event} />} />
-          <Route path="/friends" element={<FriendsPage />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/expense/" element={<Expense />} />
+          <Route path="/event" element={<Event event={event} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>} />
+          <Route path="/friends" element={<FriendsPage isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
+          <Route path="/events" element={<Events isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
+          <Route path="/expense/" element={<Expense isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
           <Route path="/user-info" element={<UserInfo isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
           <Route path="/add-expense" element={<AddExpense />} />
           

@@ -59,6 +59,10 @@ header {
 }
 
 /* Dark Mode for Each Event Page */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+  }
+  
 .dark-mode .event-page {
     @apply bg-gray-400; 
     min-height: 100vh; /* is event-page the outter most container? */
