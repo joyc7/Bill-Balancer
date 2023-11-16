@@ -58,3 +58,19 @@
 .small {
   @apply mb-4;
 }
+
+/* Dark Mode for Home Page */
+.dark-mode .home-container {
+  @apply bg-gray-800;
+  min-height: 100vh;
+}
+
+.dark-mode .box {
+  @apply bg-gray-700; 
+}
+
+.dark-mode .box h2,
+.dark-mode .home-expense-text,
+.dark-mode .home-expense-amount {
+  @apply text-white; 
+}

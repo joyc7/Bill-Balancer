@@ -5,13 +5,11 @@ import '../styles/UserInfo.css';
 import Navbar from "./Navbar";
 import axios from 'axios';
 
-function UserInfo() {
+function UserInfo({ isDarkMode, toggleDarkMode }) {
     const [userData, setUserData] = useState(null);
     const [randomUser, setRandomUser] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const [message, setMessage] = useState('');
 
-    const toggleDarkMode = () => setIsDarkMode(prevMode => !prevMode);
 
     const sendMessage = () => {
         console.log(message);
