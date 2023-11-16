@@ -72,6 +72,7 @@ const Event = props => {
       }, []) 
 
       return (
+        <div className="event-page-container"> {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
         <div id="event-page">
             <header>
                 <h2><Link to='/events'>Events</Link>|{data.name}</h2>
@@ -111,6 +112,7 @@ const Event = props => {
 
             <Navbar />
 
+        </div>
         </div>
       )
 
