@@ -64,7 +64,7 @@ header {
   }
   
 .dark-mode .event-page {
-    @apply bg-gray-400; 
+    @apply bg-gray-800; 
     min-height: 100vh; /* is event-page the outter most container? */
 }
 
@@ -72,9 +72,11 @@ header {
     @apply bg-gray-800; 
 }
 
-.dark-mode .description,
+.dark-mode .description {
+    @apply bg-gray-800;
+}
 .dark-mode .date {
-    @apply bg-gray-700; 
+    @apply bg-gray-800; 
 }
 
 .dark-mode .operations button,

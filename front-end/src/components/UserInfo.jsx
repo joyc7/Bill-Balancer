@@ -103,7 +103,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
                                         <span className="slider round"></span>
                                     </label>
                                 </li>
-                                <li className="setting-item">Passcode</li>
+                                <li className="setting-item">Password</li>
                                 {/* Add additional settings here */}
                             </ul>
                         </div>
