@@ -9,6 +9,8 @@ const AddExpense = props => {
 
     const navigate = useNavigate();
 
+    const isDarkMode = props.isDarkMode;
+
     const [showModal, setShowModal] = useState(false);
     const [splitMethod, setSplitMethod] = useState('Choose Split Method');
 
@@ -94,6 +96,19 @@ const AddExpense = props => {
     const [selectedPeople, setSelectedPeople] = useState([]); 
     const [availablePeople, setAvailablePeople] = useState([]); 
 
+    // This effect runs when the `isDarkMode` value changes
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        // if not in dark mode, remove this effect
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+      }, [isDarkMode]);
+
     useEffect(() => {
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -132,7 +147,7 @@ const AddExpense = props => {
 
 
     return (
-        <div>
+        <div className="add-expense-page-container"> {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
             <header>
                 <h2><Link to='/event'>Event</Link>|Add New Expense</h2>
             </header>

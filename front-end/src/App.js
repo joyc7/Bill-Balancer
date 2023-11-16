@@ -29,7 +29,7 @@ function App() {
           <Route path="/events" element={<Events isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
           <Route path="/expense/" element={<Expense isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
           <Route path="/user-info" element={<UserInfo isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
-          <Route path="/add-expense" element={<AddExpense />} />
+          <Route path="/add-expense" element={<AddExpense isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
           
 
         </Routes>

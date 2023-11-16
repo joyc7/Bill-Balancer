@@ -54,8 +54,16 @@
 }
 
 /* Dark Mode for Add Expense Modal */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+  }
+
+.dark-mode .add-expense-page-container {
+    @apply bg-gray-800; /* the area within the outter most background, where  "Event | Add New Expense" located */
+}
+
 .dark-mode #addExpense form {
-    @apply bg-gray-800;
+    @apply bg-gray-700;
 }
 
 .dark-mode #addExpense form input,
