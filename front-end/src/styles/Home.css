@@ -52,7 +52,7 @@
 }
 
 .main {
-  @apply home-container bg-gray-100 min-h-screen p-4;
+  @apply home-container bg-gray-100 min-h-screen p-4 w-full;
 }
 
 .small {
@@ -61,8 +61,7 @@
 
 /* Dark Mode for Home Page */
 .dark-mode .home-container {
-  @apply bg-gray-800;
-  min-height: 100vh;
+  @apply bg-gray-800 min-h-screen;
 }
 
 .dark-mode .box {
@@ -72,5 +71,5 @@
 .dark-mode .box h2,
 .dark-mode .home-expense-text,
 .dark-mode .home-expense-amount {
-  @apply text-white; 
+  @apply text-white;
 }
