@@ -77,7 +77,7 @@
 }
 
 .modal-content h2 {
-    @apply text-lg leading-6 font-medium text-gray-900 mb-4 mt-0; 
+    @apply text-lg leading-6 font-medium text-gray-700 mb-4 mt-0; 
 }
 
 .modal-content button {
@@ -94,4 +94,66 @@
 
 .space-to-scroll {
     height: 60px;
+}
+
+/* Dark Mode for Friends Page */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+}
+
+.dark-mode .friends-page {
+    @apply bg-gray-800 text-white;
+    min-height: 100vh;
+}
+  
+.dark-mode .balance-section {
+    @apply bg-gray-700; 
+}
+  
+.dark-mode .user-avatar {
+    @apply border-cyan-600; 
+}
+  
+.dark-mode .friends-list {
+    @apply bg-gray-600 bg-opacity-50; 
+}
+  
+.dark-mode .friend-item {
+    @apply border-gray-600; 
+}
+  
+.dark-mode .add-friends-btn {
+    @apply bg-gray-500 border-gray-600 hover:bg-gray-600 active:bg-gray-700;
+}
+
+.dark-mode .add-friends-btn-div {
+    @apply mb-4; 
+}
+
+.dark-mode .space-to-scroll {
+    height: 60px;
+}
+
+/* Dark Mode for Add Friends Modal */
+.dark-mode .modal-content {
+    @apply bg-gray-800; 
+}
+  
+.dark-mode .modal-content h2,
+.dark-mode .add-friend-name,
+.dark-mode .input-content,
+.dark-mode .modal-content button {
+    @apply text-white; 
+}
+  
+.dark-mode .input-content {
+    @apply bg-gray-600 border-gray-500; 
+}
+  
+.dark-mode .modal-content button {
+    @apply bg-gray-600 hover:bg-gray-500 active:bg-gray-400; 
+}
+  
+.dark-mode .add-friend-item {
+    @apply bg-gray-600 border-gray-500; 
 }

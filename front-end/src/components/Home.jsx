@@ -3,12 +3,24 @@ import "../styles/Home.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 
-const Home = () => {
+const Home = ({ isDarkMode }) => {
   const [backendData, setBackendData] = useState({});
 
   function calculateTotalSpending(expenses) {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   }
+
+  useEffect(() => {
+    if (isDarkMode) {
+        document.body.classList.add('body-dark-mode');
+    } else {
+        document.body.classList.remove('body-dark-mode');
+    }
+    // if not in dark mode, remove this effect
+    return () => {
+        document.body.classList.remove('body-dark-mode');
+    };
+  }, [isDarkMode]);
 
   useEffect(() => {
     const fetchHome = async () => {

@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 const Event = props => {
 
     const [data, setData] = useState([])
+    const isDarkMode = props.isDarkMode;
 
     function reformatDate(dateStr) {
       const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -17,6 +18,19 @@ const Event = props => {
     
       return `${monthName} ${day}`;
     }
+
+    // This effect runs when the `isDarkMode` value changes
+    useEffect(() => {
+      if (isDarkMode) {
+          document.body.classList.add('body-dark-mode');
+      } else {
+          document.body.classList.remove('body-dark-mode');
+      }
+      // if not in dark mode, remove this effect
+      return () => {
+          document.body.classList.remove('body-dark-mode');
+      };
+    }, [isDarkMode]);
 
     useEffect(() => {
         // fetch some mock data about expense 
@@ -58,6 +72,7 @@ const Event = props => {
       }, []) 
 
       return (
+        <div className="event-page-container"> {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
         <div id="event-page">
             <header>
                 <h2><Link to='/events'>Events</Link>|{data.name}</h2>
@@ -97,6 +112,7 @@ const Event = props => {
 
             <Navbar />
 
+        </div>
         </div>
       )
 

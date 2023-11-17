@@ -33,3 +33,44 @@
 .amountPerPerson .percentageContent {
     @apply col-span-2;
 }
+
+/* Dark Mode for Split Modal */
+.dark-mode .split-modal-content {
+    @apply bg-gray-900; 
+}
+
+.dark-mode .split-modal-content button {
+    @apply bg-gray-700 border-gray-600 text-white; 
+}
+
+.dark-mode .split-modal-content button:hover {
+    @apply bg-gray-600; 
+}
+
+.dark-mode .split-modal-content button:active {
+    @apply bg-gray-500; 
+}
+
+.dark-mode .tab {
+    @apply bg-gray-800; 
+}
+
+.dark-mode .tab .active {
+    @apply bg-gray-700; 
+}
+
+.dark-mode .tab-content {
+    @apply bg-gray-700; 
+}
+
+.dark-mode .amountPerPerson {
+    @apply bg-gray-700; 
+}
+
+.dark-mode .amountPerPerson input {
+    @apply text-white bg-gray-600; 
+}
+
+.dark-mode .amountPerPerson .percentageContent {
+    @apply text-white; 
+}

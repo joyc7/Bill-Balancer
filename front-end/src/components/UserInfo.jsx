@@ -5,13 +5,11 @@ import '../styles/UserInfo.css';
 import Navbar from "./Navbar";
 import axios from 'axios';
 
-function UserInfo() {
+function UserInfo({ isDarkMode, toggleDarkMode }) {
     const [userData, setUserData] = useState(null);
     const [randomUser, setRandomUser] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const [message, setMessage] = useState('');
 
-    const toggleDarkMode = () => setIsDarkMode(prevMode => !prevMode);
 
     const sendMessage = () => {
         console.log(message);
@@ -36,6 +34,19 @@ function UserInfo() {
             }
         ]
     };
+
+    // This effect runs when the `isDarkMode` value changes
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        // if not in dark mode, remove this effect
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+    }, [isDarkMode]);
 
     useEffect(() => {
         async function fetchData() {
@@ -92,7 +103,7 @@ function UserInfo() {
                                         <span className="slider round"></span>
                                     </label>
                                 </li>
-                                <li className="setting-item">Passcode</li>
+                                <li className="setting-item">Password</li>
                                 {/* Add additional settings here */}
                             </ul>
                         </div>
