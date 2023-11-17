@@ -52,3 +52,53 @@
 .space-to-scroll {
     height: 60px;
 }
+
+/* Dark Mode for Add Expense Modal */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+  }
+
+.dark-mode .add-expense-page-container {
+    @apply bg-gray-800; /* the area within the outter most background, where  "Event | Add New Expense" located */
+}
+
+.dark-mode #addExpense form {
+    @apply bg-gray-700;
+}
+
+.dark-mode #addExpense form input,
+.dark-mode #addExpense form select,
+.dark-mode #addExpense form button {
+    @apply bg-gray-900 text-white border-gray-700; 
+}
+
+.dark-mode #addExpense form .submitBtn button,
+.dark-mode .splitMethods button {
+    @apply bg-gray-700 hover:bg-gray-600 active:bg-gray-500; 
+}
+
+.dark-mode #selected-container,
+.dark-mode #available-container {
+    @apply bg-gray-900;
+}
+
+.dark-mode .remove-button {
+    @apply bg-red-700 hover:bg-red-600;
+}
+
+.dark-mode #addExpense form label,
+.dark-mode #addExpense form .remove-button {
+    @apply text-gray-300; 
+}
+
+.dark-mode .splitMethods button {
+    @apply text-gray-300; 
+}
+
+.dark-mode .remove-button:hover {
+    @apply bg-red-600; 
+}
+
+.dark-mode .space-to-scroll {
+    @apply bg-gray-700; 
+}

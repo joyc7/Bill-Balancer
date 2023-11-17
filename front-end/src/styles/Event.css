@@ -57,3 +57,47 @@ header {
 .space-to-scroll {
     height: 60px;
 }
+
+/* Dark Mode for Each Event Page */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+  }
+
+.dark-mode .event-page-container {
+    @apply bg-gray-800; /* the area within the outter most background */
+}
+  
+.dark-mode .event-page {
+    @apply bg-gray-800; 
+    min-height: 100vh; 
+}
+
+.dark-mode .expenses {
+    @apply bg-gray-700; 
+}
+
+.dark-mode .description {
+    @apply bg-gray-800;
+}
+.dark-mode .date {
+    @apply bg-gray-800; 
+}
+
+.dark-mode .operations button,
+.dark-mode .addExpenseBtn {
+    @apply bg-gray-600 hover:bg-gray-500 active:bg-gray-400; 
+}
+
+.dark-mode .date {
+    @apply bg-gray-600;
+}
+
+.dark-mode .name:hover,
+.dark-mode .name,
+.dark-mode .amount {
+    @apply text-white; 
+}
+
+.dark-mode .space-to-scroll {
+    @apply bg-gray-700; 
+}

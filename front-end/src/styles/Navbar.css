@@ -28,19 +28,19 @@
 }
 
 /* Apply dark mode styles to the navbar */
-.dark-mode {
-  @apply bg-gray-800; 
+.dark-mode .navbar {
+  @apply bg-gray-700; /* 400~900, the smaller the lighter */
 }
 
-/* Might need to change the color for icons in the Navbar as well */
+/* Change the color for icons and text in the Navbar in dark mode */
 .dark-mode .navbar ul {
   @apply text-white;
 }
 
-.dark-mode .active {
-  @apply text-blue-300; 
+.dark-mode .navbar .active {
+  @apply text-blue-300; /* Lighter blue for active links, if you want to keep the blue color consistent */
 }
 
-.dark-mode .normal {
-  @apply text-gray-300;
+.dark-mode .navbar .normal {
+  @apply text-gray-300; /* Lighter text for normal links */
 }

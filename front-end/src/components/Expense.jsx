@@ -5,7 +5,7 @@ import '../styles/Expense.css';
 import Navbar from "./Navbar";
 import { Link, useNavigate } from "react-router-dom"; {/* useNavigate is used to direct the user to the previous page */}
 
-function Expense() {
+function Expense({ isDarkMode }) {
     const [expensesData, setExpensesData] = useState([]);
     const navigate = useNavigate();
 
@@ -24,6 +24,20 @@ function Expense() {
         }
     };
 
+    useEffect(() => {
+        // Toggle the 'body-dark-mode' class on the body element
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        
+        // Clean up function to remove the class when the component unmounts or when dark mode is turned off
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+    }, [isDarkMode]);
+    
     useEffect(() => {
         fetchData();
     }, []);

@@ -58,12 +58,16 @@
 }
 
 /* Dark Mode Styles */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+}
+
 .dark-mode {
-    @apply bg-gray-800 text-white;
+    @apply bg-gray-700 text-white;
 }
 
 .dark-mode .user-detail-section {
-    @apply bg-gray-800;
+    @apply bg-gray-700;
 }
 
 .dark-mode .user-detail-section,
@@ -81,7 +85,7 @@
 }
 
 .dark-mode .UserInfo {
-    background-color: #121212; /* dark mode background color, about 800 */
+    @apply bg-gray-800; /* dark mode background color, about 800 */
 }
 
 

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
 
-function Events() {
+function Events({ isDarkMode }) {
     const[eventData, setEventData] = useState([])
     const[addEvent, setaddEvent] = useState(false)
     
@@ -73,6 +73,20 @@ function Events() {
             {"names":"Sollie Hankinson"}]
         }]
     }
+
+    useEffect(() => {
+        // Toggle the 'body-dark-mode' class on the body element
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        
+        // Clean up function to remove the class when the component unmounts or when dark mode is turned off
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+    }, [isDarkMode]);
 
     useEffect(()=>{
         //fetch mock data about a user's events list

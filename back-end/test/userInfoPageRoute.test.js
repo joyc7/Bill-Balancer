@@ -9,7 +9,7 @@ describe("User Info API", () => {
   it("should return user information including id, name, email, avatar, and a list of users", (done) => {
     chai
       .request(app)
-      .get("/")
+      .get("/user-info") // match with the route
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
