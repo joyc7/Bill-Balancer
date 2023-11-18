@@ -4,15 +4,14 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import EventsFilter from "../images/filter.png"; 
 
 function Events({ isDarkMode }) {
     const[eventData, setEventData] = useState([])
     const[addEvent, setaddEvent] = useState(false)
     const[showFilter, setShowFilter] = useState(false);
-    const [selectedFilter, setSelectedFilter] = useState('all');
-    const [filteredEvents, setFilteredEvents] = useState([]);
+    const[selectedFilter, setSelectedFilter] = useState('all');
+    const[filteredEvents, setFilteredEvents] = useState([]);
     
     const backupData_events = 
     {
@@ -119,7 +118,6 @@ function Events({ isDarkMode }) {
             const eventBalance = parseFloat(event.balance.replace('$', '')) 
             if(eventBalance === 0){
                 clearedEvents.push(event);
-                console.log(clearedEvents);
             }else{
                 otherEvents.push(event);
             }
@@ -149,9 +147,13 @@ function Events({ isDarkMode }) {
     }, [selectedFilter, eventData.events]);
 
     const handleFilterChange = (newFilter) => {
-        setSelectedFilter(newFilter);
+        setSelectedFilter(newFilter.target.value);
         setShowFilter(false); // Hide filter options
     };
+
+    const handleDropdownClick = (event) =>{
+        event.stopPropagation();
+    }
 
     const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
     
@@ -191,17 +193,27 @@ function Events({ isDarkMode }) {
             </div>
 
             <div className="filter-icon" onClick={() => setShowFilter(!showFilter)}>
-                <FontAwesomeIcon icon={faFilter} />
+                <img 
+                    src={EventsFilter}
+                    alt="EventsList"
+                    className="EventsFilter"
+                    style={{ width: "25px", height: "25px"}}
+                />
+                 {showFilter && (
+                    <select 
+                        className="filter-menu" 
+                        onChange={handleFilterChange} 
+                        onClick={handleDropdownClick}
+                        value = {selectedFilter}
+                    >
+                        <option value="all">All Events</option>
+                        <option value="cleared">Cleared</option>
+                        <option value="owe">I Owe</option>
+                        <option value="owed">Owed To Me</option>
+                    </select>
+                )} <s></s>
             </div>
 
-            {showFilter && (
-                <div className="filter-menu">
-                    <button onClick={() => handleFilterChange('all')}>All Events</button>
-                    <button onClick={() => handleFilterChange('cleared')}>Cleared</button>
-                    <button onClick={() => handleFilterChange('owe')}>I Owe</button>
-                    <button onClick={() => handleFilterChange('owed')}>Owed To Me</button>
-                </div>
-            )}
             <div className="events-list">
                 <ul>
                     {filteredEvents.map(event =>(
@@ -215,9 +227,6 @@ function Events({ isDarkMode }) {
                             <Link to='/event'>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
                             </Link>
-                            <div className="event-balance">
-                                {event.balance}
-                            </div>
                         </li>
                     ))}
                 </ul>

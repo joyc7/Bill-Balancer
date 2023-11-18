@@ -45,12 +45,18 @@
     @apply flex flex-col; 
 }
 
+.EventsFilter{
+    @apply hover:bg-orange-100 active:bg-orange-200;
+    @apply absolute right-10 border-none rounded-sm cursor-pointer; 
+    @apply mt-2 mb-2
+}
 .events_list {
     @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50;
 }
 
 .event-list {
     @apply flex justify-between items-center p-4 border-b border-gray-200;
+    @apply mt-6
 }
 
 .event-list button {
