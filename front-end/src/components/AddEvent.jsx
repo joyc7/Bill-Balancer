@@ -4,7 +4,14 @@ import axios from "axios";
 function AddEvent({addEvent, onClose}){
     const[friendsList, setfriendsList] = useState([])
     const[selectedFriends, setselectedFriends] = useState(false)
+    const[addImage, setaddImage] = useState([]);
     const[loading, setLoading] = useState(false)
+    const[eventData, seteventData] = useState({
+        eventName: '',
+        eventData: '',
+        eventDescription: '',
+        members: [],   
+    })
 
     const backupData_friends = {
         "id":1,
@@ -32,6 +39,11 @@ function AddEvent({addEvent, onClose}){
         finally{
             setLoading(false);
         }
+    }
+
+    function handleAddImage(){
+        console.log("Image URL Added:", addImage)
+        setaddImage('')
     }
 
     return(
