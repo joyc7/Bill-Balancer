@@ -151,7 +151,7 @@ function AddEvent({addEvent, onClose}){
                             {loading ? (<p>Loading...</p> 
                             ):  filteredFriends.length>0?(
                                 filteredFriends.map(friend =>(
-                                    <div className="friend" key={friend.id}>
+                                    <div className="flex items-center justify-between p-2 friend" key={friend.id}>
                                         <img src={friend.avatar}></img>
                                         <span>{friend.name}</span>
                                         <img
@@ -159,7 +159,7 @@ function AddEvent({addEvent, onClose}){
                                             alt = "Add Member"
                                             className = "add-Member-Button"
                                             onClick={() =>handleSelectedMember(friend.id)}
-                                            style = {{ width: "50px", height: "50px" }}
+                                            style = {{ width: "40px", height: "40px" }}
                                         />
                                     </div>
                                 ))
