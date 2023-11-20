@@ -1,18 +1,38 @@
 .home-container {
-  @apply p-6 rounded-lg shadow-md bg-white max-w-2xl;
-  @apply mx-auto my-8;
-  @apply min-h-[80vh] p-6 rounded-lg shadow-md bg-white max-w-4xl mx-auto;
+  @apply p-6 rounded-lg shadow-md bg-white max-w-2xl mx-auto my-8 min-h-[80vh];
 }
+
+.greeting h1 {
+  @apply text-3xl md:text-2xl font-bold mb-2 p-2;
+}
+
+.dashboard {
+  @apply grid gap-2 mb-4 place-content-center;
+}
+
 .box {
-  @apply p-4 rounded-md bg-cyan-100 my-4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @apply p-4 rounded-md bg-cyan-100 my-2 flex flex-col cursor-pointer; /* Reduced margin y-axis from my-4 to my-2 */
+  width: 100%;
+  @apply overflow-auto; /* Allows scrolling if content exceeds the height */
+  height: 150px; /* or adjust as necessary for your design */
 }
 
 .box h2 {
-  @apply text-2xl font-semibold text-black;
+  @apply text-lg font-semibold text-black whitespace-nowrap;
+}
+
+.total-spending-header {
+  @apply flex justify-between items-center w-full;
+}
+
+.expenses-list-container {
+  @apply overflow-auto h-48; /* Set a fixed height and allow scrolling */
+}
+
+@media (min-width: 768px) {
+  .box {
+    width: calc(100% - 1rem); /* Adjust width based on the gap specified in the grid */
+  }
 }
 
 .home-money {
@@ -32,7 +52,7 @@
 }
 
 .home-expense-text {
-  @apply text-lg font-semibold;
+  @apply text-sm font-semibold;
 }
 
 .home-expense-amount {
@@ -44,7 +64,11 @@
 }
 
 .heading2 {
-  @apply text-center text-2xl mb-4;
+  @apply text-lg mb-2;
+}
+
+.total-amount {
+  @apply text-lg mb-2; /* Make sure this matches the style of .heading2 if they are different */
 }
 
 .border {
@@ -56,7 +80,7 @@
 }
 
 .small {
-  @apply mb-4;
+  @apply mb-2;
 }
 
 /* Dark Mode for Home Page */
@@ -76,4 +100,8 @@
 .dark-mode .home-expense-text,
 .dark-mode .home-expense-amount {
   @apply text-white;
+}
+
+.dark-mode .greeting h1 {
+  @apply text-left; /* Align text to the left in dark mode if needed */
 }
