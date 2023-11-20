@@ -11,10 +11,10 @@
 }
 
 .box {
-  @apply p-4 rounded-md bg-cyan-100 my-2 flex flex-col cursor-pointer; /* Reduced margin y-axis from my-4 to my-2 */
+  @apply p-4 rounded-md bg-cyan-100 my-2 flex flex-col cursor-pointer;
   width: 100%;
-  @apply overflow-auto; /* Allows scrolling if content exceeds the height */
-  height: 150px; /* or adjust as necessary for your design */
+  @apply overflow-auto; 
+  height: 150px; /* if the sections exceed the page, reduce this height */
 }
 
 .box h2 {
@@ -26,12 +26,12 @@
 }
 
 .expenses-list-container {
-  @apply overflow-auto h-48; /* Set a fixed height and allow scrolling */
+  @apply overflow-auto h-48; 
 }
 
 @media (min-width: 768px) {
   .box {
-    width: calc(100% - 1rem); /* Adjust width based on the gap specified in the grid */
+    width: calc(100% - 1rem);
   }
 }
 
@@ -68,7 +68,7 @@
 }
 
 .total-amount {
-  @apply text-lg mb-2; /* Make sure this matches the style of .heading2 if they are different */
+  @apply text-lg mb-2;
 }
 
 .border {
@@ -103,5 +103,5 @@
 }
 
 .dark-mode .greeting h1 {
-  @apply text-left; /* Align text to the left in dark mode if needed */
+  @apply text-left;
 }

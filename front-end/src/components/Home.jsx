@@ -8,6 +8,7 @@ const Home = ({ isDarkMode }) => {
   const [backendData, setBackendData] = useState({});
   const [userName, setUserName] = useState("");
 
+  /* backupData for name in greeting*/
   const backupNames = {
     "id": 1,
     "name": "Bryn",
@@ -29,6 +30,7 @@ const Home = ({ isDarkMode }) => {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   }
 
+  /* useEffect for controlling DarkMode of the margin around the page */
   useEffect(() => {
     if (isDarkMode) {
         document.body.classList.add('body-dark-mode');
@@ -41,6 +43,7 @@ const Home = ({ isDarkMode }) => {
     };
   }, [isDarkMode]);
 
+   /* useEffect for fetching total spending expenses */
   useEffect(() => {
     const fetchHome = async () => {
       try {
@@ -85,6 +88,7 @@ const Home = ({ isDarkMode }) => {
     fetchHome();
   }, []);
 
+   /* useEffect for fetching name for greeting */
   useEffect(() => {
     const fetchUserName = async () => {
       try {
@@ -101,7 +105,6 @@ const Home = ({ isDarkMode }) => {
 
   return (
     <div className="home-container">
-      <Navbar />
       <div className="greeting">
         <h1>Good Morning, {userName}</h1>
       </div>
@@ -139,6 +142,7 @@ const Home = ({ isDarkMode }) => {
           {/* Implement friend mapping */}
         </div>
       </div>
+      <Navbar />
     </div>
   );
   
