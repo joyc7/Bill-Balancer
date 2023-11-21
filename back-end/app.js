@@ -11,6 +11,7 @@ const addFriendRoute = require("./routes/addFriendRoute");
 const eventsRoute = require("./routes/eventsRoute");
 const addEventRoute = require("./routes/addEventRoute");
 const loginRoute = require("./routes/loginRoute");
+const addEventMemberRoute = require('./routes/addEventMemberRoute');
 const addExpensePayerRoute = require("./routes/addExpensePayerRoute");
 const userInfoPageRoute = require("./routes/UserInfoPageRoute");
 const signupRoute = require("./routes/signupRoute");
@@ -36,6 +37,7 @@ app.use("/events", eventsRoute);
 app.use("/addEvent", addEventRoute);
 app.use("/", loginRoute);
 app.use("/user-info", userInfoPageRoute);
+app.use("/AddEventMember", addEventMemberRoute);
 app.use("/signup", signupRoute);
 app.use("/forgot-password", forgotPasswordRoute);
 

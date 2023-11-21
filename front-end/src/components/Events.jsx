@@ -4,10 +4,14 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
+import EventsFilter from "../images/filter.png"; 
 
 function Events({ isDarkMode }) {
     const[eventData, setEventData] = useState([])
     const[addEvent, setaddEvent] = useState(false)
+    const[showFilter, setShowFilter] = useState(false);
+    const[selectedFilter, setSelectedFilter] = useState('all');
+    const[filteredEvents, setFilteredEvents] = useState([]);
     
     const backupData_events = 
     {
@@ -28,7 +32,7 @@ function Events({ isDarkMode }) {
             },
             {"id":2,
             "EventName":"Kobe","Date":"4/17/2023",
-            "balance":"$69.91",
+            "balance":"$-69.91",
             "description":"Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
             "members":[
                 {"names":"Nisse Kearton"},
@@ -56,7 +60,7 @@ function Events({ isDarkMode }) {
             {"id":5,
             "EventName":"Cotabato",
             "Date":"6/10/2023",
-            "balance":"$28.00",
+            "balance":"$0.00",
             "description":"Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
             "members":[
                 {"names":"Lazaro Atterbury"},
@@ -107,16 +111,59 @@ function Events({ isDarkMode }) {
         dataFetch();
     },[]);
 
- 
+    let clearedEvents = [];
+    let otherEvents = [];
+    if (eventData.events && eventData.events.length){
+        eventData.events.forEach(event => {
+            const eventBalance = parseFloat(event.balance.replace('$', '')) 
+            if(eventBalance === 0){
+                clearedEvents.push(event);
+            }else{
+                otherEvents.push(event);
+            }
+        });
+    }
+
+    useEffect(() => {
+        let filtered = [];
+        if (eventData.events) {
+            switch (selectedFilter) {
+                case 'owe':
+                    filtered = eventData.events.filter(event => parseFloat(event.balance.replace('$', '')) < 0);
+                    break;
+                case 'owed':
+                    filtered = eventData.events.filter(event => parseFloat(event.balance.replace('$', '')) > 0);
+                    break;
+                case 'cleared':
+                    filtered = eventData.events.filter(event => parseFloat(event.balance.replace('$', '')) === 0);
+                    break;
+                case 'all':
+                default:
+                    filtered = eventData.events;
+                    break;
+            }
+        }
+        setFilteredEvents(filtered);
+    }, [selectedFilter, eventData.events]);
+
+    const handleFilterChange = (newFilter) => {
+        setSelectedFilter(newFilter.target.value);
+        setShowFilter(false); // Hide filter options
+    };
+
+    const handleDropdownClick = (event) =>{
+        event.stopPropagation();
+    }
+
     const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
     
     let sortedEvents = [];
     if (eventData.events && eventData.events.length) {
         sortedEvents = eventData.events.sort((a, b) => new Date(b.Date) - new Date(a.Date));
     }
-    
+
     function EventClick(eventId){
-        console.log('Event ${eventId} was clicked')
+        console.log(`Event ${eventId} was clicked`)
     }
     
 
@@ -145,11 +192,38 @@ function Events({ isDarkMode }) {
                 </div>
             </div>
 
-            <div className="events_list">
+            <div className="filter-icon" onClick={() => setShowFilter(!showFilter)}>
+                <img 
+                    src={EventsFilter}
+                    alt="EventsList"
+                    className="EventsFilter"
+                    style={{ width: "25px", height: "25px"}}
+                />
+                 {showFilter && (
+                    <select 
+                        className="filter-menu" 
+                        onChange={handleFilterChange} 
+                        onClick={handleDropdownClick}
+                        value = {selectedFilter}
+                    >
+                        <option value="all">All Events</option>
+                        <option value="cleared">Cleared</option>
+                        <option value="owe">I Owe</option>
+                        <option value="owed">Owed To Me</option>
+                    </select>
+                )} <s></s>
+            </div>
+
+            <div className="events-list">
                 <ul>
-                    {eventData && eventData.events && sortedEvents.map(event =>(
+                    {filteredEvents.map(event =>(
                         <li key = {event.id} className="event-list">
-                            <span>{event.EventName}</span>
+                            <div className="Event-name" style={{ marginBottom: '5px' }}>
+                                <span>{event.EventName}</span>
+                            </div>
+                            <div className="Event-date">
+                                <span>{event.Date}</span>
+                            </div>
                             <Link to='/event'>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
                             </Link>
@@ -158,6 +232,7 @@ function Events({ isDarkMode }) {
                 </ul>
             </div>
 
+            
             {addEvent && (
                 <AddEvent addEvent = {addEvent} onClose={() => setaddEvent(false)} />
             )}
