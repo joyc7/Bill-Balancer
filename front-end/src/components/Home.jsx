@@ -186,7 +186,7 @@ const Home = ({ isDarkMode }) => {
   return (
     <div className="home-container">
       <div className="greeting">
-        <h1>Good Morning, {userName}</h1>
+        <h1>Welcome, {userName}</h1>
       </div>
       <div className="dashboard">
         <div className="box total-spending">
