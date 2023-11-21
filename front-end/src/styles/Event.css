@@ -100,4 +100,5 @@ header {
 
 .dark-mode .space-to-scroll {
     @apply bg-gray-700; 
+    height: 0px;
 }
