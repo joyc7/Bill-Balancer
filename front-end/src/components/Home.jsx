@@ -164,9 +164,9 @@ const Home = ({ isDarkMode }) => {
 
   
 
-  /* since spaces are limited, only display 2 event expenses/friends, the user can access the rest by clicking "view more" */
-  const friendsPendingPayment = backendData.friends ? backendData.friends.slice(0, 2) : [];
-  const eventsPending = backupEventsData.events ? backupEventsData.events.slice(0, 2) : [];
+  /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
+  const friendsPendingPayment = backendData.friends ? backendData.friends.slice(0, 3) : [];
+  const eventsPending = backupEventsData.events ? backupEventsData.events.slice(0, 3) : [];
 
    /* useEffect for fetching name for greeting */
   useEffect(() => {
@@ -212,7 +212,7 @@ const Home = ({ isDarkMode }) => {
           </div>
         </div>
         <div className="box events-pending">
-      <h2>Expenses Pending Payment</h2>
+      <h2>Expenses Summary</h2>
       <ul className="home-list">
   {eventsPending.map(event => (
     <li key={event.id} className="small">
@@ -227,7 +227,7 @@ const Home = ({ isDarkMode }) => {
           {/* Implement event mapping */}
         </div>
         <div className="box friends-pending">
-        <h2 className="heading2">Friends Pending Payment</h2>
+        <h2 className="heading2">Friends Summary</h2>
         <ul className="home-list">
           {friendsPendingPayment.map((friend) => (
             <li key={friend.id} className="small">
