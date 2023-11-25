@@ -5,50 +5,87 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Home = ({ isDarkMode }) => {
-  const [backendData, setBackendData] = useState({
+  const [data, setData] = useState({
+    userName: "",
+    totalSpending: 0,
     expenses: [],
     friends: [],
     events: [] 
   });
-  const [userName, setUserName] = useState("");
 
-  /* backupData for name in greeting */
-  const backupNames = {
-    "id": 1,
-    "name": "Bryn",
-    "email": "btaylot0@booking.com",
-    "avatar": "https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1",
-    "user": [
-        {
-            "id": 5,
-            "name": "Jdavie",
-        },
-        {
-            "id": 2,
-            "name": "Emmie",
-        }
-    ]
-  };
-
-  const backupData = {"id":1,"name":"Bryn","email":"btaylot0@booking.com","phone":"850-479-2094","avatar":"https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1","friends":[{"id":5,"name":"Jdavie","email":"jzecchinii0@yahoo.co.jp","phone":"967-156-0272","balance":"$57.06"},{"id":2,"name":"Emmie","email":"esworder1@xinhuanet.com","phone":"832-141-0597","balance":"$60.04"}]}; 
-
-  const backupEventsData = {
-    id: 2,
-    name: "LA Road Trip",
-    events: [
-      {"id":1, "name":"Lunch", "amount":358, "creator":"Jane", "date":"06/16/2023"},
-      {"id":2, "name":"Flights to LA", "amount":261, "creator":"Tom", "date":"01/21/2023"},
-      {"id":3, "name":"Hotels", "amount":170, "creator":"David", "date":"08/02/2023"}
+  /* backupData from Expenses, Events, Friends.jsx */
+  const backupData = {
+    userName: "Bryn",
+    totalSpending: 0,
+    expenses: [
+      {
+        id: 1,
+        name: "Lunch",
+        amount: 358,
+        creator: "Jane",
+        date: "06/16/2023",
+      },
+      {
+        id: 2,
+        name: "Flights to LA",
+        amount: 261,
+        creator: "Tom",
+        date: "01/21/2023",
+      },
+      {
+        id: 3,
+        name: "Hotels",
+        amount: 170,
+        creator: "David",
+        date: "08/02/2023",
+      },
     ],
-    description: "Road trip with friends",
-  }
-
+    events: [
+      {
+        "id": 1,
+        "EventName": "Cooro",
+        "Date": "06/16/2023",
+        "balance": "$358.00",
+        "description": "Lunch at local restaurant",
+        "members": [
+          { "names": "Jane" },
+          { "names": "John" }
+        ]
+      },
+      {
+        "id": 2,
+        "EventName": "Kobe",
+        "Date": "01/21/2023",
+        "balance": "$262.00",
+        "description": "Flight tickets for LA trip",
+        "members": [
+          { "names": "Tom" },
+          { "names": "Lucy" }
+        ]
+      },
+      {
+        "id": 3,
+        "EventName": "Cuiji",
+        "Date": "08/02/2023",
+        "balance": "$170.00",
+        "description": "Accommodation expenses",
+        "members": [
+          { "names": "David" },
+          { "names": "Sarah" }
+        ]
+      }
+    ],
+    friends: [
+      {"id":2,"name":"Jdavie","email":"jzecchinii0@yahoo.co.jp","phone":"967-156-0272","balance":"$57.06"},
+      {"id":4,"name":"Emmie","email":"esworder1@xinhuanet.com","phone":"832-141-0597","balance":"$60.04"},
+      {"id":5,"name":"Jason","email":"jsathep@pehisbd.com","phone":"212-121-0437","balance":"$70.41"}]
+    };
 
   function calculateTotalSpending(expenses) {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   }
 
-  const eventsWithTotalExpenses = backendData.events ? backendData.events.map(event => ({
+  const eventsWithTotalExpenses = data.events ? data.events.map(event => ({
     ...event,
     totalExpense: calculateTotalSpending(event.expenses || [])
   })) : [];
@@ -60,7 +97,7 @@ const Home = ({ isDarkMode }) => {
     } else {
         document.body.classList.remove('body-dark-mode');
     }
-    // if not in dark mode, remove this effect
+    // if not in dark mode, remove this effect 
     return () => {
         document.body.classList.remove('body-dark-mode');
     };
@@ -68,163 +105,74 @@ const Home = ({ isDarkMode }) => {
 
   /* useEffect for fetching total spending expenses */
   useEffect(() => {
-    const fetchHome = async () => {
+    const fetchData = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/home");
-        setBackendData(result.data);
-      } catch (err) {
-        console.error(err);
+        // Fetch home data
+        const homeRes = await axios.get("http://localhost:3001/home");
+        const expenses = homeRes.data.expenses || [];
+        const totalSpending = calculateTotalSpending(expenses);
 
-        const backupData = {
-          id: 2,
-          name: "LA Road Trip",
-          expenses: [
-            {
-              id: 1,
-              name: "Lunch",
-              amount: 358,
-              creator: "Jane",
-              date: "06/16/2023",
-            },
-            {
-              id: 2,
-              name: "Flights to LA",
-              amount: 261,
-              creator: "Tom",
-              date: "01/21/2023",
-            },
-            {
-              id: 3,
-              name: "Hotels",
-              amount: 170,
-              creator: "David",
-              date: "08/02/2023",
-            },
-          ],
-          description: "Road trip with friends",
-        };
+        // Fetch events data
+        const eventsRes = await axios.get("http://localhost:3001/events");
+        const events = Array.isArray(eventsRes.data) ? eventsRes.data : [];
 
-        setBackendData(backupData);
-      }
-    };
+        // Fetch friends data
+        const friendsRes = await axios.get("http://localhost:3001/friends");
+        const friends = friendsRes.data.friends || [];
 
-    fetchHome();
-  }, []);
+        // Fetch user name
+        const userRes = await axios.get("http://localhost:3001/user");
+        const userName = userRes.data.name || "";
 
-  /* useEffect for fetching events and their expenses */
-  useEffect(() => {
-    const fetchEventsData = async () => {
-      try {
-        const eventsResult = await axios.get("http://localhost:3001/events");
-        if (Array.isArray(eventsResult.data)) {
-          setBackendData(prevData => ({
-            ...prevData,
-            events: eventsResult.data,
-          }));
-        } else {
-          // If it's not an array, log the structure to understand what's being returned
-          console.error('Data fetched is not an array:', eventsResult.data);
-          throw new Error('Data fetched is not an array.');
-        }
+        setData({ userName, totalSpending, expenses, events, friends });
       } catch (error) {
-        console.error('Error fetching events:', error);
-        // Use the array within backupEventsData, not the object itself
-        setBackendData(prevData => ({
-          ...prevData,
-          events: backupEventsData.events, // Ensure this is an array
-        }));
-      }
-    };
-    
-    fetchEventsData();
-  }, []);
-  
-  
-
-  /* useEffect for fetching friends and their expenses */
-  useEffect(() => {
-    const fetchFriendsData = async () => {
-      try {
-        const friendsResult = await axios.get("http://localhost:3001/friends");
-        setBackendData(prevData => ({
-          ...prevData,
-          friends: friendsResult.data.friends
-        }));
-      } catch (err) {
-        console.error(err);
-        setBackendData(prevData => ({
-          ...prevData,
-          friends: backupData.friends
-        }));
+        console.error("Error fetching data:", error);
+        setData(backupData); // set to backup data in case of error
       }
     };
 
-    fetchFriendsData();
+    fetchData();
   }, []);
-
-  
 
   /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
-  const friendsPendingPayment = backendData.friends ? backendData.friends.slice(0, 3) : [];
-  const eventsPending = backupEventsData.events ? backupEventsData.events.slice(0, 3) : [];
-
-   /* useEffect for fetching name for greeting */
-  useEffect(() => {
-    const fetchUserName = async () => {
-      try {
-        const result = await axios.get("http://localhost:3001/user");
-        setUserName(result.data.name); 
-      } catch (err) {
-        console.error(err);
-        setUserName(backupNames.name); 
-      }
-    };
-
-    fetchUserName();
-  }, []);
+  const friendsPendingPayment = data.friends ? data.friends.slice(0, 3) : [];
+  const expensesPending = data.expenses ? data.expenses.slice(0, 3) : [];
+  const eventsPending = data.events ? data.events.slice(0, 3) : [];
 
   return (
     <div className="home-container">
       <div className="greeting">
-        <h1>Welcome, {userName}</h1>
+        <h1>Welcome, {data.userName}</h1>
       </div>
       <div className="dashboard">
-        <div className="box total-spending">
-          <div className="total-spending-header">
-            <h2 className="heading2">Total Spending:</h2>
-            <p className="heading2 total-amount">${calculateTotalSpending(backendData.expenses || [])}</p>
+      <div className="box events-summary">
+    <h2 className="heading2">Events Summary</h2>
+    <ul className="home-list">
+      {eventsPending.map((event) => (
+        <li key={event.id} className="small">
+          <div className="center">
+          <p className="home-expense-text">{event.EventName}</p>
+          <p className="home-expense-amount">{event.Date}</p>
           </div>
-          <div className="expenses-list-container">
-            {backendData && backendData.expenses && backendData.expenses.length > 0 ? (
-              <ul className="home-list">
-                {backendData.expenses.map((expense) => (
-                  <li key={expense.id} className="small">
-                    <div className="center">
-                      <p className="home-expense-text">{expense.name}</p>
-                      <p className="home-expense-amount">${expense.amount}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="home-expense-amount">No expenses available.</p>
-            )}
-          </div>
-        </div>
+        </li>
+      ))}
+    </ul>
+    <Link to="/events" className="view-all">View All</Link>
+  </div>
         <div className="box events-pending">
       <h2>Expenses Summary</h2>
+      {/* <p className="heading2 total-amount">${calculateTotalSpending(data.expenses || [])}</p> */}
       <ul className="home-list">
-  {eventsPending.map(event => (
-    <li key={event.id} className="small">
-      <div className="center">
-        <p className="home-expense-text">{event.name}</p>
-        <p className="home-expense-amount">${event.amount.toFixed(2)}</p>
-      </div>
-    </li>
-  ))}
-</ul>
-      <Link to="/event" className="view-all">View All</Link>
-          {/* Implement event mapping */}
+        {expensesPending.map(event => (
+        <li key={event.id} className="small">
+          <div className="center">
+            <p className="home-expense-text">{event.name}</p>
+            <p className="home-expense-amount">${event.amount.toFixed(2)}</p>
+            </div>
+            </li>
+            ))}
+            </ul>
+            <Link to="/event" className="view-all">View All</Link>
         </div>
         <div className="box friends-pending">
         <h2 className="heading2">Friends Summary</h2>

@@ -47,16 +47,13 @@
   @apply rounded-lg mt-1;
 }
 
-.home-list2 {
-  @apply py-4 border-b border-gray-300 flex justify-between;
-}
-
-.home-expense-text {
+.home-expense-text,
+.home-expense-amount {
   @apply text-sm font-semibold;
 }
 
 .home-expense-amount {
-  @apply text-gray-600;
+  @apply text-gray-600 flex-1 text-right;
 }
 
 .view-all {
@@ -84,7 +81,7 @@
 }
 
 .small {
-  @apply mb-1 mt-1;
+  @apply mb-2 mt-2;
 }
 
 /* Dark Mode for Home Page */
