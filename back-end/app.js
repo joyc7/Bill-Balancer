@@ -2,6 +2,8 @@
 const express = require("express"); // CommonJS import style!
 const app = express(); // instantiate an Express object
 const cors = require("cors");
+require("dotenv").config({ silent: true });
+const mongoose = require("mongoose");
 
 const eventRoute = require("./routes/eventRoute");
 const addExpenseRoute = require("./routes/addExpenseRoute");
@@ -11,11 +13,22 @@ const addFriendRoute = require("./routes/addFriendRoute");
 const eventsRoute = require("./routes/eventsRoute");
 const addEventRoute = require("./routes/addEventRoute");
 const loginRoute = require("./routes/loginRoute");
-const addEventMemberRoute = require('./routes/addEventMemberRoute');
+const addEventMemberRoute = require("./routes/addEventMemberRoute");
 const addExpensePayerRoute = require("./routes/addExpensePayerRoute");
 const userInfoPageRoute = require("./routes/UserInfoPageRoute");
 const signupRoute = require("./routes/signupRoute");
 const forgotPasswordRoute = require("./routes/forgotPasswordRoute");
+
+// connect to the database
+// console.log(`Conneting to MongoDB at ${process.env.MONGODB_URI}`)
+try {
+  mongoose.connect(process.env.MONGODB_URI);
+  console.log(`Connected to MongoDB.`);
+} catch (err) {
+  console.log(
+    `Error connecting to MongoDB user account authentication will fail: ${err}`
+  );
+}
 
 app.use(cors());
 app.use(express.json());
