@@ -86,6 +86,10 @@ function AddEvent({addEvent, onClose}){
         }
     }
 
+    const handleDeleteMember = (memberId) =>{
+
+    }
+    
     useEffect(()=>{
         seteventData(prev => ({
             ...prev,

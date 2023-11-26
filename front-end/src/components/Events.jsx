@@ -13,6 +13,17 @@ function Events({ isDarkMode }) {
     const[selectedFilter, setSelectedFilter] = useState('all');
     const[filteredEvents, setFilteredEvents] = useState([]);
     
+    function reformatDate(dateStr) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const date = new Date(dateStr);
+      
+        const monthName = months[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+    
+        return `${monthName} ${day} ${year}`;
+    }
+
     const backupData_events = 
     {
         "id":1, 
@@ -69,7 +80,7 @@ function Events({ isDarkMode }) {
             },
             {"id":6,
             "EventName":"Krajan",
-            "Date":"4/25/2023",
+            "Date":"04/25/2023",
             "balance":"$37.27",
             "description":"Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
             "members":[{"names":"Kevina Birth"},
@@ -78,8 +89,8 @@ function Events({ isDarkMode }) {
         }]
     }
 
-    useEffect(() => {
         // Toggle the 'body-dark-mode' class on the body element
+    useEffect(() => {
         if (isDarkMode) {
             document.body.classList.add('body-dark-mode');
         } else {
@@ -218,11 +229,11 @@ function Events({ isDarkMode }) {
                 <ul>
                     {filteredEvents.map(event =>(
                         <li key = {event.id} className="event-list">
+                            <div className="Event-date">
+                                {reformatDate(event.Date)}
+                            </div>
                             <div className="Event-name" style={{ marginBottom: '5px' }}>
                                 <span>{event.EventName}</span>
-                            </div>
-                            <div className="Event-date">
-                                <span>{event.Date}</span>
                             </div>
                             <Link to='/event'>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
