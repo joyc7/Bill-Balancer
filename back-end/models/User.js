@@ -19,18 +19,18 @@ const UserSchema = new Schema({
   },
   // image of user, stored as url or file path
   avatar: String,
-  // friends: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User",
-  //   },
-  // ],
-  //   events: [
-  //     {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: "Event",
-  //     },
-  //   ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  events: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+    },
+  ],
   // waiting for events schema
   events: [
     {
