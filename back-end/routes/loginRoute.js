@@ -1,19 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User.js");
-const { body, validationResult } = require("express-validator");
-
-// router.post("/", async (req, res) => {
-//   const response = {
-//     status: "Success",
-//     message: "We recieved your data!",
-//     data: {
-//       name: req.body.username,
-//       password: req.body.password,
-//     },
-//   };
-//   res.json(response);
-// });
 
 router.post("/", async function (req, res, next) {
   const username = req.body.username;

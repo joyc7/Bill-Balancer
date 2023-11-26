@@ -28,34 +28,6 @@ const Signup = () => {
     }
   }, [response]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3001/signup",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 200) {
-  //       window.alert("Sign Up successful, Please log in!");
-
-  //       navigate("/");
-  //       console.log("Signup successful!");
-  //       console.log(response.data);
-  //     } else {
-  //       console.error("Signup failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error: " + error.message);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
