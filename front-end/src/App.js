@@ -12,6 +12,7 @@ import UserInfo from "./components/UserInfo";
 import AddExpense from "./components/AddExpense";
 import SignUp from "./components/SignUp";
 import ForgotPassword from "./components/ForgotPassword";
+import Logout from "./components/Logout";
 
 function App() {
   // used to keep track of which specific event the user choose to see
@@ -27,6 +28,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<Login />} />
