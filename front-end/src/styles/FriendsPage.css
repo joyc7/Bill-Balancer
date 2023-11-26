@@ -131,7 +131,8 @@
 }
 
 .dark-mode .space-to-scroll {
-    height: 60px;
+    @apply bg-gray-700;
+    height: 0px;
 }
 
 /* Dark Mode for Add Friends Modal */

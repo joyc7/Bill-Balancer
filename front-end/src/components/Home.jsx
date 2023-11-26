@@ -2,105 +2,198 @@ import React, { useState, useEffect } from "react";
 import "../styles/Home.css";
 import Navbar from "./Navbar";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Home = ({ isDarkMode }) => {
-  const [backendData, setBackendData] = useState({});
+  const [data, setData] = useState({
+    userName: "",
+    totalSpending: 0,
+    expenses: [],
+    friends: [],
+    events: [] 
+  });
+
+  /* backupData from Expenses, Events, Friends.jsx */
+  const backupData = {
+    userName: "Bryn",
+    totalSpending: 0,
+    expenses: [
+      {
+        id: 1,
+        name: "Lunch",
+        amount: 358,
+        creator: "Jane",
+        date: "06/16/2023",
+      },
+      {
+        id: 2,
+        name: "Flights to LA",
+        amount: 261,
+        creator: "Tom",
+        date: "01/21/2023",
+      },
+      {
+        id: 3,
+        name: "Hotels",
+        amount: 170,
+        creator: "David",
+        date: "08/02/2023",
+      },
+    ],
+    events: [
+      {
+        "id": 1,
+        "EventName": "Cooro",
+        "Date": "06/16/2023",
+        "balance": "$358.00",
+        "description": "Lunch at local restaurant",
+        "members": [
+          { "names": "Jane" },
+          { "names": "John" }
+        ]
+      },
+      {
+        "id": 2,
+        "EventName": "Kobe",
+        "Date": "01/21/2023",
+        "balance": "$262.00",
+        "description": "Flight tickets for LA trip",
+        "members": [
+          { "names": "Tom" },
+          { "names": "Lucy" }
+        ]
+      },
+      {
+        "id": 3,
+        "EventName": "Cuiji",
+        "Date": "08/02/2023",
+        "balance": "$170.00",
+        "description": "Accommodation expenses",
+        "members": [
+          { "names": "David" },
+          { "names": "Sarah" }
+        ]
+      }
+    ],
+    friends: [
+      {"id":2,"name":"Jdavie","email":"jzecchinii0@yahoo.co.jp","phone":"967-156-0272","balance":"$57.06"},
+      {"id":4,"name":"Emmie","email":"esworder1@xinhuanet.com","phone":"832-141-0597","balance":"$60.04"},
+      {"id":5,"name":"Jason","email":"jsathep@pehisbd.com","phone":"212-121-0437","balance":"$70.41"}]
+    };
 
   function calculateTotalSpending(expenses) {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   }
 
+  const eventsWithTotalExpenses = data.events ? data.events.map(event => ({
+    ...event,
+    totalExpense: calculateTotalSpending(event.expenses || [])
+  })) : [];
+
+  /* useEffect for controlling DarkMode of the margin around the page */
   useEffect(() => {
     if (isDarkMode) {
         document.body.classList.add('body-dark-mode');
     } else {
         document.body.classList.remove('body-dark-mode');
     }
-    // if not in dark mode, remove this effect
+    // if not in dark mode, remove this effect 
     return () => {
         document.body.classList.remove('body-dark-mode');
     };
   }, [isDarkMode]);
 
+  /* useEffect for fetching total spending expenses */
   useEffect(() => {
-    const fetchHome = async () => {
+    const fetchData = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/home");
-        setBackendData(result.data);
-      } catch (err) {
-        console.error(err);
+        // Fetch home data
+        const homeRes = await axios.get("http://localhost:3001/home");
+        const expenses = homeRes.data.expenses || [];
+        const totalSpending = calculateTotalSpending(expenses);
 
-        const backupData = {
-          id: 2,
-          name: "LA Road Trip",
-          expenses: [
-            {
-              id: 1,
-              name: "Lunch",
-              amount: 358,
-              creator: "Jane",
-              date: "06/16/2023",
-            },
-            {
-              id: 2,
-              name: "Flights to LA",
-              amount: 261,
-              creator: "Tom",
-              date: "01/21/2023",
-            },
-            {
-              id: 3,
-              name: "Hotels",
-              amount: 170,
-              creator: "David",
-              date: "08/02/2023",
-            },
-          ],
-          description: "Road trip with friends",
-        };
+        // Fetch events data
+        const eventsRes = await axios.get("http://localhost:3001/events");
+        const events = Array.isArray(eventsRes.data) ? eventsRes.data : [];
 
-        setBackendData(backupData);
+        // Fetch friends data
+        const friendsRes = await axios.get("http://localhost:3001/friends");
+        const friends = friendsRes.data.friends || [];
+
+        // Fetch user name
+        const userRes = await axios.get("http://localhost:3001/user");
+        const userName = userRes.data.name || "";
+
+        setData({ userName, totalSpending, expenses, events, friends });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setData(backupData); // set to backup data in case of error
       }
     };
 
-    fetchHome();
+    fetchData();
   }, []);
 
+  /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
+  const friendsPendingPayment = data.friends ? data.friends.slice(0, 3) : [];
+  const expensesPending = data.expenses ? data.expenses.slice(0, 3) : [];
+  const eventsPending = data.events ? data.events.slice(0, 3) : [];
+
   return (
-    <div className="main">
-      <div className="border">
-        <div>
-          <h2 className="heading2">
-            {backendData &&
-              Array.isArray(backendData.expenses) &&
-              backendData.expenses.length > 0 && (
-                <p>
-                  Total Spending: $
-                  {calculateTotalSpending(backendData.expenses)}
-                </p>
-              )}
-          </h2>
-          <ul className="home-list">
-            {backendData &&
-            backendData.expenses &&
-            backendData.expenses.length > 0 ? (
-              backendData.expenses.map((expense) => (
-                <li key={expense.id} className="small">
-                  <div className="center">
-                    <p className="home-expense-text">{expense.name}</p>
-                    <p className="home-expense-amount">${expense.amount}</p>
-                  </div>
-                </li>
-              ))
-            ) : (
-              <p className="home-expense-amount">No expenses available.</p>
-            )}
-          </ul>
+    <div className="home-container">
+      <div className="greeting">
+        <h1>Welcome, {data.userName}</h1>
+      </div>
+      <div className="dashboard">
+      <div className="box events-summary">
+    <h2 className="heading2">Events Summary</h2>
+    <ul className="home-list">
+      {eventsPending.map((event) => (
+        <li key={event.id} className="small">
+          <div className="center">
+          <p className="home-expense-text">{event.EventName}</p>
+          <p className="home-expense-amount">{event.Date}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <Link to="/events" className="view-all">View All</Link>
+  </div>
+        <div className="box events-pending">
+      <h2>Expenses Summary</h2>
+      {/* <p className="heading2 total-amount">${calculateTotalSpending(data.expenses || [])}</p> */}
+      <ul className="home-list">
+        {expensesPending.map(event => (
+        <li key={event.id} className="small">
+          <div className="center">
+            <p className="home-expense-text">{event.name}</p>
+            <p className="home-expense-amount">${event.amount.toFixed(2)}</p>
+            </div>
+            </li>
+            ))}
+            </ul>
+            <Link to="/event" className="view-all">View All</Link>
+        </div>
+        <div className="box friends-pending">
+        <h2 className="heading2">Friends Summary</h2>
+        <ul className="home-list">
+          {friendsPendingPayment.map((friend) => (
+            <li key={friend.id} className="small">
+              <div className="center">
+                <p className="home-expense-text">{friend.name}</p>
+                <p className="home-expense-amount">{friend.balance}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <Link to="/friends" className="view-all">View All</Link>
         </div>
       </div>
       <Navbar />
     </div>
   );
+  
+  
 };
 
 export default Home;
