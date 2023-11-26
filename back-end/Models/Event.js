@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const User = require("./User");
+const Expense = require("./Expense");
 
 const eventSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  description: {
-    type: String,
-    required: true,
-  },
+  description: String,
   date: {
     type: Date,
     required: true,
