@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User.js");
 
-
 // router.post("/", async (req, res) => {
 //   const response = {
 //     status: "Success",
@@ -19,7 +18,6 @@ const { User } = require("../models/User.js");
 router.post("/", async (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
-
   if (!username || !password) {
     res.status(401).json({
       success: false,

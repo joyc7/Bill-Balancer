@@ -12,13 +12,13 @@ const Home = ({ isDarkMode }) => {
 
   useEffect(() => {
     if (isDarkMode) {
-        document.body.classList.add('body-dark-mode');
+      document.body.classList.add("body-dark-mode");
     } else {
-        document.body.classList.remove('body-dark-mode');
+      document.body.classList.remove("body-dark-mode");
     }
     // if not in dark mode, remove this effect
     return () => {
-        document.body.classList.remove('body-dark-mode');
+      document.body.classList.remove("body-dark-mode");
     };
   }, [isDarkMode]);
 
