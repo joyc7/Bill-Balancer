@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const jwtStrategy = require("../config/jwt-config.js");
+// const jwtStrategy = require("../config/jwt-config.js");
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -19,12 +19,12 @@ const userSchema = new Schema({
   },
   // image of user, stored as url or file path
   avatar: String,
-  friends: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  // friends: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "User",
+  //   },
+  // ],
   //   events: [
   //     {
   //       type: mongoose.Schema.Types.ObjectId,
@@ -40,33 +40,24 @@ const userSchema = new Schema({
   ],
 });
 
-// hash the password before the user is saved
-// mongoose provides hooks that allow us to run code before or after specific events
 UserSchema.pre("save", function (next) {
   const user = this;
-  // if the password has not changed, no need to hash it
   if (!user.isModified("password")) return next();
-  // otherwise, the password is being modified, so hash it
   bcrypt.hash(user.password, 10, (err, hash) => {
     if (err) return next(err);
-    user.password = hash; // update the password to the hashed version
+    user.password = hash;
     next();
   });
 });
 
-// mongoose allows us to attach methods to a model...
-
-// compare a given password with the database hash
 UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-// return a JWT token for the user
 UserSchema.methods.generateJWT = function () {
   const today = new Date();
   const exp = new Date(today);
-  exp.setDate(today.getDate() + process.env.JWT_EXP_DAYS); // assuming an environment variable with num days in it
-
+  exp.setDate(today.getDate() + process.env.JWT_EXP_DAYS);
   return jwt.sign(
     {
       id: this._id,
@@ -77,7 +68,6 @@ UserSchema.methods.generateJWT = function () {
   );
 };
 
-// return the user information without sensitive data
 UserSchema.methods.toAuthJSON = function () {
   return {
     username: this.username,
@@ -85,7 +75,7 @@ UserSchema.methods.toAuthJSON = function () {
   };
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", UserSchema);
 
 module.exports = {
   User,
