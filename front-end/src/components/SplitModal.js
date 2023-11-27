@@ -1,18 +1,34 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
 import '../styles/SplitModal.css';
 
 function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, participants, onClose }) {
-    const [activeTab, setActiveTab] = useState('equally'); // Default to 'equally'
+    const [activeTab, setActiveTab] = useState('equally'); 
     const [participantPercentages, setParticipantPercentages] = useState({});
     const [participantAmounts, setParticipantAmounts] = useState({});
+    const [validationMessage, setValidationMessage] = useState('');
+
+    useEffect(() => {
+        // Reset amounts and percentages when the split method changes
+        setParticipantAmounts({});
+        setParticipantPercentages({});
+        setValidationMessage('');
+    }, [activeTab]);
 
     const handlePercentageChange = (event, participantId) => {
-        const newPercentages = { ...participantPercentages, [participantId]: parseFloat(event.target.value) };
+        const percentageValue = event.target.value;
+        const newPercentages = {
+            ...participantPercentages,
+            [participantId]: percentageValue === '' ? 0 : parseFloat(percentageValue)
+        };
         setParticipantPercentages(newPercentages);
     };
 
     const handleAmountChange = (event, participantId) => {
-        const newAmounts = { ...participantAmounts, [participantId]: parseFloat(event.target.value) };
+        const amountValue = event.target.value;
+        const newAmounts = {
+            ...participantAmounts,
+            [participantId]: amountValue === '' ? 0 : parseFloat(amountValue)
+        };
         setParticipantAmounts(newAmounts);
     };
 
@@ -22,11 +38,37 @@ function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, p
     };
 
     const handleSave = () => {
+        let totalPercentage = 0;
+        let totalAmountSplit = 0;
+
+        if (activeTab === 'percentage') {
+            totalPercentage = Object.values(participantPercentages).reduce((acc, value) => acc + value, 0);
+            if (totalPercentage > 100) {
+                setValidationMessage('Total percentage cannot exceed 100%');
+                return; 
+            }
+            if (totalPercentage !== 100) {
+                setValidationMessage('Total percentage must equal exactly 100%');
+                return; 
+            }
+        } else if (activeTab === 'amount') {
+            totalAmountSplit = Object.values(participantAmounts).reduce((acc, value) => acc + value, 0);
+            if (totalAmountSplit > totalAmount) {
+                setValidationMessage(`Total amount cannot exceed $${totalAmount.toFixed(2)}`);
+                return; 
+            }
+            if (totalAmountSplit !== totalAmount) {
+                setValidationMessage(`Total amount split must equal exactly $${totalAmount.toFixed(2)}`);
+                return; 
+            }
+        }
+
+        setValidationMessage('');
+
         if (activeTab === 'equally') {
             const equalAmount = parseFloat(totalAmount) / participants.length;
             const amounts = participants.reduce((acc, participant) => {
                 acc[participant.id] = equalAmount;
-                participantAmounts[participant.id] = equalAmount;
                 return acc;
             }, {});
             onAmountsChange(amounts);
@@ -43,6 +85,18 @@ function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, p
         }
         onMethodChange(activeTab);
     };
+
+    const calculateRemaining = () => {
+        if (activeTab === 'percentage') {
+            const totalPercentageAssigned = Object.values(participantPercentages).reduce((acc, value) => acc + value, 0);
+            return 100 - totalPercentageAssigned;
+        } else if (activeTab === 'amount') {
+            const totalAmountAssigned = Object.values(participantAmounts).reduce((acc, value) => acc + value, 0);
+            return totalAmount - totalAmountAssigned;
+        }
+        return 0;
+    };
+    
     
   
     return (
@@ -56,8 +110,15 @@ function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, p
               <button className={activeTab === "amount" ? "active" : ""} onClick={() => {setActiveTab("amount")}}>$</button>
             </div>
             <div className="tab-content">
-              {participants.map((participant, index) => (
-                <div key={index} className="amountPerPerson">
+                {validationMessage && <div className="validation-message">{validationMessage}</div>}
+                {activeTab === 'percentage' && 
+                    <p>Remaining Percentage to Assign: {calculateRemaining()}%</p>
+                }
+                {activeTab === 'amount' && 
+                    <p>Remaining Amount to Assign: ${calculateRemaining().toFixed(2)}</p>
+                }
+              {participants.map((participant) => (
+                <div key={participant.id} className="amountPerPerson">
                     <span>{participant.first_name}</span>
                     {activeTab === 'equally' && 
                         <span>{"$"+(totalAmount / participants.length).toFixed(2)}</span>

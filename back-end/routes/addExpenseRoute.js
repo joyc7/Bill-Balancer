@@ -8,9 +8,9 @@ router.post(
   // validation rules
   [
     body("name").not().isEmpty().withMessage("Name is required"),
-    body("amount").isNumeric().withMessage("Amount should be a number"),
+    body("totalAmount").isNumeric().withMessage("Amount should be a number"),
     body("date").not().isEmpty().withMessage("Date is required"),
-    body("personPaid")
+    body("paidBy")
       .not()
       .isEmpty()
       .withMessage("Person who paid is required"),
@@ -30,9 +30,9 @@ router.post(
       const newExpense = new Expense({
         name: req.body.name,
         description: req.body.description,
-        totalAmount: req.body.amount,
+        totalAmount: req.body.totalAmount,
         date: new Date(req.body.date),
-        paidBy: req.body.personPaid,
+        paidBy: req.body.paidBy,
         splitDetails: req.body.peopleSplit.map((split) => ({
           user: split.user,
           settlement: split.settlement,
@@ -53,6 +53,7 @@ router.post(
       });
     } catch (error) {
       // Handle any errors that occur during saving to database
+      console.log(error); 
       res.status(500).json({ status: "Error", message: error.message });
     }
   }

@@ -74,3 +74,8 @@
 .dark-mode .amountPerPerson .percentageContent {
     @apply text-white; 
 }
+
+.validation-message {
+    color: red;
+    text-align: center;
+}
