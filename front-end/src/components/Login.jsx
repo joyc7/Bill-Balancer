@@ -12,6 +12,7 @@ const Login = () => {
 
   let [urlSearchParams] = useSearchParams();
   const [response, setResponse] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -41,16 +42,8 @@ const Login = () => {
       });
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
-
-      // if (response.status === 200) {
-      //   navigate("/home");
-      //   console.log("Successful!");
-      //   console.log(response.data);
-      // } else {
-      //   console.error("Login failed");
-      // }
     } catch (error) {
-      console.error(
+      setErrorMessage(
         "You entered invalid credentials.  Try harder!  Check out the usernames in the server's user_data.js file."
       );
     }
@@ -61,6 +54,8 @@ const Login = () => {
       <div className="login-container">
         <div className="login-form">
           <h2 className="login-title">Login</h2>
+          {errorMessage ? <p className="error">{errorMessage}</p> : ""}
+
           <div className="flex justify-center">
             <img
               src={userImage}

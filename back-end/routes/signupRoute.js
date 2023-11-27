@@ -10,6 +10,7 @@ router.post(
     body("username").not().isEmpty().withMessage("Username is required"),
     body("password").not().isEmpty().withMessage("Password is required"),
   ],
+
   async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -24,15 +25,17 @@ router.post(
     }
 
     try {
-      // const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-      // if (existingUser) {
-      //   res.status(409).json({
-      //     success: false,
-      //     message: "Username or email already exists.",
-      //   });
-      //   next();
-      //   return;
-      // }
+      const existingUser = await User.findOne({
+        $or: [{ username }, { email }],
+      });
+      if (existingUser) {
+        res.status(409).json({
+          success: false,
+          message: "Username or email already exists.",
+        });
+        next();
+        return;
+      }
 
       const user = await new User({ username, password }).save();
       console.error(`New user: ${user}`);
