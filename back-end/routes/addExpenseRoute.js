@@ -1,7 +1,7 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
-const { Expense } = require("../Models/Expense.js");
+const { Expense } = require("../models/Expense.js");
 
 router.post(
   "/",
