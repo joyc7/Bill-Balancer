@@ -17,26 +17,77 @@ const AddExpense = props => {
         amount: '',
         date: '',
         personPaid: '',  
-        peopleSplit: [],
+        selectedPeople: [],
         splitMethod: ''   
-    });
+    }); 
+
+    const [validationMessages, setValidationMessages] = useState({
+        name: '',
+        amount: '',
+        date: '',
+        personPaid: '',
+        selectedPeople: ''
+    });    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name === "peopleSplit" && e.target.multiple) {
-            // Handle the selection of multiple options for 'peopleSplit'
+        if (name === "selectedPeople" && e.target.multiple) {
             const selectedOptions = [...e.target.options].filter(o => o.selected).map(o => o.value);
+            console.log("People Split Changed:", selectedOptions); // Debugging
+    
             setFormData(prevFormData => ({
                 ...prevFormData,
-                peopleSplit: selectedOptions
+                selectedPeople: selectedOptions
             }));
-
+    
+            if (selectedOptions.length > 0) {
+                setValidationMessages(prevMessages => {
+                    console.log("Clearing selectedPeople validation message"); // Debugging
+                    return { ...prevMessages, selectedPeople: '' };
+                });
+            }
         } else {
             setFormData(prevFormData => ({
                 ...prevFormData,
                 [name]: value
             }));
         }
+
+        // Validation logic
+        let message = '';
+        if (name === 'name') {
+            message = value.length < 3 ? '<3 characters' : '';
+        } else if (name === 'amount') {
+            const number = parseFloat(value);
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                [name]: isNaN(number) ? '' : number
+            }));
+            if (isNaN(number)) {
+                message = 'Invalid entry';
+            } else if (number <= 0) {
+                message = 'Invalid amount';
+            }
+        } else if (name === 'date') {
+            if (!value) {
+                message = ' Enter a date';
+            } else if (new Date(value) > new Date()){
+                message = 'Invalid date';
+            }
+        } else if (name === 'personPaid') {
+            if (!value) {
+                message = ' Selection required'; 
+            }
+        } else if (name === 'selectedPeople') {
+            if (value.length === 0) {
+                message = ' Selection required'; 
+            }
+        }
+
+        setValidationMessages(prevMessages => ({
+            ...prevMessages,
+            [name]: message
+        }));
     };
 
     // function handle the split method
@@ -57,10 +108,58 @@ const AddExpense = props => {
     };
 
     const handleAddExpense = async () => {
+        let newValidationMessages = {
+            name: '',
+            amount: '',
+            date: '',
+            personPaid: '',
+            selectedPeople: ''
+        };
+    
+        let isValid = true;
+
+        if (formData.name.length < 3) {
+            newValidationMessages.name = ' <3 characters';
+            isValid = false;
+        }
+    
+        if (!(typeof formData.amount === 'number') || isNaN(formData.amount)) {
+            newValidationMessages.amount = ' Invalid entry';
+            isValid = false;
+        } else if (formData.amount <= 0) {
+            newValidationMessages.amount = ' Invalid amount';
+            isValid = false;
+        }
+
+        if (!formData.date) {
+            newValidationMessages.date = ' Enter a date';
+            isValid = false;
+        } else if (new Date(formData.date) > new Date()) {
+            newValidationMessages.date = ' Invalid date';
+            isValid = false;
+        }
+
+        if (!formData.personPaid) {
+            newValidationMessages.personPaid = ' Selection required';
+            isValid = false;
+        }
+
+        if (formData.selectedPeople.length === 0) {
+            newValidationMessages.selectedPeople = ' Selection required';
+            isValid = false;
+        }
+    
+        setValidationMessages(newValidationMessages);
+    
+        if (!isValid) {
+            return; // prevent form submission
+        }
+
         const submissionData = {
             ...formData,
-            peopleSplit: formData.peopleSplit.map(person => person.id)
+            selectedPeople: formData.selectedPeople.map(person => person.id)
         };
+        
         try {
             console.log(formData);
             const response = await axios.post('http://localhost:3001/add-expense', formData);
@@ -87,8 +186,15 @@ const AddExpense = props => {
     }, []);
 
     const handlePaidByChange = (event) => {
-        // Update your form data state accordingly
-        setFormData({ ...formData, personPaid: event.target.value });
+        const selectedValue = event.target.value;
+
+        setFormData({ ...formData, personPaid: selectedValue });
+
+        if (selectedValue) {
+            setValidationMessages(prevMessages => {
+                return { ...prevMessages, personPaid: '' };
+            });
+        }
     };
 
     const [selectedPeople, setSelectedPeople] = useState([]); 
@@ -97,7 +203,7 @@ const AddExpense = props => {
     useEffect(() => {
         setFormData(prevFormData => ({
             ...prevFormData,
-            peopleSplit: selectedPeople
+            selectedPeople: selectedPeople
         }));
     }, [selectedPeople]);
 
@@ -118,17 +224,34 @@ const AddExpense = props => {
         const person = availablePeople.find(p => p.id === personId);
         if (person) {
             setAvailablePeople(availablePeople.filter(p => p.id !== personId));
-            setSelectedPeople([...selectedPeople, person]);
+            const updatedSelectedPeople = [...selectedPeople, person];
+            setSelectedPeople(updatedSelectedPeople);
+    
+            if (updatedSelectedPeople.length > 0) {
+                setValidationMessages(prevMessages => ({
+                    ...prevMessages,
+                    selectedPeople: ''
+                }));
+            }
         }
     };
     
     const handleRemovePerson = personId => {
         const person = selectedPeople.find(p => p.id === personId);
         if (person) {
-            setSelectedPeople(selectedPeople.filter(p => p.id !== personId));
+            const updatedSelectedPeople = selectedPeople.filter(p => p.id !== personId);
+            setSelectedPeople(updatedSelectedPeople);
             setAvailablePeople([...availablePeople, person]);
+    
+            if (updatedSelectedPeople.length === 0) {
+                setValidationMessages(prevMessages => ({
+                    ...prevMessages,
+                    selectedPeople: 'Selection required'
+                }));
+            }
         }
     };
+    
 
 
     return (
@@ -139,19 +262,27 @@ const AddExpense = props => {
             <div id="addExpense">
             <form onSubmit={e => { e.preventDefault(); handleAddExpense(); }}>
                 <div id="nameInput">
-                    <label>Name:</label><br/>
+                    <label>Name:</label> 
+                    {validationMessages.name && <span style={{color: 'red'}}>{validationMessages.name}</span>}
+                    <br/>
                     <input name="name" placeholder="Enter a name" value={formData.name} onChange={handleInputChange}/>
                 </div>
                 <div id="amountInput">
-                    <label>Amount:</label><br/>
+                    <label>Amount:</label>
+                    {validationMessages.amount && <span style={{color: 'red'}}>{validationMessages.amount}</span>}
+                    <br/>
                     <input name="amount" placeholder="Enter the amount" value={formData.amount} onChange={handleInputChange}/>
                 </div>
                 <div id="dateInput">
-                    <label>Date:</label><br/>
+                    <label>Date:</label>
+                    {validationMessages.date && <span style={{color: 'red'}}>{validationMessages.date}</span>}
+                    <br/>
                     <input type="date" name="date" value={formData.date} onChange={handleInputChange}/>
                 </div>
                 <div id="paid">
-                    <label>Paid by:</label><br/>
+                    <label>Payer:</label><br/>
+                    {validationMessages.personPaid && <span style={{color: 'red'}}>{validationMessages.personPaid}</span>}
+                    <br/>
                     <select name="personPaid" value={formData.personPaid} onChange={handlePaidByChange}>
                         <option value="">Select who paid</option>
                         {people.map(person => (
@@ -162,7 +293,9 @@ const AddExpense = props => {
                     </select>
                 </div>
                 <div id="split">
-                    <label>Available People:</label><br/>
+                    <label>Available People:</label>
+                    {validationMessages.selectedPeople && <span style={{color: 'red'}}>{validationMessages.selectedPeople}</span>}
+                    <br/>
                     <div>
                     <select id="available-container" size="5">
                         {availablePeople.map(person => (
@@ -191,6 +324,7 @@ const AddExpense = props => {
                 <div className="submitBtn">
                     <button type="submit">Done</button>
                 </div>
+                <div className="space-to-scroll"></div>
             </form>
             </div>
 
@@ -199,7 +333,7 @@ const AddExpense = props => {
                 onAmountsChange={handleAmountsChange}
                 showModal={showModal} 
                 totalAmount={formData.amount} 
-                participants={formData.peopleSplit} 
+                participants={formData.selectedPeople} 
                 onClose={() => setShowModal(false)} 
             />
 
