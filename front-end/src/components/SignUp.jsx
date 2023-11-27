@@ -115,7 +115,7 @@ const Signup = () => {
         </div>
       </div>
     );
-  else return <Navigate to="/home" />;
+  else return <Navigate to="/" />;
 };
 
 export default Signup;
