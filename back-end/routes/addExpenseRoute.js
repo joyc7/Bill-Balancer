@@ -23,6 +23,8 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    console.log("validation passed");
+
     try {
       // Create a new Expense object
       const newExpense = new Expense({
@@ -35,7 +37,10 @@ router.post(
           user: split.user,
           settlement: split.settlement,
         })),
+        event: req.body.event,
       });
+
+      console.log(newExpense);
 
       // Save the Expense object to the database
       await newExpense.save();
