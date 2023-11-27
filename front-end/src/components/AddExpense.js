@@ -149,13 +149,11 @@ const AddExpense = props => {
             return; 
         }
 
-        const paidById = formData.personPaid; 
-        const paidByUser = people.find(person => person.id == paidById);
         const amountNumber = parseFloat(formData.amount);
 
         const peopleSplit = selectedPeople.map(person => {
             return {
-                user: person, 
+                user: person.id, 
                 amount: individualAmounts[person.id] 
             };
         });
@@ -164,7 +162,7 @@ const AddExpense = props => {
             name: formData.name,
             totalAmount: amountNumber, 
             date: new Date(formData.date), 
-            paidBy: paidByUser,
+            paidBy: formData.personPaid,
             peopleSplit: peopleSplit,
         };
         console.log(submissionData); 
