@@ -166,7 +166,21 @@ function Events({ isDarkMode }) {
         event.stopPropagation();
     }
 
-    const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
+    const totalOwed = eventData && eventData.events && eventData.events.length 
+    ? eventData.events.reduce((acc, event) => {
+        const balance = parseFloat(event.balance.replace('$', ''));
+        return balance < 0 ? acc + balance : acc;
+    }, 0) 
+    : 0;
+
+    const totalOwedToYou = eventData && eventData.events && eventData.events.length 
+    ? eventData.events.reduce((acc, event) => {
+        const balance = parseFloat(event.balance.replace('$', ''));
+        return balance > 0 ? acc + balance : acc;
+    }, 0) 
+    : 0;
+
+    //const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
     
     let sortedEvents = [];
     if (eventData.events && eventData.events.length) {
@@ -190,13 +204,13 @@ function Events({ isDarkMode }) {
                 <div>
                     <div className="Total_Balance_title">Total Balance</div>
                     <div className="balance_details">
-                        {totalBalance < 0 && (
-                            <div> You owe ${Math.abs(totalBalance).toFixed(2)}</div>
+                        {totalOwed < 0 && (
+                            <div> You owe ${Math.abs(totalOwed).toFixed(2)}</div>
                         )}
-                        {totalBalance > 0 && (
-                            <div> You are owed ${totalBalance.toFixed(2)}</div>
+                        {totalOwedToYou > 0 && (
+                            <div> You are owed ${totalOwedToYou.toFixed(2)}</div>
                         )}
-                        {totalBalance === 0 && (
+                        {totalOwed === 0 && totalOwedToYou === 0 && (
                             <div> All Balances are Settled!</div>
                         )}
                     </div>

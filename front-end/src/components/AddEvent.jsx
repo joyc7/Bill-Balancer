@@ -201,13 +201,15 @@ function AddEvent({addEvent, onClose}){
                                     <div className="flex items-center justify-between p-2 friend" key={friend.id}>
                                         <img src={friend.avatar}></img>
                                         <span>{friend.name}</span>
-                                        <img
-                                            src = {addMemberButton}
-                                            alt = "Add Member"
-                                            className = "add-Member-Button"
-                                            onClick={() =>handleSelectedMember(friend.id)}
-                                            style = {{ width: "40px", height: "40px" }}
-                                        />
+                                        {!selectedMember.includes(friend) && (
+                                            <img
+                                                src={addMemberButton}
+                                                alt="Add Member"
+                                                className="add-Member-Button"
+                                                onClick={() => handleSelectedMember(friend.id)}
+                                                style={{ width: "40px", height: "40px" }}
+                                            />
+                                        )}
                                     </div>
                                 ))
                             ) : searchPerformed?(
