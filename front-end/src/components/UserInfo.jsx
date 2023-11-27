@@ -1,121 +1,152 @@
 /* UserInfo.jsx - components of User Info(Account) Page */
 
 import React, { useState, useEffect } from "react";
-import '../styles/UserInfo.css';
+import { useNavigate } from "react-router-dom";
+import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
+import axios from "axios";
 
-function UserInfo() {
-    const [userData, setUserData] = useState(null);
-    const [randomUser, setRandomUser] = useState(null); {/* to fetch random user info */}
-    const [isDarkMode, setIsDarkMode] = useState(false); {/* to control dark mode */}
-    const [message, setMessage] = useState(''); {/* to input contact us messages */}
+function UserInfo({ isDarkMode, toggleDarkMode }) {
+  const [userData, setUserData] = useState(null);
+  const [randomUser, setRandomUser] = useState(null);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-    {/* dark mode function */}
-    const toggleDarkMode = () => {
-        setIsDarkMode(prevMode => !prevMode);
+  const sendMessage = () => {
+    console.log(message);
+    setMessage("");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
+  const backupData = {
+    id: 1,
+    name: "Bryn",
+    email: "btaylot0@booking.com",
+    avatar: "https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1",
+    user: [
+      {
+        id: 5,
+        name: "Jdavie",
+        email: "jzecchinii0@yahoo.co.jp",
+      },
+      {
+        id: 2,
+        name: "Emmie",
+        email: "esworder1@xinhuanet.com",
+      },
+    ],
+  };
+
+  // This effect runs when the `isDarkMode` value changes
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("body-dark-mode");
+    } else {
+      document.body.classList.remove("body-dark-mode");
+    }
+    // if not in dark mode, remove this effect
+    return () => {
+      document.body.classList.remove("body-dark-mode");
     };
+  }, [isDarkMode]);
 
-    {/* contact us function */}
-    const sendMessage = () => {
-        console.log(message);
-        {/* can add an API call here to send the message to the backend */}
-        {/* reset the message input after sending */}
-        setMessage('');
-    };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("http://localhost:3001/user-info");
+        const data = response.data;
+        setUserData(data);
 
-    {/* backup data */}
-    const backupData = {
-        "id": 1,
-        "name": "Bryn",
-        "email": "btaylot0@booking.com",
-        "avatar": "https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1",
-        "user": [
-            {
-                "id": 5,
-                "name": "Jdavie",
-                "email": "jzecchinii0@yahoo.co.jp"
-            },
-            {
-                "id": 2,
-                "name": "Emmie",
-                "email": "esworder1@xinhuanet.com"
-            }
-        ]
-    };
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch("https://my.api.mockaroo.com/user_info.json?key=2712db60");
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                setUserData(data);
-                {/* pick a random user from the user array */}
-                const randomIdx = Math.floor(Math.random() * data.user.length);
-                setRandomUser(data.user[randomIdx]);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                setUserData(backupData);
-                {/* pick a random user from the backup data */}
-                const randomIdx = Math.floor(Math.random() * backupData.user.length);
-                setRandomUser(backupData.user[randomIdx]);
-            }
+        // handle potential undefined data.user
+        const userArray = data.user || [];
+        if (userArray.length > 0) {
+          const randomIdx = Math.floor(Math.random() * userArray.length);
+          setRandomUser(userArray[randomIdx]);
+        } else {
+          console.error("User data or user array is empty.");
+          setRandomUser(null);
         }
-        fetchData();
-    }, []);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setUserData(backupData);
+        const randomIdx = Math.floor(Math.random() * backupData.user.length);
+        setRandomUser(backupData.user[randomIdx]);
+      }
+    }
+    fetchData();
+  }, []);
 
-    return (
-        <div className={`UserInfo ${isDarkMode ? 'dark-mode' : ''}`}> 
-            <h1 className="page-title">Account</h1>
-            {randomUser && (
-                <>
-                    <div className="user-detail-section">
-                        <img src={userData.avatar} alt="User's Avatar" className="avatar" />
-                        <div className="user-name-email">
-                            <div className="name">{randomUser.name}</div>
-                            <div className="email">{randomUser.email}</div>
-                        </div>
-                    </div>
-                    <div className="settings-list-general">
-                        <ul>
-                            <li className="setting-title">Settings</li>
-                            <li className="setting-item">
-                                Dark Mode  
-                                <label className="switch">
-                                    <input type="checkbox" checked={isDarkMode} onChange={toggleDarkMode} />
-                                    <span className="slider round"></span>
-                                </label>
-                            </li>
-                            <li className="setting-item">Passcode</li>
-                        </ul>
-                    </div>
-                    
-                    <div className="settings-list-feedback">
-                    <ul>
-                        <li className="setting-title">Feedback</li>
-                        <li className="setting-item setting-item-feedback">
-                            <div className="contact-us-title">Contact us</div>
-                            <div className="chatbox-container">
-                                <textarea
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    placeholder="Type your message here..." /* store messages in backend */
-                                    className="chatbox-input"
-                                />
-                                <button onClick={sendMessage} className="send-button">Send</button>
-                            </div>
-                        </li>
-                    </ul>
-                    </div>
-                </>
-            )}
-            <Navbar />
-        </div>
-    );
-       
-   
+  return (
+    <div className={`UserInfo-full-height ${isDarkMode ? "dark-mode" : ""}`}>
+      <div className="UserInfo">
+        <h1 className="page-title">Account</h1>
+        {randomUser && (
+          <>
+            <div className="user-detail-section">
+              <img
+                src={userData.avatar}
+                alt="User's Avatar"
+                className="avatar"
+              />
+              <div className="user-name-email">
+                <div className="name">{randomUser.name}</div>
+                <div className="email">{randomUser.email}</div>
+              </div>
+            </div>
+            <div className="settings-list-general">
+              <ul>
+                <li className="setting-title">Settings</li>
+                <li className="setting-item">
+                  Dark Mode
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      id="darkModeToggle"
+                      name="darkModeToggle"
+                      checked={isDarkMode}
+                      onChange={toggleDarkMode}
+                    />
+                    <span className="slider round"></span>
+                  </label>
+                </li>
+                <li className="setting-item">Password</li>
+                <button onClick={handleLogout} className="logout">
+                  Logout
+                </button>
+                {/* Add additional settings here */}
+              </ul>
+            </div>
+            <div className="settings-list-feedback">
+              <ul>
+                <li className="setting-title">Feedback</li>
+                <li className="setting-item setting-item-feedback">
+                  <div className="contact-us-title">Contact us</div>
+                  <div className="chatbox-container">
+                    <textarea
+                      id="userMessage"
+                      name="userMessage"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Type your message here..."
+                      className="chatbox-input"
+                    />
+                    <button onClick={sendMessage} className="send-button">
+                      Send
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
+        <Navbar isDarkMode={isDarkMode} />
+      </div>
+    </div>
+  );
 }
 
 export default UserInfo;

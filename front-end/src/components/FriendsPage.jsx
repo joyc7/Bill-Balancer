@@ -4,11 +4,24 @@ import '../styles/FriendsPage.css';
 import AddFriendModal from './AddFriendModal';
 import Navbar from "./Navbar";
 
-function FriendsPage() {
+function FriendsPage({ isDarkMode }) {
     const [userData, setUserData] = useState(null);
     const [showModal, setShowModal] = useState(false); 
 
     const backupData = {"id":1,"name":"Bryn","email":"btaylot0@booking.com","phone":"850-479-2094","avatar":"https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1","friends":[{"id":5,"name":"Jdavie","email":"jzecchinii0@yahoo.co.jp","phone":"967-156-0272","balance":"$57.06"},{"id":2,"name":"Emmie","email":"esworder1@xinhuanet.com","phone":"832-141-0597","balance":"$60.04"}]}; 
+
+    // useEffect for dark mode
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        // Cleanup function to remove dark mode class
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+    }, [isDarkMode]); // Depend on isDarkMode prop
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,6 +84,8 @@ function FriendsPage() {
                     Add Friends
                 </button>
             </div>
+
+            <div className="space-to-scroll"></div>
 
             {showModal && (
                 <AddFriendModal showModal={showModal} onClose={() => setShowModal(false)} />

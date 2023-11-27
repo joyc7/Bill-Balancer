@@ -1,4 +1,4 @@
-.Event_main {
+.Event {
     @apply flex flex-col items-center space-y-5 p-4;
     @apply bg-cyan-50 min-h-screen p-6 font-mono;
 }
@@ -19,10 +19,15 @@
 
 .select-members-popup{
     @apply flex flex-col space-y-4 p-6 bg-white rounded-lg shadow-lg;
+    
 }
 
 .add-members-content{
     @apply flex flex-col space-y-4 p-6 bg-white rounded-lg shadow-lg;
+}
+
+.add-Member-Button{
+    @apply cursor-pointer
 }
 
 .close {
@@ -45,14 +50,68 @@
     @apply flex flex-col; 
 }
 
+.EventsFilter{
+    @apply hover:bg-orange-100 active:bg-orange-200;
+    @apply absolute right-10 border-none rounded-sm cursor-pointer; 
+    @apply mt-2 mb-2
+}
 .events_list {
-    @apply w-full flex flex-col space-y-4 mt-6;
+    @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50;
 }
 
 .event-list {
     @apply flex justify-between items-center p-4 border-b border-gray-200;
+    @apply mt-6
+}
+
+.Event-date {
+    @apply inline-block;
+    @apply w-12 p-1 rounded-2xl bg-slate-100 break-words text-center opacity-60;
 }
 
 .event-list button {
     @apply w-28 h-8 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+}
+
+/* Dark Mode for Events Page */
+.body-dark-mode {
+    @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+  }
+  
+.dark-mode .Events {
+    @apply bg-gray-800;
+    min-height: 100vh;
+}
+
+.dark-mode .add_events_button {
+    @apply bg-gray-500 border-gray-600 hover:bg-gray-600 active:bg-gray-700;
+}
+
+.dark-mode .add-event-content,
+.dark-mode .select-members-popup,
+.dark-mode .add-members-content {
+    @apply bg-gray-800; 
+}
+
+.dark-mode .Total_Balance_Section {
+    @apply bg-gray-700; 
+}
+
+.dark-mode .Total_Balance_avatar {
+    @apply border-cyan-600; 
+}
+
+.dark-mode .events_list,
+.dark-mode .event-list {
+    @apply bg-gray-700 border-gray-600; 
+}
+
+.dark-mode .event-list button {
+    @apply bg-gray-500 hover:bg-gray-600 active:bg-gray-700; 
+}
+
+.dark-mode .title,
+.dark-mode .Total_Balance_title,
+.dark-mode .event-list {
+    @apply text-white;
 }
