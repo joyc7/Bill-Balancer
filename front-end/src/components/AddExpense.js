@@ -8,21 +8,17 @@ import '../styles/AddExpense.css';
 const AddExpense = props => {
 
     const navigate = useNavigate();
-
     const isDarkMode = props.isDarkMode;
-
     const [showModal, setShowModal] = useState(false);
     const [splitMethod, setSplitMethod] = useState('Choose Split Method');
-
     const [formData, setFormData] = useState({
         name: '',
         amount: '',
         date: '',
         personPaid: '',  
-        selectedPeople: [],
         splitMethod: ''   
     }); 
-
+    
     const [validationMessages, setValidationMessages] = useState({
         name: '',
         amount: '',
@@ -35,7 +31,6 @@ const AddExpense = props => {
         const { name, value } = e.target;
         if (name === "selectedPeople" && e.target.multiple) {
             const selectedOptions = [...e.target.options].filter(o => o.selected).map(o => o.value);
-            console.log("People Split Changed:", selectedOptions); // Debugging
     
             setFormData(prevFormData => ({
                 ...prevFormData,
@@ -44,7 +39,6 @@ const AddExpense = props => {
     
             if (selectedOptions.length > 0) {
                 setValidationMessages(prevMessages => {
-                    console.log("Clearing selectedPeople validation message"); // Debugging
                     return { ...prevMessages, selectedPeople: '' };
                 });
             }
@@ -92,7 +86,6 @@ const AddExpense = props => {
         }));
     };
 
-    // function handle the split method
     const handleMethodChange = (method) => {
         setSplitMethod(method);
         setFormData(prevFormData => ({
@@ -102,11 +95,10 @@ const AddExpense = props => {
         setShowModal(false); 
     };
 
+    const [individualAmounts, setIndividualAmounts] = useState({});
+
     const handleAmountsChange = (amounts) => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            amountDetails: amounts
-        }));
+        setIndividualAmounts(amounts); 
     };
 
     const handleAddExpense = async () => {
@@ -146,30 +138,52 @@ const AddExpense = props => {
             isValid = false;
         }
 
-        if (formData.selectedPeople.length === 0) {
-            newValidationMessages.selectedPeople = ' Selection required';
+        if (selectedPeople.length === 0) {
+            newValidationMessages.selectedPeople = 'Selection required';
             isValid = false;
         }
     
         setValidationMessages(newValidationMessages);
     
         if (!isValid) {
-            return; // prevent form submission
+            return; 
         }
 
+        const paidById = formData.personPaid; 
+        const paidByUser = people.find(person => person.id == paidById);
+        const amountNumber = parseFloat(formData.amount);
+
+        const peopleSplit = selectedPeople.map(person => {
+            return {
+                user: person, 
+                amount: individualAmounts[person.id] 
+            };
+        });
+
         const submissionData = {
-            ...formData,
-            selectedPeople: formData.selectedPeople.map(person => person.id)
+            name: formData.name,
+            totalAmount: amountNumber, 
+            date: new Date(formData.date), 
+            paidBy: paidByUser,
+            peopleSplit: peopleSplit,
         };
-        
+        console.log(submissionData); 
         try {
-            console.log(formData);
-            const response = await axios.post('http://localhost:3001/add-expense', formData);
-            console.log(response.data);
+            const response = await axios.post('http://localhost:3001/add-expense', submissionData);
             navigate('/event');
         } catch (error) {
-            console.error('Failed to submit expense:', error);
+            if (error.response) {
+                console.error('Validation errors:', error.response.data.errors);
+                // Log each error message
+                error.response.data.errors.forEach(err => {
+                    console.error(`${err.param}: ${err.msg}`);
+                });
+            } else {
+                // Handle other types of errors (network issue, request canceled, etc.)
+                console.error('Error submitting expense:', error);
+            }
         }
+        
     };
 
     const [people, setPeople] = useState([]); 
@@ -188,14 +202,14 @@ const AddExpense = props => {
     }, []);
 
     const handlePaidByChange = (event) => {
-        const selectedValue = event.target.value;
+        const selectedUserId = event.target.value;
+        setFormData({ ...formData, personPaid: selectedUserId });
 
-        setFormData({ ...formData, personPaid: selectedValue });
-
-        if (selectedValue) {
-            setValidationMessages(prevMessages => {
-                return { ...prevMessages, personPaid: '' };
-            });
+        if (selectedUserId) {
+            setValidationMessages(prevMessages => ({
+                ...prevMessages,
+                personPaid: ''
+            }));
         }
     };
 
@@ -286,7 +300,8 @@ const AddExpense = props => {
                     <label>Amount:</label>
                     {validationMessages.amount && <span style={{color: 'red'}}>{validationMessages.amount}</span>}
                     <br/>
-                    <input name="amount" placeholder="Enter the amount" value={formData.amount} onChange={handleInputChange}/>
+                    <input type="number" name="amount" placeholder="Enter the amount" value={formData.amount} onChange={handleInputChange} />
+
                 </div>
                 <div id="dateInput">
                     <label>Date:</label>

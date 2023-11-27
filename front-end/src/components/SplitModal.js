@@ -69,7 +69,6 @@ function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, p
             const equalAmount = parseFloat(totalAmount) / participants.length;
             const amounts = participants.reduce((acc, participant) => {
                 acc[participant.id] = equalAmount;
-                participantAmounts[participant.id] = equalAmount;
                 return acc;
             }, {});
             onAmountsChange(amounts);
@@ -111,15 +110,15 @@ function SplitModal({ onMethodChange, onAmountsChange, showModal, totalAmount, p
               <button className={activeTab === "amount" ? "active" : ""} onClick={() => {setActiveTab("amount")}}>$</button>
             </div>
             <div className="tab-content">
-                {validationMessage && <div style={{color: 'red', textAlign: 'center'}}>{validationMessage}</div>}
+                {validationMessage && <div className="validation-message">{validationMessage}</div>}
                 {activeTab === 'percentage' && 
                     <p>Remaining Percentage to Assign: {calculateRemaining()}%</p>
                 }
                 {activeTab === 'amount' && 
                     <p>Remaining Amount to Assign: ${calculateRemaining().toFixed(2)}</p>
                 }
-              {participants.map((participant, index) => (
-                <div key={index} className="amountPerPerson">
+              {participants.map((participant) => (
+                <div key={participant.id} className="amountPerPerson">
                     <span>{participant.first_name}</span>
                     {activeTab === 'equally' && 
                         <span>{"$"+(totalAmount / participants.length).toFixed(2)}</span>
