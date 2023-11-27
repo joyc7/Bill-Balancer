@@ -3,13 +3,13 @@ const router = express.Router();
 
 // Hardcoded user data to simulate a database
 let friendData = [{
-    "id":1,
+    "id":"507f1f77bcf86cd799439011",
     "name":"Gaby Coupar",
     "avatar":"https://robohash.org/temporererumomnis.png?size=50x50\u0026set=set1",
     "phone":"435-715-2899",
     "email":"gcoupar0@rakuten.co.jp"
   }, {
-    "id": 2,
+    "id": "507f1f77bcf86cd799439012",
     "name": "Andy Gaber",
     "avatar": "https://robohash.org/quaeetcorrupti.png?size=50x50&set=set1",
     "phone":"425-712-2309",
