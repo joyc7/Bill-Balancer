@@ -50,7 +50,7 @@ const Signup = () => {
       }
     } catch (error) {
       setErrorMessage(
-        "The username or password you entered are not valid.  Try harder! "
+        "Email or Username has already been taken, please try a different one!"
       );
     }
   };

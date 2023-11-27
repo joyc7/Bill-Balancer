@@ -43,9 +43,7 @@ const Login = () => {
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
     } catch (error) {
-      setErrorMessage(
-        "You entered invalid credentials.  Try harder!  Check out the usernames in the server's user_data.js file."
-      );
+      setErrorMessage("You entered invalid credentials.  Try harder!");
     }
   };
 
