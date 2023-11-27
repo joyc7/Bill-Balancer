@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Login.css";
-import userImage from "../images/user.png";
-import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/SignUp.css";
 
-const Login = () => {
+const Signup = () => {
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     password: "",
   });
 
-  let [urlSearchParams] = useSearchParams();
   const [response, setResponse] = useState({});
-
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -34,43 +32,42 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:3001/signup",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
-
-      // if (response.status === 200) {
-      //   navigate("/home");
-      //   console.log("Successful!");
-      //   console.log(response.data);
-      // } else {
-      //   console.error("Login failed");
-      // }
     } catch (error) {
       console.error(
-        "You entered invalid credentials.  Try harder!  Check out the usernames in the server's user_data.js file."
+        "The username or password you entered are not valid.  Try harder!"
       );
     }
   };
-
   if (!response.success)
     return (
-      <div className="login-container">
-        <div className="login-form">
-          <h2 className="login-title">Login</h2>
-          <div className="flex justify-center">
-            <img
-              src={userImage}
-              alt="User Icon"
-              style={{ width: "150px", height: "150px" }}
-              className="user-image"
-            />
-          </div>
+      <div className="signup-container">
+        <div className="signup-form">
+          <h2 className="signup-title">Sign Up</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <label htmlFor="username" className="login-label">
+            <label htmlFor="email" className="signup-label">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              className="signup-input"
+            />
+            <label htmlFor="username" className="signup-label">
               Username
             </label>
             <input
@@ -80,10 +77,10 @@ const Login = () => {
               value={formData.username}
               onChange={handleInputChange}
               required
-              className="login-input"
+              className="signup-input"
             />
 
-            <label htmlFor="password" className="login-label">
+            <label htmlFor="password" className="signup-label">
               Password
             </label>
             <input
@@ -93,22 +90,21 @@ const Login = () => {
               value={formData.password}
               onChange={handleInputChange}
               required
-              className="login-input"
+              className="signup-input"
             />
 
-            <button type="submit" className="login-button">
-              Login
+            <button type="submit" className="signup-button">
+              Sign Up
             </button>
           </form>
 
           <div className="mt-4">
-            <a href="/signup" className="login-link">
-              Sign Up
-            </a>
-            <span className="mx-2"> | </span>
-            <a href="/forgot-password" className="login-link">
-              Forgot Password
-            </a>
+            <p>
+              Already have an account?{" "}
+              <a href="/" className="signup-link">
+                Login
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -116,4 +112,4 @@ const Login = () => {
   else return <Navigate to="/home" />;
 };
 
-export default Login;
+export default Signup;

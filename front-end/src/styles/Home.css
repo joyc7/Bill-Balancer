@@ -1,18 +1,38 @@
 .home-container {
-  @apply p-6 rounded-lg shadow-md bg-white max-w-2xl;
-  @apply mx-auto my-8;
-  @apply min-h-[80vh] p-6 rounded-lg shadow-md bg-white max-w-4xl mx-auto;
+  @apply p-6 rounded-lg shadow-md bg-white max-w-4xl mx-auto my-8 min-h-[80vh];
 }
+
+.greeting h1 {
+  @apply text-3xl md:text-2xl font-bold mb-2 p-2;
+}
+
+.dashboard {
+  @apply grid gap-2 mb-4 place-content-center;
+}
+
 .box {
-  @apply p-4 rounded-md bg-cyan-100 my-4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @apply p-4 rounded-md bg-cyan-100 my-2 flex flex-col cursor-pointer;
+  width: 100%;
+  @apply overflow-auto; 
+  height: 170px; /* if the sections exceed the page, reduce this height */
 }
 
 .box h2 {
-  @apply text-2xl font-semibold text-black;
+  @apply text-lg font-semibold text-black whitespace-nowrap;
+}
+
+.total-spending-header {
+  @apply flex justify-between items-center w-full;
+}
+
+.expenses-list-container {
+  @apply overflow-auto h-48; 
+}
+
+@media (min-width: 768px) {
+  .box {
+    width: calc(100% - 1rem);
+  }
 }
 
 .home-money {
@@ -24,19 +44,20 @@
 }
 
 .home-list {
-  @apply rounded-lg p-4 mt-4;
+  @apply rounded-lg mt-1;
 }
 
-.home-list2 {
-  @apply py-4 border-b border-gray-300 flex justify-between;
-}
-
-.home-expense-text {
-  @apply text-lg font-semibold;
+.home-expense-text,
+.home-expense-amount {
+  @apply text-sm font-semibold;
 }
 
 .home-expense-amount {
-  @apply text-gray-600;
+  @apply text-gray-600 flex-1 text-right;
+}
+
+.view-all {
+  @apply text-center text-sm text-blue-500 mx-auto;
 }
 
 .center {
@@ -44,7 +65,11 @@
 }
 
 .heading2 {
-  @apply text-center text-2xl mb-4;
+  @apply text-lg mb-0;
+}
+
+.total-amount {
+  @apply text-lg mb-2;
 }
 
 .border {
@@ -52,9 +77,32 @@
 }
 
 .main {
-  @apply home-container bg-gray-100 min-h-screen p-4;
+  @apply home-container bg-gray-100 min-h-screen p-4 w-full;
 }
 
 .small {
-  @apply mb-4;
+  @apply mb-2 mt-2;
+}
+
+/* Dark Mode for Home Page */
+.body-dark-mode {
+  @apply bg-gray-800; /* add dark mode to the outter most background on the page (area around the container) */
+}
+
+.dark-mode .home-container {
+  @apply bg-gray-800 min-h-screen;
+}
+
+.dark-mode .box {
+  @apply bg-gray-700; 
+}
+
+.dark-mode .box h2,
+.dark-mode .home-expense-text,
+.dark-mode .home-expense-amount {
+  @apply text-white;
+}
+
+.dark-mode .greeting h1 {
+  @apply text-left;
 }
