@@ -111,6 +111,7 @@ const AddExpense = props => {
         };
     
         let isValid = true;
+        let invalidAmounts = false;
 
         if (formData.name.length < 3) {
             newValidationMessages.name = ' <3 characters';
@@ -142,21 +143,30 @@ const AddExpense = props => {
             newValidationMessages.selectedPeople = 'Selection required';
             isValid = false;
         }
+
+        const amountNumber = parseFloat(formData.amount);
+
+        const peopleSplit = selectedPeople.map(person => {
+            const amount = individualAmounts[person.id];
+            if (typeof amount !== 'number' || isNaN(amount)) {
+                invalidAmounts = true;
+            }
+            return {
+                user: person.id, 
+                amount: amount
+            };
+        });
     
+        if (invalidAmounts) {
+            newValidationMessages.individualAmounts = 'Invalid amount(s) in split details'; 
+            isValid = false;
+        }
+
         setValidationMessages(newValidationMessages);
     
         if (!isValid) {
             return; 
         }
-
-        const amountNumber = parseFloat(formData.amount);
-
-        const peopleSplit = selectedPeople.map(person => {
-            return {
-                user: person.id, 
-                amount: individualAmounts[person.id] 
-            };
-        });
 
         const submissionData = {
             name: formData.name,
@@ -346,6 +356,7 @@ const AddExpense = props => {
                         ))}
                     </div>
                 </div>
+                {validationMessages.individualAmounts && <span style={{color: 'red'}}>{validationMessages.individualAmounts}</span>}
                 <div className="splitMethods">
                     <button onClick={(e) => {e.preventDefault(); setShowModal(true)}}>{splitMethod === "equally" ? "Equally": "By "+splitMethod}</button>
                 </div>
