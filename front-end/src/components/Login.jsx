@@ -3,12 +3,26 @@ import "../styles/Login.css";
 import userImage from "../images/user.png";
 import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  const location = useLocation();
+  const showAlert = location.state?.showAlert;
+  const [showNotification, setShowNotification] = useState(showAlert);
+
+  useEffect(() => {
+    if (showAlert) {
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+    }
+  }, [showAlert]);
 
   let [urlSearchParams] = useSearchParams();
   const [response, setResponse] = useState({});
@@ -52,6 +66,11 @@ const Login = () => {
       <div className="login-container">
         <div className="login-form">
           <h2 className="login-title">Login</h2>
+          {showNotification && (
+            <div className="notification">
+              <p>You have been successfully registered. Please log in.</p>
+            </div>
+          )}
           {errorMessage ? <p className="error">{errorMessage}</p> : ""}
 
           <div className="flex justify-center">

@@ -46,7 +46,9 @@ const Signup = () => {
       setResponse(response.data);
 
       if (!response.data.success) {
-        alert(response.data.message);
+        setErrorMessage(response.data.message);
+      } else {
+        navigate("/", { state: { showAlert: true } });
       }
     } catch (error) {
       setErrorMessage(
