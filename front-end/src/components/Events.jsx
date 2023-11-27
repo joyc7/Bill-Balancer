@@ -247,8 +247,7 @@ function Events({ isDarkMode }) {
             {addEvent && (
                 <AddEvent addEvent = {addEvent} onClose={() => setaddEvent(false)} />
             )}
-
-            <Navbar/>
+            <div><Navbar/></div>
 
         </div>
     )

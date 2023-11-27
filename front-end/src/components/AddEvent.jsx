@@ -148,7 +148,7 @@ function AddEvent({addEvent, onClose}){
                             className={`mt-4 block w-full rounded-md px-3 py-2 ${errors.eventName ? 'bg-red-100 border-red-500' : 'bg-white border-gray-300'}`}
                             name = "eventName"
                             value={eventData.eventName}
-                            onChange={(e) => { handleInputChange(e)}}
+                            onChange={handleInputChange}
                         />
                         {errors.eventName && <p className="text-red-500 text-sm mt-1 error-message">Event Name is required.</p>}
                     </div>
@@ -158,7 +158,7 @@ function AddEvent({addEvent, onClose}){
                             placeholder="Event Date"
                             className={`mt-4 block w-full rounded-md px-3 py-2 ${errors.Date ? 'bg-red-100 border-red-500' : 'bg-white border-gray-300'}`}
                             name = "Date"
-                            onChange={(e) => { handleInputChange(e)}}
+                            onChange={handleInputChange}
                             value={eventData.Date}
                         />
                         {errors.Date && <p className="text-red-500 text-sm mt-1 error-message">Event Date is required.</p>}
@@ -169,7 +169,7 @@ function AddEvent({addEvent, onClose}){
                             placeholder="Event Description"
                             className={`mt-4 block w-full rounded-md px-3 py-2 ${errors.Description ? 'bg-red-100 border-red-500' : 'bg-white border-gray-300'}`}
                             name = "Description"
-                            onChange={(e) => { handleInputChange(e)}}
+                            onChange={handleInputChange}
                             value={eventData.Description}
                         />
                         {errors.Description && <p className="text-red-500 text-sm mt-1 error-message">Event Description is required.</p>}
