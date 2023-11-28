@@ -20,7 +20,7 @@ let eventData = {
         },
         {"id":2,
         "EventName":"Kobe","Date":"4/17/2023",
-        "balance":"$69.91",
+        "balance":"$-69.91",
         "description":"Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
         "members":[
             {"names":"Nisse Kearton"},
@@ -48,7 +48,7 @@ let eventData = {
         {"id":5,
         "EventName":"Cotabato",
         "Date":"6/10/2023",
-        "balance":"$28.00",
+        "balance":"$0.00",
         "description":"Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
         "members":[
             {"names":"Lazaro Atterbury"},

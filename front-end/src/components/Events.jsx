@@ -4,11 +4,26 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
+import EventsFilter from "../images/filter.png"; 
 
-function Events() {
+function Events({ isDarkMode }) {
     const[eventData, setEventData] = useState([])
     const[addEvent, setaddEvent] = useState(false)
+    const[showFilter, setShowFilter] = useState(false);
+    const[selectedFilter, setSelectedFilter] = useState('all');
+    const[filteredEvents, setFilteredEvents] = useState([]);
     
+    function reformatDate(dateStr) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const date = new Date(dateStr);
+      
+        const monthName = months[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+    
+        return `${monthName} ${day} ${year}`;
+    }
+
     const backupData_events = 
     {
         "id":1, 
@@ -28,7 +43,7 @@ function Events() {
             },
             {"id":2,
             "EventName":"Kobe","Date":"4/17/2023",
-            "balance":"$69.91",
+            "balance":"$-69.91",
             "description":"Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
             "members":[
                 {"names":"Nisse Kearton"},
@@ -56,7 +71,7 @@ function Events() {
             {"id":5,
             "EventName":"Cotabato",
             "Date":"6/10/2023",
-            "balance":"$28.00",
+            "balance":"$0.00",
             "description":"Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
             "members":[
                 {"names":"Lazaro Atterbury"},
@@ -65,7 +80,7 @@ function Events() {
             },
             {"id":6,
             "EventName":"Krajan",
-            "Date":"4/25/2023",
+            "Date":"04/25/2023",
             "balance":"$37.27",
             "description":"Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
             "members":[{"names":"Kevina Birth"},
@@ -73,6 +88,20 @@ function Events() {
             {"names":"Sollie Hankinson"}]
         }]
     }
+
+        // Toggle the 'body-dark-mode' class on the body element
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('body-dark-mode');
+        } else {
+            document.body.classList.remove('body-dark-mode');
+        }
+        
+        // Clean up function to remove the class when the component unmounts or when dark mode is turned off
+        return () => {
+            document.body.classList.remove('body-dark-mode');
+        };
+    }, [isDarkMode]);
 
     useEffect(()=>{
         //fetch mock data about a user's events list
@@ -93,16 +122,59 @@ function Events() {
         dataFetch();
     },[]);
 
- 
+    let clearedEvents = [];
+    let otherEvents = [];
+    if (eventData.events && eventData.events.length){
+        eventData.events.forEach(event => {
+            const eventBalance = parseFloat(event.balance.replace('$', '')) 
+            if(eventBalance === 0){
+                clearedEvents.push(event);
+            }else{
+                otherEvents.push(event);
+            }
+        });
+    }
+
+    useEffect(() => {
+        let filtered = [];
+        if (eventData.events) {
+            switch (selectedFilter) {
+                case 'owe':
+                    filtered = eventData.events.filter(event => parseFloat(event.balance.replace('$', '')) < 0);
+                    break;
+                case 'owed':
+                    filtered = eventData.events.filter(event => parseFloat(event.balance.replace('$', '')) > 0);
+                    break;
+                case 'cleared':
+                    filtered = eventData.events.filter(event => parseFloat(event.balance.replace('$', '')) === 0);
+                    break;
+                case 'all':
+                default:
+                    filtered = eventData.events;
+                    break;
+            }
+        }
+        setFilteredEvents(filtered);
+    }, [selectedFilter, eventData.events]);
+
+    const handleFilterChange = (newFilter) => {
+        setSelectedFilter(newFilter.target.value);
+        setShowFilter(false); // Hide filter options
+    };
+
+    const handleDropdownClick = (event) =>{
+        event.stopPropagation();
+    }
+
     const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
     
     let sortedEvents = [];
     if (eventData.events && eventData.events.length) {
         sortedEvents = eventData.events.sort((a, b) => new Date(b.Date) - new Date(a.Date));
     }
-    
+
     function EventClick(eventId){
-        console.log('Event ${eventId} was clicked')
+        console.log(`Event ${eventId} was clicked`)
     }
     
 
@@ -131,11 +203,38 @@ function Events() {
                 </div>
             </div>
 
-            <div className="events_list">
+            <div className="filter-icon" onClick={() => setShowFilter(!showFilter)}>
+                <img 
+                    src={EventsFilter}
+                    alt="EventsList"
+                    className="EventsFilter"
+                    style={{ width: "25px", height: "25px"}}
+                />
+                 {showFilter && (
+                    <select 
+                        className="filter-menu" 
+                        onChange={handleFilterChange} 
+                        onClick={handleDropdownClick}
+                        value = {selectedFilter}
+                    >
+                        <option value="all">All Events</option>
+                        <option value="cleared">Cleared</option>
+                        <option value="owe">I Owe</option>
+                        <option value="owed">Owed To Me</option>
+                    </select>
+                )} <s></s>
+            </div>
+
+            <div className="events-list">
                 <ul>
-                    {eventData && eventData.events && sortedEvents.map(event =>(
+                    {filteredEvents.map(event =>(
                         <li key = {event.id} className="event-list">
-                            <span>{event.EventName}</span>
+                            <div className="Event-date">
+                                {reformatDate(event.Date)}
+                            </div>
+                            <div className="Event-name" style={{ marginBottom: '5px' }}>
+                                <span>{event.EventName}</span>
+                            </div>
                             <Link to='/event'>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
                             </Link>
@@ -144,6 +243,7 @@ function Events() {
                 </ul>
             </div>
 
+            
             {addEvent && (
                 <AddEvent addEvent = {addEvent} onClose={() => setaddEvent(false)} />
             )}
