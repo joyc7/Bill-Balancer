@@ -74,7 +74,7 @@ function AddFriendModal({ showModal, onClose }) {
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
                 <h2>Add a new friend</h2>
-                <input type="text" placeholder="Username or Email" className='input-content'/>
+                <input type="text" placeholder="Enter username" className='input-content'/>
                 <button onClick={handleSearchClick}>Search</button>
                 {loading && <div>Loading...</div>}
                 {userData && (
