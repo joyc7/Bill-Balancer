@@ -12,6 +12,7 @@ const Signup = () => {
 
   const [response, setResponse] = useState({});
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,9 +44,15 @@ const Signup = () => {
       );
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
+
+      if (!response.data.success) {
+        setErrorMessage(response.data.message);
+      } else {
+        navigate("/", { state: { showAlert: true } });
+      }
     } catch (error) {
-      console.error(
-        "The username or password you entered are not valid.  Try harder!"
+      setErrorMessage(
+        "Email or Username has already been taken, please try a different one!"
       );
     }
   };
@@ -54,6 +61,7 @@ const Signup = () => {
       <div className="signup-container">
         <div className="signup-form">
           <h2 className="signup-title">Sign Up</h2>
+          {errorMessage ? <p className="error">{errorMessage}</p> : ""}
           <form onSubmit={handleSubmit} className="space-y-4">
             <label htmlFor="email" className="signup-label">
               Email
@@ -109,7 +117,7 @@ const Signup = () => {
         </div>
       </div>
     );
-  else return <Navigate to="/home" />;
+  else return <Navigate to="/" />;
 };
 
 export default Signup;
