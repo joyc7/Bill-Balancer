@@ -37,7 +37,7 @@ router.post(
         return;
       }
 
-      const user = await new User({ username, password }).save();
+      const user = await new User({ username, password, email }).save();
       console.error(`New user: ${user}`);
       const token = user.generateJWT();
       res.json({
