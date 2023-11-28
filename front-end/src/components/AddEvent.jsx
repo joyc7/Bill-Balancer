@@ -103,7 +103,7 @@ function AddEvent({addEvent, onClose}){
             const response = await axios.get(API_mock_friends);
             //return the data
             setfriendsList(Array.isArray(response.data) ? response.data : [response.data]);
-
+            console.log("fetch friends list");
         }catch(error){
             console.error("There was an error fetching the data:", error);
             setfriendsList(backupData_friends)
