@@ -43,6 +43,21 @@ Run the following command to start the Express.js server:
 npm start
 ```
 
+#### Using Nodemon for Automatic Server Restart
+
+To automatically restart the server on file changes, install Nodemon globally:
+
+```bash
+sudo npm install -g nodemon
+```
+Then, start your Express.js server with Nodemon:
+
+```bash
+nodemon server
+```
+Nodemon monitors your files for changes and restarts the server automatically, streamlining the development process.
+
+
 ### Step 4: Unit Testing with Mocha, Chai, and c8
 
 Unit testing is crucial for maintaining the quality of our application. We use Mocha as our test framework, Chai for assertions, and c8 to track test coverage. 
