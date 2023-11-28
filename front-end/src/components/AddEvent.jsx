@@ -97,10 +97,9 @@ function AddEvent({addEvent, onClose}){
     async function friendsCL(){
         setLoading(true);
         setSearchPerformed(true);
-        const API_mock_friends = "http://localhost:3001/addEventMember";
         try{
             //requesting data from the mock API endpoint
-            const response = await axios.get(API_mock_friends);
+            const response = await axios.get("http://localhost:3001/addEventMember");
             //return the data
             setfriendsList(Array.isArray(response.data) ? response.data : [response.data]);
 
