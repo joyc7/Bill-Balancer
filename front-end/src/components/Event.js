@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../styles/Event.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const Event = (props) => {
   const [data, setData] = useState([]);
   const isDarkMode = props.isDarkMode;
+  const { eventId } = useParams();
 
   function reformatDate(dateStr) {
     const months = [
@@ -49,8 +50,11 @@ const Event = (props) => {
     console.log("fetching the event");
     const fetchEvent = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/event");
+        const result = await axios.get(
+          `http://localhost:3001/event/${eventId}`
+        );
         setData(result.data);
+        console.log(result.data);
       } catch (err) {
         console.error(err);
 

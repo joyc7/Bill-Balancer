@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import addMemberButton from "../images/addMember.png"; 
+import { jwtDecode } from "jwt-decode";
 
 function AddEvent({addEvent, onClose}){
     const[friendsList, setfriendsList] = useState([])
@@ -71,6 +72,23 @@ function AddEvent({addEvent, onClose}){
         setErrors(newErrors);
         return isValid;
     };
+
+    useEffect(() => {
+        // Retrieve the current user's ID from local storage
+        const token = localStorage.getItem("token");
+        const currentUser = jwtDecode(token);
+
+        if (currentUser && currentUser.id) {
+            setselectedMember(prevMembers => {
+                // Check if the current user's ID is already in the selected members
+                if (prevMembers.some(member => member.id === currentUser.id)) {
+                    return prevMembers;
+                }
+                // If not, add the current user's ID to the selected members
+                return [...prevMembers, { id: currentUser.id }];
+            });
+        }
+    }, []);
 
     const handleAddEvent = async () => {
         if (!validateForm()) {

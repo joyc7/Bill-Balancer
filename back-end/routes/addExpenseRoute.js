@@ -2,6 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const { Expense } = require("../models/Expense.js");
+const Event = require("../models/Event");
 
 router.post(
   "/",
@@ -10,10 +11,7 @@ router.post(
     body("name").not().isEmpty().withMessage("Name is required"),
     body("totalAmount").isNumeric().withMessage("Amount should be a number"),
     body("date").not().isEmpty().withMessage("Date is required"),
-    body("paidBy")
-      .not()
-      .isEmpty()
-      .withMessage("Person who paid is required"),
+    body("paidBy").not().isEmpty().withMessage("Person who paid is required"),
     // Add other validation rules as needed
   ],
   async (req, res) => {
@@ -45,6 +43,17 @@ router.post(
       // Save the Expense object to the database
       await newExpense.save();
 
+      const event = await Event.findById(req.body.event);
+      if (!event) {
+        return res
+          .status(404)
+          .json({ status: "Error", message: "Event not found" });
+      }
+
+      // Add the expense ID to the event's expenses list
+      event.expenses.push(savedExpense._id);
+      await event.save();
+
       // Send a success response
       res.status(201).json({
         status: "Success",
@@ -53,7 +62,7 @@ router.post(
       });
     } catch (error) {
       // Handle any errors that occur during saving to database
-      console.log(error); 
+      console.log(error);
       res.status(500).json({ status: "Error", message: error.message });
     }
   }

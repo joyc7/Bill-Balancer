@@ -1,31 +1,21 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const Event = require("../models/Event.js");
 
-router.get("/", async (req, res) => {
-    // assemble an object with the data we want to send
-    const body = {
-        id: 1,
-        name: "LA Road Trip",
-        expenses: [
-          {"id":1,
-          "name":"Dinner",
-          "amount":358,
-          "creator":"Jane",
-          "date":"06/16/2023"},
-          {"id":2,
-          "name":"Flights to LA",
-          "amount":261,
-          "creator":"Tom",
-          "date":"01/21/2023"},
-          {"id":3,
-          "name":"Hotels",
-          "amount":170,
-          "creator":"David",
-          "date":"08/02/2023"}],
-        description: "Road trip with friends",
-    };
-    // send the response as JSON to the client
-    res.json(body);
-  });
+router.get("/:eventId", async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const event = await Event.findById(eventId);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.json(event);
+  } catch (error) {
+    console.error("Error fetching event:", error);
+    res.status(500).json({ message: "Error fetching event data" });
+  }
+});
 
 module.exports = router;
