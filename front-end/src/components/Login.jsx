@@ -3,6 +3,7 @@ import "../styles/Login.css";
 import userImage from "../images/user.png";
 import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +11,22 @@ const Login = () => {
     password: "",
   });
 
+  const location = useLocation();
+  const showAlert = location.state?.showAlert;
+  const [showNotification, setShowNotification] = useState(showAlert);
+
+  useEffect(() => {
+    if (showAlert) {
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+    }
+  }, [showAlert]);
+
   let [urlSearchParams] = useSearchParams();
   const [response, setResponse] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -41,18 +56,8 @@ const Login = () => {
       });
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
-
-      // if (response.status === 200) {
-      //   navigate("/home");
-      //   console.log("Successful!");
-      //   console.log(response.data);
-      // } else {
-      //   console.error("Login failed");
-      // }
     } catch (error) {
-      console.error(
-        "You entered invalid credentials.  Try harder!  Check out the usernames in the server's user_data.js file."
-      );
+      setErrorMessage("You entered invalid credentials.  Try harder!");
     }
   };
 
@@ -61,6 +66,14 @@ const Login = () => {
       <div className="login-container">
         <div className="login-form">
           <h2 className="login-title">Login</h2>
+          {showNotification && (
+            <div className="notification">
+              {/* <p>You have been successfully registered. Please log in.</p> */}
+              <p>Please log in again!</p>
+            </div>
+          )}
+          {errorMessage ? <p className="error">{errorMessage}</p> : ""}
+
           <div className="flex justify-center">
             <img
               src={userImage}

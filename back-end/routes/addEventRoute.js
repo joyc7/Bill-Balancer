@@ -17,14 +17,18 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    console.log("validation passed");
+
     try {
       const newEvent = new Event({
         name: req.body.eventName,
         date: req.body.Date,
         description: req.body.Description,
-        participants: req.body.Members, // Assuming this is an array of User IDs
+        participants: req.body.Members, // an array of User IDs
         expenses: [], // initialize this as empty
       });
+
+      console.log(newEvent);
 
       const savedEvent = await newEvent.save();
 
@@ -34,6 +38,7 @@ router.post(
         data: savedEvent,
       });
     } catch (error) {
+      console.log(error);
       res.status(400).json({
         status: "Error",
         message: "Error creating event",
