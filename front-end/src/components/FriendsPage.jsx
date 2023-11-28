@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/FriendsPage.css';
 import AddFriendModal from './AddFriendModal';
 import Navbar from "./Navbar";
+import { jwtDecode } from 'jwt-decode';
 
 function FriendsPage({ isDarkMode }) {
     const [userData, setUserData] = useState(null);
@@ -23,15 +24,17 @@ function FriendsPage({ isDarkMode }) {
         };
     }, [isDarkMode]); // Depend on isDarkMode prop
 
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
-              const result = await axios.get("http://localhost:3001/friends");
-              setUserData(result.data); 
+                const token = localStorage.getItem("token");
+                const currentUser = jwtDecode(token); 
+                const userId = currentUser.id; 
+                const result = await axios.get(`http://localhost:3001/friends/${userId}`);
+                setUserData(result.data); 
             } catch (err) {
-              console.error(err); 
-                console.log(backupData); 
-                // Setting backup data when API call fails
+                console.error(err); 
                 setUserData(backupData);
             }
         }
@@ -40,16 +43,16 @@ function FriendsPage({ isDarkMode }) {
 
     if (!userData) return <div>Loading...</div>;
 
-    const totalBalance = userData.friends && userData.friends.length ? userData.friends.reduce((acc, friend) => acc + parseFloat(friend.balance.replace('$', '')), 0) : 0;
+    // const totalBalance = userData.friends && userData.friends.length ? userData.friends.reduce((acc, friend) => acc + parseFloat(friend.balance.replace('$', '')), 0) : 0;
 
     return (
         <div className="friends-page">
             <h1 className="page-title">Friends</h1>
             <div className="balance-section">
-                <img src={userData.avatar} alt="User Avatar" className="user-avatar"/>
+                <img src={`https://robohash.org/${userData.username}.png?size=50x50&set=set1`} alt="User Avatar" className="user-avatar"/>
                 <div>
                     <div className="balance-title">Total balance</div>
-                    <div className="balance-details">
+                    {/* <div className="balance-details">
                         {totalBalance < 0 && (
                             <div> You owe ${Math.abs(totalBalance).toFixed(2)}</div>
                         )}
@@ -59,21 +62,21 @@ function FriendsPage({ isDarkMode }) {
                         {totalBalance === 0 && (
                             <div> All Balances are Settled!</div>
                         )}
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
             <div className="friends-list">
                 <ul className='p-6 divide-y divide-slate-200'>
                     {userData.friends.map((friend) => (
-                        <li key={friend.id} className="friend-item">
+                        <li key={friend.username} className="friend-item">
                             <span className='item-name-avatar'>
-                                <img src={`https://robohash.org/${friend.name}.png?size=50x50&set=set1`} alt={`${friend.name}'s avatar`} className="friend-avatar"/>
-                                <span>{friend.name}</span>
+                                <img src={`https://robohash.org/${friend.username}.png?size=50x50&set=set1`} alt={`${friend.username}'s avatar`} className="friend-avatar"/>
+                                <span>{friend.username}</span>
                             </span>
-                            <span className={parseFloat(friend.balance.replace('$', '')) < 0 ? "negative-balance" : "positive-balance"}>
+                            {/* <span className={parseFloat(friend.balance.replace('$', '')) < 0 ? "negative-balance" : "positive-balance"}>
                                  {friend.balance}
-                            </span>
+                            </span> */}
                         </li>
                     ))}
                 </ul>
