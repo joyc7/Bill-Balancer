@@ -68,7 +68,8 @@ const Login = () => {
           <h2 className="login-title">Login</h2>
           {showNotification && (
             <div className="notification">
-              <p>You have been successfully registered. Please log in.</p>
+              {/* <p>You have been successfully registered. Please log in.</p> */}
+              <p>Please log in again!</p>
             </div>
           )}
           {errorMessage ? <p className="error">{errorMessage}</p> : ""}
