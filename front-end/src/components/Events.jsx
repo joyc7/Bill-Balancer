@@ -261,7 +261,8 @@ function Events({ isDarkMode }) {
             {addEvent && (
                 <AddEvent addEvent = {addEvent} onClose={() => setaddEvent(false)} />
             )}
-            <div><Navbar/></div>
+            <div className="navbar-placeholder" style={{ height: '4rem' }}></div>
+            <div className="mt-6"><Navbar/></div>
 
         </div>
     )

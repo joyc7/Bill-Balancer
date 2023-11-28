@@ -1,6 +1,6 @@
 .Event {
-    @apply flex flex-col space-y-5 p-4;
-    @apply bg-cyan-50 min-h-screen p-6 font-mono;
+    @apply flex flex-col space-y-5 p-4; /* This will hide any overflow */
+    @apply bg-cyan-50 p-6 font-mono;
 }
 
 .title {
@@ -56,11 +56,16 @@
     @apply mt-2 mb-2
 }
 .events_list {
-    @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50;
+    @apply h-80 w-full flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50 pb-20;
+    @overflow-auto
 }
 
 .event-list {
     @apply flex justify-between items-center p-4 border-b border-gray-200;
+    @apply mt-6
+}
+
+.navbar-placeholder {
     @apply mt-6
 }
 
