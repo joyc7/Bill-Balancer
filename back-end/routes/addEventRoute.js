@@ -26,7 +26,7 @@ router.post(
         date: req.body.Date,
         description: req.body.Description,
         participants: req.body.Members, // an array of User IDs
-        expenses: [], 
+        expenses: [], // initialize this as empty
       });
 
       console.log(newEvent);
@@ -54,7 +54,7 @@ router.post(
         data: savedEvent,
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(400).json({
         status: "Error",
         message: "Error creating event or updating users",
