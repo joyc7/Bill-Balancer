@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import addMemberButton from "../images/addMember.png"; 
+import { jwtDecode } from 'jwt-decode';
 
 function AddEvent({addEvent, onClose}){
     const[friendsList, setfriendsList] = useState([])
@@ -9,7 +10,7 @@ function AddEvent({addEvent, onClose}){
     const[searchPerformed, setSearchPerformed] = useState(false);
     const[selectedMember, setselectedMember] = useState([])
     const[loading, setLoading] = useState(false)
-    const [errors, setErrors] = useState({
+    const[errors, setErrors] = useState({
         eventName: false,
         Date: false,
         Description: false,
@@ -24,13 +25,13 @@ function AddEvent({addEvent, onClose}){
 
     const backupData_friends = [{
         "id":"507f1f77bcf86cd799439011",
-        "name":"Gaby Coupar",
+        "username":"Gaby Coupar",
         "avatar":"https://robohash.org/temporererumomnis.png?size=50x50\u0026set=set1",
         "phone":"435-715-2899",
         "email":"gcoupar0@rakuten.co.jp"
       }, {
         "id": "507f1f77bcf86cd799439012",
-        "name": "Andy Gaber",
+        "username": "Andy Gaber",
         "avatar": "https://robohash.org/quaeetcorrupti.png?size=50x50&set=set1",
         "phone":"425-712-2309",
         "email":"gmember0@rakuten.co.jp"
@@ -80,31 +81,36 @@ function AddEvent({addEvent, onClose}){
             eventName: eventData.eventName,
             Date: eventData.Date,
             Description: eventData.Description,
-            Members: selectedMember.map(member => member.id) // mapping to member IDs
+            Members: friendsList.filter((friend) => selectedMember.includes(friend._id))
         };
     
         try {
             console.log('Submitting data:', submitData);
-            const response = await axios.post("http://localhost:3001/addEvent", submitData);
+            const response = await axios.post(`http://localhost:3001/addEvent`, submitData);
             console.log(`Event added:`, response.data);
             onClose(); // Optionally close the form upon successful submission
         } catch (error) {
-            console.error('Failed to submit event:', error.response ? error.response.data : error);
+            console.error('Failed to submit event:', error.response);
         }
     }
-    
+
     //fetch friends' data for the member list
-    async function friendsCL(){
+    async function friendsCL(userID){
         setLoading(true);
         setSearchPerformed(true);
+        console.log('userID in friendsCL:', userID, 'Type:', typeof userID);
         try{
-            //requesting data from the mock API endpoint
-            const response = await axios.get("http://localhost:3001/addEventMember");
+            //const url = `http://localhost:3001/addEventMember/friendsList/${currentUser.id}`;
+
+            // Make the API call
+            const response = await axios.get(`http://localhost:3001/addEventMember/friendsList/${userID}`);
             //return the data
-            setfriendsList(Array.isArray(response.data) ? response.data : [response.data]);
+            console.log(response)
+            setfriendsList(Array.isArray(response.data.friends) ? response.data.friends : [response.data.friends]);
+            //setfriendsList(response.data.flatMap(user => user.friends));
 
         }catch(error){
-            console.error("There was an error fetching the data:", error);
+            console.error("There was an error fetching the data:", error.response);
             setfriendsList(backupData_friends)
         }
         finally{
@@ -112,20 +118,63 @@ function AddEvent({addEvent, onClose}){
         }
     }
 
+    /*
+    useEffect(() => {
+        // Retrieve the current user from local storage
+        const token = localStorage.getItem("token");
+        const decodedUser = jwtDecode(token);
+        if (decodedUser && decodedUser.id) {
+            console.log(decodedUser.id)
+            friendsCL(decodedUser.id)
+            setselectedMember(prevMembers => {
+            // Check if the current user's ID is already in the selected members
+                if (prevMembers.some(member => member.id === decodedUser.id)) {
+                    return prevMembers;
+                }
+            // If not, add the current user's ID to the selected members
+                return [...prevMembers, { id: decodedUser.id }];
+                });
+        } else {
+            console.error("No valid user found in local storage.");
+        }
+    }, []);
+    */
+
+    const handleSearch = () => {
+        const token = localStorage.getItem("token");
+        const decodedUser = jwtDecode(token);
+        if (decodedUser && decodedUser.id) {
+            console.log(decodedUser.id)
+            friendsCL(decodedUser.id)
+            setselectedMember(prevMembers => {
+            // Check if the current user's ID is already in the selected members
+                if (prevMembers.some(member => member.id === decodedUser.id)) {
+                    return prevMembers;
+                }
+            // If not, add the current user's ID to the selected members
+                return [...prevMembers, decodedUser.id];
+                });
+        } else {
+            console.error("No valid user found in local storage.");
+        }
+    };
+    
     const handleSearchChange = (e) =>{
         setSearchQuery(e.target.value)
     }
-    const filteredFriends = searchQuery?friendsList.filter(friend => friend.name.toLowerCase().includes(searchQuery.toLowerCase())): [];
 
+    const filteredFriends = searchQuery ? friendsList.filter(friend => friend?.username?.toLowerCase().includes(searchQuery.toLowerCase())) : [];
 
     const handleSelectedMember = (memberId) =>{
-        if(selectedMember.find(member => member.id === memberId)){
+        if(selectedMember.includes(memberId)){
             return;
         }
-        const member = friendsList.find(p => p.id === memberId)
+        const member = friendsList.find(p => p._id === memberId)
         if(member){
-            setselectedMember([...selectedMember, member]);
+            setselectedMember([...selectedMember, memberId]);
+            console.log(`Member Successfuly Added!`)
         }
+        
     }
 
     useEffect(()=>{
@@ -192,20 +241,20 @@ function AddEvent({addEvent, onClose}){
                                 className="member-name" 
                                 onChange={handleSearchChange}    
                             />
-                            <button type='button' onClick={friendsCL}>Search</button>
+                            <button type='button'onClick={handleSearch}>Search</button>
                             {loading ? (<p>Loading...</p>
                             ) : searchPerformed ? (  
                                 filteredFriends.length>0?(
                                 filteredFriends.map(friend =>(
-                                    <div className="flex items-center justify-between p-2 friend" key={friend.id}>
+                                    <div className="flex items-center justify-between p-2 friend" key={friend._id}>
                                         <img src={friend.avatar}></img>
-                                        <span>{friend.name}</span>
-                                        {!selectedMember.includes(friend) && (
+                                        <span>{friend.username}</span>
+                                        {!selectedMember.includes(friend._id) && (
                                             <img
                                                 src={addMemberButton}
                                                 alt="Add Member"
                                                 className="add-Member-Button"
-                                                onClick={() => handleSelectedMember(friend.id)}
+                                                onClick={() => handleSelectedMember(friend._id)}
                                                 style={{ width: "40px", height: "40px" }}
                                             />
                                         )}

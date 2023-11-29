@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const Event = require("../models/Event.js");
+const { User } = require("../models/User.js");
 
 router.post(
   "/",
@@ -17,26 +18,46 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    console.log("validation passed");
+
     try {
       const newEvent = new Event({
         name: req.body.eventName,
         date: req.body.Date,
         description: req.body.Description,
-        participants: req.body.Members, // Assuming this is an array of User IDs
-        expenses: [], // initialize this as empty
+        participants: req.body.Members, // an array of User IDs
+        expenses: [], 
       });
+
+      console.log(newEvent);
 
       const savedEvent = await newEvent.save();
 
+      console.log("Event created:", savedEvent);
+
+      // Fetch and update each participant
+      for (const userId of req.body.Members) {
+        let user = await User.findById(userId);
+        if (!user) {
+          console.error(`User not found for ID: ${userId}`);
+          continue;
+        }
+
+        user.events.push(savedEvent._id); // Add the event ID to the user's events list
+        await user.save();
+        console.log(`Event added to user ${userId}`);
+      }
+
       res.status(201).json({
         status: "Success",
-        message: "Event created successfully!",
+        message: "Event created and added to participants successfully!",
         data: savedEvent,
       });
     } catch (error) {
+      console.error(error);
       res.status(400).json({
         status: "Error",
-        message: "Error creating event",
+        message: "Error creating event or updating users",
         error: error.message,
       });
     }
