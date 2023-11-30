@@ -177,7 +177,7 @@ const AddExpense = (props) => {
       date: new Date(formData.date),
       paidBy: formData.personPaid,
       peopleSplit: peopleSplit,
-      event: eventId,
+      event: eventId, // make sure it is not "undefined"
     };
     console.log(submissionData);
     try {
