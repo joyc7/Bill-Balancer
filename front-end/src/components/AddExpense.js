@@ -8,6 +8,7 @@ import "../styles/AddExpense.css";
 const AddExpense = (props) => {
   const navigate = useNavigate();
   const isDarkMode = props.isDarkMode;
+  const { eventId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [splitMethod, setSplitMethod] = useState("Choose Split Method");
   const [formData, setFormData] = useState({
@@ -176,6 +177,7 @@ const AddExpense = (props) => {
       date: new Date(formData.date),
       paidBy: formData.personPaid,
       peopleSplit: peopleSplit,
+      event: eventId,
     };
     console.log(submissionData);
     try {
@@ -183,7 +185,8 @@ const AddExpense = (props) => {
         "http://localhost:3001/add-expense",
         submissionData
       );
-      navigate("/event");
+      // after adding an expense, navigate back to the event
+      navigate(`/event/${eventId}`);
     } catch (error) {
       if (error.response) {
         console.error("Validation errors:", error.response.data.errors);
@@ -304,7 +307,7 @@ const AddExpense = (props) => {
       {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
       <header>
         <h2>
-          <Link to="/event">Event</Link>|Add New Expense
+        <Link to={`/event/${eventId}`}>Event</Link>|Add New Expense
         </h2>
       </header>
       <div id="addExpense">
