@@ -6,10 +6,34 @@ const tripData = {
   name: "LA Road Trip",
   expenses: [
     { id: 1, name: "Lunch", amount: 358, creator: "Jane", date: "06/16/2023" },
-    { id: 2, name: "Flights to LA", amount: 261, creator: "Tom", date: "01/21/2023" },
-    { id: 3, name: "Hotels", amount: 170, creator: "David", date: "08/02/2023" },
-    { id: 4, name: "Dinner", amount: 120, creator: "David", date: "08/02/2023" },
-    { id: 5, name: "Souvenirs", amount: 570, creator: "David", date: "08/02/2023" },
+    {
+      id: 2,
+      name: "Flights to LA",
+      amount: 261,
+      creator: "Tom",
+      date: "01/21/2023",
+    },
+    {
+      id: 3,
+      name: "Hotels",
+      amount: 170,
+      creator: "David",
+      date: "08/02/2023",
+    },
+    {
+      id: 4,
+      name: "Dinner",
+      amount: 120,
+      creator: "David",
+      date: "08/02/2023",
+    },
+    {
+      id: 5,
+      name: "Souvenirs",
+      amount: 570,
+      creator: "David",
+      date: "08/02/2023",
+    },
     { id: 6, name: "Gifts", amount: 200, creator: "David", date: "08/02/2023" },
   ],
   description: "Road trip with friends",
@@ -31,12 +55,12 @@ const userData = {
 };
 
 // Endpoint to get home data
-router.get("/home", async (req, res) => {
+router.get("/", async (req, res) => {
   res.json(tripData);
 });
 
 // Endpoint to get user data with friends
-router.get('/user', (req, res) => {
+router.get("/", (req, res) => {
   res.json(userData);
 });
 
