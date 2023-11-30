@@ -23,10 +23,8 @@ router.post(
 
     try {
       const user = await User.findOne({
-        $and: [{ $or: [{ username: username }, { email: email }] }],
+        $and: [{ username: username }, { email: email }],
       });
-
-      console.log(user);
 
       if (!user) {
         console.error(`User not found.`);
@@ -35,9 +33,7 @@ router.post(
           .json({ success: false, message: "User not found." });
       }
 
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedPassword;
-
+      const updatedPassword = user.resetPassword(newPassword);
       await user.save();
 
       res.json({ success: true, message: "Password updated successfully." });
