@@ -52,7 +52,7 @@ app.use("/events", eventsRoute);
 app.use("/addEvent", addEventRoute);
 app.use("/", loginRoute);
 app.use("/user-info", userInfoPageRoute);
-app.use("/AddEventMember", addEventMemberRoute);
+app.use("/addEventMember", addEventMemberRoute);
 app.use("/signup", signupRoute);
 app.use("/forgot-password", forgotPasswordRoute);
 app.use("/logout", logoutRoute);

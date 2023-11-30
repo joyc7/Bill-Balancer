@@ -1,6 +1,6 @@
 .Event {
-    @apply flex flex-col items-center space-y-5 p-4;
-    @apply bg-cyan-50 min-h-screen p-6 font-mono;
+    @apply flex flex-col space-y-5 p-4; /* This will hide any overflow */
+    @apply bg-cyan-50 p-6 font-mono;
 }
 
 .title {
@@ -56,11 +56,16 @@
     @apply mt-2 mb-2
 }
 .events_list {
-    @apply h-96 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50;
+    @apply h-80 w-full flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50 pb-20;
+    @overflow-auto
 }
 
 .event-list {
     @apply flex justify-between items-center p-4 border-b border-gray-200;
+    @apply mt-6
+}
+
+.navbar-placeholder {
     @apply mt-6
 }
 
@@ -69,8 +74,12 @@
     @apply w-12 p-1 rounded-2xl bg-slate-100 break-words text-center opacity-60;
 }
 
+.Event-name{
+    @apply ml-10 flex-grow;
+}
+
 .event-list button {
-    @apply w-28 h-8 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+    @apply w-16 p-1 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
 }
 
 /* Dark Mode for Events Page */
