@@ -126,11 +126,11 @@ const Home = ({ isDarkMode }) => {
           const totalSpending = calculateTotalSpending(expenses);
 
           // Fetch events data
-          const eventsRes = await axios.get("http://localhost:3001/events");
+          const eventsRes = await axios.get(`http://localhost:3001/events/for/${currentUser.id}`);
           const events = eventsRes.data.events || [];
 
           // Fetch friends data
-          const friendsRes = await axios.get("http://localhost:3001/friends");
+          const friendsRes = await axios.get(`http://localhost:3001/friends/${currentUser.id}`);
           const friends = friendsRes.data.friends || [];
 
           const userName = currentUser.username || "";
@@ -190,8 +190,8 @@ const Home = ({ isDarkMode }) => {
             {eventsPending.map((event) => (
               <li key={event.id} className="small">
                 <div className="center">
-                  <p className="home-expense-text">{event.EventName}</p>
-                  <p className="home-expense-amount">{event.Date}</p>
+                  <p className="home-expense-text">{event.name}</p>
+                  <p className="home-expense-amount">{event.date}</p>
                 </div>
               </li>
             ))}
@@ -225,7 +225,7 @@ const Home = ({ isDarkMode }) => {
             {friendsPendingPayment.map((friend) => (
               <li key={friend.id} className="small">
                 <div className="center">
-                  <p className="home-expense-text">{friend.name}</p>
+                  <p className="home-expense-text">{friend.username}</p>
                   <p className="home-expense-amount">{friend.balance}</p>
                 </div>
               </li>
