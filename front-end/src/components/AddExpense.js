@@ -148,7 +148,7 @@ const AddExpense = (props) => {
 
     const amountNumber = parseFloat(formData.amount);
 
-    const peopleSplit = selectedPeople.map((person) => {
+    const peopleSplit = Array.isArray(selectedPeople) ? selectedPeople.map((person) => {
       const amount = individualAmounts[person.id];
       if (typeof amount !== "number" || isNaN(amount)) {
         invalidAmounts = true;
@@ -157,7 +157,7 @@ const AddExpense = (props) => {
         user: person.id,
         amount: amount,
       };
-    });
+    }) : [];
 
     if (invalidAmounts) {
       newValidationMessages.individualAmounts =

@@ -52,6 +52,7 @@ router.post(
 
       // Add the expense ID to the event's expenses list
       // ? no "savedExpense" defined, maybe "newExpense"?
+      const savedExpense = await newExpense.save();
       event.expenses.push(savedExpense._id);
       await event.save();
 
