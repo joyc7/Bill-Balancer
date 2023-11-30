@@ -19,6 +19,7 @@ const userInfoPageRoute = require("./routes/UserInfoPageRoute");
 const signupRoute = require("./routes/signupRoute");
 const forgotPasswordRoute = require("./routes/forgotPasswordRoute");
 const logoutRoute = require("./routes/logoutRoute");
+const searchFriendRoute = require('./routes/searchFriendRoute'); 
 
 // connect to the database
 // console.log(`Conneting to MongoDB at ${process.env.MONGODB_URI}`)
@@ -55,6 +56,7 @@ app.use("/addEventMember", addEventMemberRoute);
 app.use("/signup", signupRoute);
 app.use("/forgot-password", forgotPasswordRoute);
 app.use("/logout", logoutRoute);
+app.use("/searchFriend", searchFriendRoute); 
 
 // export the express app we created to make it available to other modules
 module.exports = app;
