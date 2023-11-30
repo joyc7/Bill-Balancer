@@ -127,7 +127,7 @@ const Event = (props) => {
                     <div>{item.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.amount}</div>
+                <div className="amount">${item.totalAmount}</div>
                 <div className="checkbox">
                   <input type="checkbox" name={item.id} />
                 </div>
