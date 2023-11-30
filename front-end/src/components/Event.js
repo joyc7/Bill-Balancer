@@ -8,6 +8,7 @@ const Event = (props) => {
   const [data, setData] = useState([]);
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
+  console.log("Event ID:", eventId); // check the eventID received
 
   function reformatDate(dateStr) {
     const months = [
@@ -135,7 +136,7 @@ const Event = (props) => {
         </section>
 
         <div className="addExpenseBtnDiv">
-          <Link to="/add-expense" className="btn addExpenseBtn">
+          <Link to={`/add-expense/${eventId}`} className="btn addExpenseBtn"> {/* <Link to="/add-expense" className="btn addExpenseBtn"> */}
             Add Expense
           </Link>
         </div>

@@ -82,7 +82,7 @@ function App() {
             }
           />
           <Route
-            path="/add-expense"
+            path="/add-expense/:eventId"
             element={
               <AddExpense
                 isDarkMode={isDarkMode}
