@@ -286,7 +286,7 @@ function Events({ isDarkMode }) {
             <div className="events-list">
                 <ul>
                     {eventData.events && eventData.events.map(event =>(
-                        <li key = {event.id} className="event-list">
+                        <li key = {event._id} className="event-list">
                             <div className="Event-date">
                                 {reformatDate(event.date)}
                             </div>

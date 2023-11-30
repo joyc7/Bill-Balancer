@@ -10,6 +10,7 @@ function AddEvent({addEvent, onClose}){
     const[searchPerformed, setSearchPerformed] = useState(false);
     const[selectedMember, setselectedMember] = useState([])
     const[loading, setLoading] = useState(false)
+    const [currentUser, setCurrentUser] = useState(null);
     const[errors, setErrors] = useState({
         eventName: false,
         Date: false,
@@ -77,11 +78,12 @@ function AddEvent({addEvent, onClose}){
         if (!validateForm()) {
             return; // Stop the function if validation fails
         }
+
         const submitData = {
             eventName: eventData.eventName,
             Date: eventData.Date,
             Description: eventData.Description,
-            Members: friendsList.filter((friend) => selectedMember.includes(friend._id))
+            Members: selectedMember
         };
     
         try {
@@ -118,26 +120,31 @@ function AddEvent({addEvent, onClose}){
         }
     }
 
-    /*
+/*
     useEffect(() => {
         // Retrieve the current user from local storage
         const token = localStorage.getItem("token");
         const decodedUser = jwtDecode(token);
         if (decodedUser && decodedUser.id) {
             console.log(decodedUser.id)
-            friendsCL(decodedUser.id)
             setselectedMember(prevMembers => {
-            // Check if the current user's ID is already in the selected members
+                // Check if the current user's ID is already in the selected members
                 if (prevMembers.some(member => member.id === decodedUser.id)) {
                     return prevMembers;
                 }
-            // If not, add the current user's ID to the selected members
-                return [...prevMembers, { id: decodedUser.id }];
-                });
+                // Add the current user's ID to the selected members
+                return [...prevMembers, decodedUser.id];
+            });
         } else {
             console.error("No valid user found in local storage.");
         }
     }, []);
+    */
+
+    /*
+    useEffect(() => {
+        console.log('Selected Members:', selectedMember);
+    }, [selectedMember]);
     */
 
     const handleSearch = () => {
@@ -145,20 +152,22 @@ function AddEvent({addEvent, onClose}){
         const decodedUser = jwtDecode(token);
         if (decodedUser && decodedUser.id) {
             console.log(decodedUser.id)
+            setCurrentUser(decodedUser.id)
             friendsCL(decodedUser.id)
             setselectedMember(prevMembers => {
-            // Check if the current user's ID is already in the selected members
+                // Check if the current user's ID is already in the selected members
                 if (prevMembers.some(member => member.id === decodedUser.id)) {
                     return prevMembers;
                 }
-            // If not, add the current user's ID to the selected members
+                // Add the current user's ID to the selected members
                 return [...prevMembers, decodedUser.id];
-                });
+            });
         } else {
             console.error("No valid user found in local storage.");
         }
     };
     
+   
     const handleSearchChange = (e) =>{
         setSearchQuery(e.target.value)
     }
