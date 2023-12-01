@@ -4,23 +4,21 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Expense.css';
 import axios from "axios";
 import Navbar from "./Navbar";
-import { Link, useNavigate, useParams } from "react-router-dom"; {/* useNavigate is used to direct the user to the previous page */}
+import { Link, useNavigate, useParams } from "react-router-dom"; 
+
 
 function Expense({ isDarkMode }) {
     const [expensesData, setExpensesData] = useState([]);
     const navigate = useNavigate();
     const { expenseId } = useParams();
-    console.log("expenseId:", expenseId)
 
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/expense/ExpenseDetail/${expenseId}`);
-            console.log(response)
+            console.log(response.data); 
             setExpensesData(response.data);
         }catch(error){
             console.error("There was an error fetching the data:", error);
-            console.log(backupData_expenses)
-            setExpensesData(backupData_expenses)
         }
     };
 
@@ -41,16 +39,6 @@ function Expense({ isDarkMode }) {
     useEffect(() => {
         fetchData();
     }, []);
-
-    const backupData_expenses = {
-        "expense": [
-            {"id":1,"name":"Jolynn","expense":"$246.92"},
-            {"id":2,"name":"Merv","expense":"$210.86"},
-            {"id":3,"name":"Cora","expense":"$18.65"},
-            {"id":4,"name":"Dwain","expense":"$200.25"},
-            {"id":5,"name":"Husain","expense":"$478.25"}
-        ]
-    };
 
     {/* navigates to the previous page */}
     const handleTitleClick = () => {

@@ -25,78 +25,6 @@ function Events({ isDarkMode }) {
         return `${monthName} ${day} ${year}`;
     }
 
-    const backupData_events = 
-    {
-        "id":1, 
-        "username": "Karlotte Flewett", 
-        "email": "kflewett0@skyrock.com", 
-        //"phone": "669-280-7758", 
-        "avatar":"https://robohash.org/pariaturipsumculpa.png?size=50x50&set=set1", 
-        "events":[
-            {"id":1,
-            "name":"Coromoro Trip",
-            "date":"3/12/2023",
-            //"balance":"$48.03",
-            "description":"March Break trip to Coromoro with two friends",
-            "participants":[
-                {"names":"April Gosker"},
-                {"names":"Viva Rilings"}],
-            "expenses":[]
-            },
-            {"id":2,
-            "name":"Kobe",
-            "date":"4/17/2023",
-            //"balance":"$-69.91",
-            "description":"Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
-            "participants":[
-                {"names":"Nisse Kearton"},
-                {"names":"Helen-elizabeth Corpe"},
-                {"names":"Arther Parffrey"}],
-            "expenses":[]
-            },
-            {"id":3,
-            "name":"Ratchathewi",
-            "date":"10/30/2022",
-            //"balance":"$96.06",
-            "description":"Fusce consequat. Nulla nisl. Nunc nisl.",
-            "participants":[
-                {"names":"Annis Badrick"}],
-            "expenses": []
-            },
-            {"id":4,
-            "name":"Cuijiamatou",
-            "date":"11/1/2022",
-            //"balance":"$79.17",
-            "description":"In congue. Etiam justo. Etiam pretium iaculis justo.",
-            "participants":[
-                {"names":"Emyle McGonigal"},
-                {"names":"Gwennie McClory"},
-                {"names":"Arleen Bilson"}],
-            "expenses": []
-            },
-            {"id":5,
-            "name":"Cotabato",
-            "date":"6/10/2023",
-            //"balance":"$0.00",
-            "description":"Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
-            "participants":[
-                {"names":"Lazaro Atterbury"},
-                {"names":"Harriette Hicks"},
-                {"names":"Cosette Wallsworth"}],
-            "expenses": []
-            },
-            {"id":6,
-            "name":"Krajan",
-            "date":"04/25/2023",
-            //"balance":"$37.27",
-            "description":"Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
-            "participants":[{"names":"Kevina Birth"},
-            {"names":"Javier Wraight"},
-            {"names":"Sollie Hankinson"}],
-            "expenses": []
-        }]
-    }
-
         // Toggle the 'body-dark-mode' class on the body element
     useEffect(() => {
         if (isDarkMode) {
@@ -131,8 +59,6 @@ function Events({ isDarkMode }) {
 
             }catch(error){
                 console.error("There was an error fetching the data:", error);
-                console.log(backupData_events)
-                setEventData(backupData_events)
             }
         }
         dataFetch();

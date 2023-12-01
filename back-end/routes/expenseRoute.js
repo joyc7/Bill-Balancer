@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Expense = require("../models/Expense.js");
+const { Expense } = require("../models/Expense.js");
 
 router.get("/ExpenseDetail/:expenseId", async (req, res) => {
     try {
@@ -11,8 +11,7 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
       if (!expenseSplit) {
         return res.status(404).json({ message: "Expense not found" });
       }
-      console.log(expenseId)
-      console.log(expenseSplit)
+      // Return the user's events
       res.json(expenseSplit);
     } catch (error) {
       console.error("Error fetching expense details:", error);
