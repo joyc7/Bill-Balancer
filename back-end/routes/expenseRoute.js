@@ -10,18 +10,18 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
                                   .populate('event')
                                   .populate({
                                     path: 'splitDetails',
-                                    populate:{
+                                    populate: {
                                       path: 'settlement',
-                                      model: 'Settlement',
+                                      model: 'Settlement'
                                     }
                                   })
                                   .populate({
-                                    path:'splitDetails',
+                                    path: 'splitDetails',
                                     populate: {
-                                      path: 'user',
-                                      model: 'User',
+                                      path: 'user', 
+                                      model: 'User'
                                     }
-                                  });
+                                  })
   
       if (!expenseSplit) {
         return res.status(404).json({ message: "Expense not found" });
