@@ -73,7 +73,7 @@ function App() {
             }
           />
           <Route
-            path="/user-info"
+            path="/user-info/:userId"
             element={
               <UserInfo
                 isDarkMode={isDarkMode}
