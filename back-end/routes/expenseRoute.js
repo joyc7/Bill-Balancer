@@ -27,8 +27,8 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
         return res.status(404).json({ message: "Expense not found" });
       }
       // Return the user's events
-      console.log(expenseSplit.splitDetails)
-      res.json(expenseSplit.splitDetails);
+      console.log(expenseSplit)
+      res.json(expenseSplit)
     } catch (error) {
       console.error("Error fetching expense details:", error);
       res.status(500).json({ message: "Server error" , error});
