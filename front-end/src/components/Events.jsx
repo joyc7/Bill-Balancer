@@ -293,7 +293,7 @@ function Events({ isDarkMode }) {
                             <div className="Event-name" style={{ marginBottom: '5px' }}>
                                 <span>{event.name}</span>
                             </div>
-                            <Link to='/event'>
+                            <Link to={`/event/${event._id}`}>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
                             </Link>
                         </li>
