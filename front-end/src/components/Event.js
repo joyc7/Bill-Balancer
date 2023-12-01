@@ -123,7 +123,7 @@ const Event = (props) => {
               <div className="expenseItem" key={item._id}>
                 <div className="date">{reformatDate(item.date)}</div>
                 <div className="name">
-                  <Link to="/expense">
+                  <Link to={`/expense/${item._id}`}>
                     <div>{item.name}</div>
                   </Link>
                 </div>

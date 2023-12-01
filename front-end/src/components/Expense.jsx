@@ -2,25 +2,25 @@
 
 import React, { useState, useEffect } from 'react';
 import '../styles/Expense.css';
+import axios from "axios";
 import Navbar from "./Navbar";
-import { Link, useNavigate } from "react-router-dom"; {/* useNavigate is used to direct the user to the previous page */}
+import { Link, useNavigate, useParams } from "react-router-dom"; {/* useNavigate is used to direct the user to the previous page */}
 
 function Expense({ isDarkMode }) {
     const [expensesData, setExpensesData] = useState([]);
     const navigate = useNavigate();
+    const { expenseId } = useParams();
+    console.log("expenseId:", expenseId)
 
     const fetchData = async () => {
         try {
-            const response = await fetch("https://my.api.mockaroo.com/expense_data.json?key=2712db60");
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            setExpensesData(data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            {/* using backup data when API call fails */}
-            setExpensesData(backupData_expenses.expense);
+            const response = await axios.get(`http://localhost:3001/expense/ExpenseDetail/${expenseId}`);
+            console.log(response)
+            setExpensesData(response.data);
+        }catch(error){
+            console.error("There was an error fetching the data:", error);
+            console.log(backupData_expenses)
+            setExpensesData(backupData_expenses)
         }
     };
 
