@@ -7,7 +7,22 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
       const expenseId = req.params.expenseId;
   
       // Fetch the user and populate the events
-      const expenseSplit = await Expense.findById(expenseId).populate("splitDetails");
+      const expenseSplit = await Expense.findById(expenseId)
+                                  .populate('event')
+                                  .populate({
+                                    path: 'splitDetails',
+                                    populate: {
+                                      path: 'settlement',
+                                      model: 'Settlement'
+                                    }
+                                  })
+                                  .populate({
+                                    path: 'splitDetails',
+                                    populate: {
+                                      path: 'user', 
+                                      model: 'User'
+                                    }
+                                  })
   
       if (!expenseSplit) {
         return res.status(404).json({ message: "Expense not found" });

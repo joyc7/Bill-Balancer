@@ -47,7 +47,10 @@ function Expense({ isDarkMode }) {
     
     return (
         <div className="expense">
-            <h1 className="page-title" onClick={handleTitleClick}>LA Roadtrip | Flights to LA</h1> {/* click the title to direct to the previous page */}
+            <h1 className="page-title" onClick={handleTitleClick}>
+                {expensesData.event ? expensesData.event.name : 'Loading...'} | 
+                {expensesData.name ? expensesData.name : 'Loading...'}            
+            </h1>
             <div className="buttons">
                 <button className="balance-btn">Balance</button>
                 <button className="total-btn">Total</button>
@@ -58,10 +61,10 @@ function Expense({ isDarkMode }) {
                 <div className="expense-list">
                     {/* Assume a headcount limit to split the bill */}
                     {Array.isArray(expensesData) && expensesData.slice(0, 7).map(item => (
-                    <div key={item.id} className="expense-item">
+                    <div key={expensesData._id} className="expense-item">
                         <span>{item.name}</span> {/* This is the first child */}
                         <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span> {/* This is the second child */}
-                        <div className="checkbox"><input type="checkbox" name={item.id} /></div> {/* This is the third child */}
+                        <div className="checkbox"><input type="checkbox" name={item.id} /></div>
                         </div>
                         ))}
                         
