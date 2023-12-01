@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
 import EventsFilter from "../images/filter.png"; 
+import { jwtDecode } from "jwt-decode";
 
 function Events({ isDarkMode }) {
     const[eventData, setEventData] = useState([])
@@ -22,71 +23,6 @@ function Events({ isDarkMode }) {
         const year = date.getFullYear();
     
         return `${monthName} ${day} ${year}`;
-    }
-
-    const backupData_events = 
-    {
-        "id":1, 
-        "name": "Karlotte Flewett", 
-        "email": "kflewett0@skyrock.com", 
-        "phone": "669-280-7758", 
-        "avatar":"https://robohash.org/pariaturipsumculpa.png?size=50x50&set=set1", 
-        "events":[
-            {"id":1,
-            "EventName":"Coromoro",
-            "Date":"3/12/2023",
-            "balance":"$48.03",
-            "description":"Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo. Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui.",
-            "members":[
-                {"names":"April Gosker"},
-                {"names":"Viva Rilings"}]
-            },
-            {"id":2,
-            "EventName":"Kobe","Date":"4/17/2023",
-            "balance":"$-69.91",
-            "description":"Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
-            "members":[
-                {"names":"Nisse Kearton"},
-                {"names":"Helen-elizabeth Corpe"},
-                {"names":"Arther Parffrey"}]
-            },
-            {"id":3,
-            "EventName":"Ratchathewi",
-            "Date":"10/30/2022",
-            "balance":"$96.06",
-            "description":"Fusce consequat. Nulla nisl. Nunc nisl.",
-            "members":[
-                {"names":"Annis Badrick"}]
-            },
-            {"id":4,
-            "EventName":"Cuijiamatou",
-            "Date":"11/1/2022",
-            "balance":"$79.17",
-            "description":"In congue. Etiam justo. Etiam pretium iaculis justo.",
-            "members":[
-                {"names":"Emyle McGonigal"},
-                {"names":"Gwennie McClory"},
-                {"names":"Arleen Bilson"}]
-            },
-            {"id":5,
-            "EventName":"Cotabato",
-            "Date":"6/10/2023",
-            "balance":"$0.00",
-            "description":"Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
-            "members":[
-                {"names":"Lazaro Atterbury"},
-                {"names":"Harriette Hicks"},
-                {"names":"Cosette Wallsworth"}]
-            },
-            {"id":6,
-            "EventName":"Krajan",
-            "Date":"04/25/2023",
-            "balance":"$37.27",
-            "description":"Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
-            "members":[{"names":"Kevina Birth"},
-            {"names":"Javier Wraight"},
-            {"names":"Sollie Hankinson"}]
-        }]
     }
 
         // Toggle the 'body-dark-mode' class on the body element
@@ -107,21 +43,28 @@ function Events({ isDarkMode }) {
         //fetch mock data about a user's events list
         async function dataFetch(){ 
             try{
+                const token = localStorage.getItem("token");
+                const decode = jwtDecode(token);
+                if (!decode || !decode.id) {
+                    console.error("No current user found in local storage.");
+                    return;
+                } else {
+                    console.log(decode.id);
+                }
                 //requesting data from the mock API endpoint
-                const response = await axios.get("http://localhost:3001/events");
-
+                const response = await axios.get(`http://localhost:3001/events/for/${decode.id}`);
+                console.log(response)
                 //return the data
                 setEventData(response.data)
 
             }catch(error){
                 console.error("There was an error fetching the data:", error);
-                console.log(backupData_events)
-                setEventData(backupData_events)
             }
         }
         dataFetch();
     },[]);
 
+    /*
     let clearedEvents = [];
     let otherEvents = [];
     if (eventData.events && eventData.events.length){
@@ -166,13 +109,29 @@ function Events({ isDarkMode }) {
         event.stopPropagation();
     }
 
-    const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
+    const totalOwed = eventData && eventData.events && eventData.events.length 
+    ? eventData.events.reduce((acc, event) => {
+        const balance = parseFloat(event.balance.replace('$', ''));
+        return balance < 0 ? acc + balance : acc;
+    }, 0) 
+    : 0;
+
+    const totalOwedToYou = eventData && eventData.events && eventData.events.length 
+    ? eventData.events.reduce((acc, event) => {
+        const balance = parseFloat(event.balance.replace('$', ''));
+        return balance > 0 ? acc + balance : acc;
+    }, 0) 
+    : 0;
+
+    //const totalBalance = eventData && eventData.events && eventData.events.length ? eventData.events.reduce((acc, event) => acc + parseFloat(event.balance.replace('$', '')), 0): 0;
     
     let sortedEvents = [];
     if (eventData.events && eventData.events.length) {
-        sortedEvents = eventData.events.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+        sortedEvents = eventData.events.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
+    */
+   
     function EventClick(eventId){
         console.log(`Event ${eventId} was clicked`)
     }
@@ -185,18 +144,20 @@ function Events({ isDarkMode }) {
                 Add Events
             </button>
 
+{/* total balance Section + Filter Icon
+
             <div className="Total_Balance_Section">
                 <img src={eventData.avatar} alt="User's Avatar" className="Total_Balance_avatar"></img>
                 <div>
                     <div className="Total_Balance_title">Total Balance</div>
                     <div className="balance_details">
-                        {totalBalance < 0 && (
-                            <div> You owe ${Math.abs(totalBalance).toFixed(2)}</div>
+                        {totalOwed < 0 && (
+                            <div> You owe ${Math.abs(totalOwed).toFixed(2)}</div>
                         )}
-                        {totalBalance > 0 && (
-                            <div> You are owed ${totalBalance.toFixed(2)}</div>
+                        {totalOwedToYou > 0 && (
+                            <div> You are owed ${totalOwedToYou.toFixed(2)}</div>
                         )}
-                        {totalBalance === 0 && (
+                        {totalOwed === 0 && totalOwedToYou === 0 && (
                             <div> All Balances are Settled!</div>
                         )}
                     </div>
@@ -225,15 +186,18 @@ function Events({ isDarkMode }) {
                 )} <s></s>
             </div>
 
+                 */}
+
+{/*
             <div className="events-list">
                 <ul>
                     {filteredEvents.map(event =>(
                         <li key = {event.id} className="event-list">
                             <div className="Event-date">
-                                {reformatDate(event.Date)}
+                                {reformatDate(event.date)}
                             </div>
                             <div className="Event-name" style={{ marginBottom: '5px' }}>
-                                <span>{event.EventName}</span>
+                                <span>{event.name}</span>
                             </div>
                             <Link to='/event'>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
@@ -242,13 +206,36 @@ function Events({ isDarkMode }) {
                     ))}
                 </ul>
             </div>
-
             
-            {addEvent && (
-                <AddEvent addEvent = {addEvent} onClose={() => setaddEvent(false)} />
-            )}
+            */}
 
-            <Navbar/>
+            <div className="events-list">
+                <ul>
+                    {eventData.events && eventData.events.length > 0 ? (eventData.events.map(event =>(
+                        <li key = {event._id} className="event-list">
+                            <div className="Event-date">
+                                {reformatDate(event.date)}
+                            </div>
+                            <div className="Event-name" style={{ marginBottom: '5px' }}>
+                                <span>{event.name}</span>
+                            </div>
+                            <Link to={`/event/${event._id}`}>
+                            <button onClick={() => EventClick(event.id)}>View Event</button>
+                            </Link>
+                        </li>
+                        ))
+                    ) : (
+                        <div className="no-events-message">Please add your first event!</div>
+                    )}
+                </ul>
+            </div>
+
+
+            {addEvent && (
+                <AddEvent addEvent = {addEvent} onClose={() => {setaddEvent(false); window.location.reload();}} />
+            )}
+            <div className="navbar-placeholder" style={{ height: '4rem' }}></div>
+            <div className="mt-6"><Navbar/></div>
 
         </div>
     )

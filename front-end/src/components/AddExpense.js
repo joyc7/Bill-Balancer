@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import SplitModal from "./SplitModal";
 import "../styles/AddExpense.css";
@@ -8,6 +8,7 @@ import "../styles/AddExpense.css";
 const AddExpense = (props) => {
   const navigate = useNavigate();
   const isDarkMode = props.isDarkMode;
+  const { eventId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [splitMethod, setSplitMethod] = useState("Choose Split Method");
   const [formData, setFormData] = useState({
@@ -147,16 +148,18 @@ const AddExpense = (props) => {
 
     const amountNumber = parseFloat(formData.amount);
 
-    const peopleSplit = selectedPeople.map((person) => {
-      const amount = individualAmounts[person.id];
-      if (typeof amount !== "number" || isNaN(amount)) {
-        invalidAmounts = true;
-      }
-      return {
-        user: person.id,
-        amount: amount,
-      };
-    });
+    const peopleSplit = Array.isArray(selectedPeople)
+      ? selectedPeople.map((person) => {
+          const amount = individualAmounts[person._id];
+          if (typeof amount !== "number" || isNaN(amount)) {
+            invalidAmounts = true;
+          }
+          return {
+            user: person,
+            amount: amount,
+          };
+        })
+      : [];
 
     if (invalidAmounts) {
       newValidationMessages.individualAmounts =
@@ -176,6 +179,7 @@ const AddExpense = (props) => {
       date: new Date(formData.date),
       paidBy: formData.personPaid,
       peopleSplit: peopleSplit,
+      event: eventId, // make sure it is not "undefined"
     };
     console.log(submissionData);
     try {
@@ -183,7 +187,8 @@ const AddExpense = (props) => {
         "http://localhost:3001/add-expense",
         submissionData
       );
-      navigate("/event");
+      // after adding an expense, navigate back to the event
+      window.location.href = `/event/${eventId}`;
     } catch (error) {
       if (error.response) {
         console.error("Validation errors:", error.response.data.errors);
@@ -204,14 +209,15 @@ const AddExpense = (props) => {
     const fetchPeople = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/addExpensePayer"
+          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        setPeople(response.data);
+        setPeople(
+          Array.isArray(response.data) ? response.data : [response.data]
+        );
       } catch (error) {
         console.error("Failed to fetch people:", error);
       }
     };
-
     fetchPeople();
   }, []);
 
@@ -254,7 +260,7 @@ const AddExpense = (props) => {
     const fetchAvailablePeople = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/addExpensePayer"
+          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
         setAvailablePeople(response.data);
       } catch (error) {
@@ -265,9 +271,9 @@ const AddExpense = (props) => {
   }, []);
 
   const handleSelectPerson = (personId) => {
-    const person = availablePeople.find((p) => p.id === personId);
+    const person = availablePeople.find((p) => p._id === personId);
     if (person) {
-      setAvailablePeople(availablePeople.filter((p) => p.id !== personId));
+      setAvailablePeople(availablePeople.filter((p) => p._id !== personId));
       const updatedSelectedPeople = [...selectedPeople, person];
       setSelectedPeople(updatedSelectedPeople);
 
@@ -281,20 +287,31 @@ const AddExpense = (props) => {
   };
 
   const handleRemovePerson = (personId) => {
-    const person = selectedPeople.find((p) => p.id === personId);
+    const person = selectedPeople.find((p) => p._id === personId);
     if (person) {
       const updatedSelectedPeople = selectedPeople.filter(
-        (p) => p.id !== personId
+        (p) => p._id !== personId
       );
       setSelectedPeople(updatedSelectedPeople);
-      setAvailablePeople([...availablePeople, person]);
 
-      if (updatedSelectedPeople.length === 0) {
-        setValidationMessages((prevMessages) => ({
-          ...prevMessages,
-          selectedPeople: "Selection required",
-        }));
+      if (!availablePeople.some((p) => p.id === personId)) {
+        setAvailablePeople([...availablePeople, person]);
       }
+    }
+  };
+
+  const [amountError, setAmountError] = useState("");
+  const isValidAmount = () => {
+    const amount = parseFloat(formData.amount);
+    return !isNaN(amount) && amount > 0;
+  };
+  const handleSplitMethodClick = (e) => {
+    e.preventDefault();
+    if (isValidAmount()) {
+      setShowModal(true);
+      setAmountError("");
+    } else {
+      setAmountError("Please enter a valid amount.");
     }
   };
 
@@ -304,7 +321,7 @@ const AddExpense = (props) => {
       {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
       <header>
         <h2>
-          <Link to="/event">Event</Link>|Add New Expense
+          <Link to={`/event/${eventId}`}>Event</Link>|Add New Expense
         </h2>
       </header>
       <div id="addExpense">
@@ -369,11 +386,12 @@ const AddExpense = (props) => {
               onChange={handlePaidByChange}
             >
               <option value="">Select who paid</option>
-              {people.map((person) => (
-                <option key={person.id} value={person.id}>
-                  {person.first_name}
-                </option>
-              ))}
+              {Array.isArray(people) &&
+                people.map((person) => (
+                  <option key={person._id} value={person._id}>
+                    {person.username}
+                  </option>
+                ))}
             </select>
           </div>
           <div id="split">
@@ -386,14 +404,15 @@ const AddExpense = (props) => {
             <br />
             <div>
               <select id="available-container" size="5">
-                {availablePeople.map((person) => (
-                  <option
-                    key={person.id}
-                    onClick={() => handleSelectPerson(person.id)}
-                  >
-                    {person.first_name}
-                  </option>
-                ))}
+                {Array.isArray(availablePeople) &&
+                  availablePeople.map((person) => (
+                    <option
+                      key={person._id}
+                      onClick={() => handleSelectPerson(person._id)}
+                    >
+                      {person.username}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -403,7 +422,7 @@ const AddExpense = (props) => {
             <div id="selected-container">
               {selectedPeople.map((person) => (
                 <div
-                  key={person.id}
+                  key={person._id}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -412,17 +431,17 @@ const AddExpense = (props) => {
                 >
                   <img
                     src={person.avatar}
-                    alt={person.first_name}
+                    alt={person.username}
                     style={{
                       width: "30px",
                       height: "30px",
                       marginRight: "10px",
                     }}
                   />
-                  <span>{person.first_name}</span>
+                  <span>{person.username}</span>
                   <button
                     className="remove-button"
-                    onClick={() => handleRemovePerson(person.id)}
+                    onClick={() => handleRemovePerson(person._id)}
                   >
                     {" "}
                     x{" "}
@@ -437,14 +456,10 @@ const AddExpense = (props) => {
             </span>
           )}
           <div className="splitMethods">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setShowModal(true);
-              }}
-            >
+            <button onClick={handleSplitMethodClick}>
               {splitMethod === "equally" ? "Equally" : "By " + splitMethod}
             </button>
+            {amountError && <div style={{ color: "red" }}>{amountError}</div>}
           </div>
           <div className="submitBtn">
             <button type="submit">Done</button>

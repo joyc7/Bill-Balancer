@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const Event = require("../models/Event.js");
+const { User } = require("../models/User.js");
 
 router.post(
   "/",
@@ -32,16 +33,31 @@ router.post(
 
       const savedEvent = await newEvent.save();
 
+      console.log("Event created:", savedEvent);
+
+      // Fetch and update each participant
+      for (const userId of req.body.Members) {
+        let user = await User.findById(userId);
+        if (!user) {
+          console.error(`User not found for ID: ${userId}`);
+          continue;
+        }
+
+        user.events.push(savedEvent._id); // Add the event ID to the user's events list
+        await user.save();
+        console.log(`Event added to user ${userId}`);
+      }
+
       res.status(201).json({
         status: "Success",
-        message: "Event created successfully!",
+        message: "Event created and added to participants successfully!",
         data: savedEvent,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(400).json({
         status: "Error",
-        message: "Error creating event",
+        message: "Error creating event or updating users",
         error: error.message,
       });
     }

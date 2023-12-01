@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import addMemberButton from "../images/addMember.png"; 
+import { jwtDecode } from 'jwt-decode';
 
 function AddEvent({addEvent, onClose}){
     const[friendsList, setfriendsList] = useState([])
@@ -9,7 +10,8 @@ function AddEvent({addEvent, onClose}){
     const[searchPerformed, setSearchPerformed] = useState(false);
     const[selectedMember, setselectedMember] = useState([])
     const[loading, setLoading] = useState(false)
-    const [errors, setErrors] = useState({
+    const [currentUser, setCurrentUser] = useState(null);
+    const[errors, setErrors] = useState({
         eventName: false,
         Date: false,
         Description: false,
@@ -24,13 +26,13 @@ function AddEvent({addEvent, onClose}){
 
     const backupData_friends = [{
         "id":"507f1f77bcf86cd799439011",
-        "name":"Gaby Coupar",
+        "username":"Gaby Coupar",
         "avatar":"https://robohash.org/temporererumomnis.png?size=50x50\u0026set=set1",
         "phone":"435-715-2899",
         "email":"gcoupar0@rakuten.co.jp"
       }, {
         "id": "507f1f77bcf86cd799439012",
-        "name": "Andy Gaber",
+        "username": "Andy Gaber",
         "avatar": "https://robohash.org/quaeetcorrupti.png?size=50x50&set=set1",
         "phone":"425-712-2309",
         "email":"gmember0@rakuten.co.jp"
@@ -76,36 +78,41 @@ function AddEvent({addEvent, onClose}){
         if (!validateForm()) {
             return; // Stop the function if validation fails
         }
+
         const submitData = {
             eventName: eventData.eventName,
             Date: eventData.Date,
             Description: eventData.Description,
-            Members: selectedMember.map(member => member.id) // mapping to member IDs
+            Members: selectedMember
         };
     
         try {
             console.log('Submitting data:', submitData);
-            const response = await axios.post("http://localhost:3001/addEvent", submitData);
+            const response = await axios.post(`http://localhost:3001/addEvent`, submitData);
             console.log(`Event added:`, response.data);
             onClose(); // Optionally close the form upon successful submission
         } catch (error) {
-            console.error('Failed to submit event:', error.response ? error.response.data : error);
+            console.error('Failed to submit event:', error.response);
         }
     }
-    
+
     //fetch friends' data for the member list
-    async function friendsCL(){
+    async function friendsCL(userID){
         setLoading(true);
         setSearchPerformed(true);
-        const API_mock_friends = "http://localhost:3001/addEventMember";
+        console.log('userID in friendsCL:', userID, 'Type:', typeof userID);
         try{
-            //requesting data from the mock API endpoint
-            const response = await axios.get(API_mock_friends);
+            //const url = `http://localhost:3001/addEventMember/friendsList/${currentUser.id}`;
+
+            // Make the API call
+            const response = await axios.get(`http://localhost:3001/addEventMember/friendsList/${userID}`);
             //return the data
-            setfriendsList(Array.isArray(response.data) ? response.data : [response.data]);
-            console.log("fetch friends list");
+            console.log(response)
+            setfriendsList(Array.isArray(response.data.friends) ? response.data.friends : [response.data.friends]);
+            //setfriendsList(response.data.flatMap(user => user.friends));
+
         }catch(error){
-            console.error("There was an error fetching the data:", error);
+            console.error("There was an error fetching the data:", error.response);
             setfriendsList(backupData_friends)
         }
         finally{
@@ -113,20 +120,70 @@ function AddEvent({addEvent, onClose}){
         }
     }
 
+/*
+    useEffect(() => {
+        // Retrieve the current user from local storage
+        const token = localStorage.getItem("token");
+        const decodedUser = jwtDecode(token);
+        if (decodedUser && decodedUser.id) {
+            console.log(decodedUser.id)
+            setselectedMember(prevMembers => {
+                // Check if the current user's ID is already in the selected members
+                if (prevMembers.some(member => member.id === decodedUser.id)) {
+                    return prevMembers;
+                }
+                // Add the current user's ID to the selected members
+                return [...prevMembers, decodedUser.id];
+            });
+        } else {
+            console.error("No valid user found in local storage.");
+        }
+    }, []);
+    */
+
+    /*
+    useEffect(() => {
+        console.log('Selected Members:', selectedMember);
+    }, [selectedMember]);
+    */
+
+    const handleSearch = () => {
+        const token = localStorage.getItem("token");
+        const decodedUser = jwtDecode(token);
+        if (decodedUser && decodedUser.id) {
+            console.log(decodedUser.id)
+            setCurrentUser(decodedUser.id)
+            friendsCL(decodedUser.id)
+            setselectedMember(prevMembers => {
+                // Check if the current user's ID is already in the selected members
+                if (prevMembers.some(member => member.id === decodedUser.id)) {
+                    return prevMembers;
+                }
+                // Add the current user's ID to the selected members
+                return [...prevMembers, decodedUser.id];
+            });
+        } else {
+            console.error("No valid user found in local storage.");
+        }
+    };
+    
+   
     const handleSearchChange = (e) =>{
         setSearchQuery(e.target.value)
     }
-    const filteredFriends = searchQuery?friendsList.filter(friend => friend.name.toLowerCase().includes(searchQuery.toLowerCase())): [];
 
+    const filteredFriends = searchQuery ? friendsList.filter(friend => friend?.username?.toLowerCase().includes(searchQuery.toLowerCase())) : [];
 
     const handleSelectedMember = (memberId) =>{
-        if(selectedMember.find(member => member.id === memberId)){
+        if(selectedMember.includes(memberId)){
             return;
         }
-        const member = friendsList.find(p => p.id === memberId)
+        const member = friendsList.find(p => p._id === memberId)
         if(member){
-            setselectedMember([...selectedMember, member]);
+            setselectedMember([...selectedMember, memberId]);
+            console.log(`Member Successfuly Added!`)
         }
+        
     }
 
     useEffect(()=>{
@@ -148,7 +205,7 @@ function AddEvent({addEvent, onClose}){
                             className={`mt-4 block w-full rounded-md px-3 py-2 ${errors.eventName ? 'bg-red-100 border-red-500' : 'bg-white border-gray-300'}`}
                             name = "eventName"
                             value={eventData.eventName}
-                            onChange={(e) => { handleInputChange(e)}}
+                            onChange={handleInputChange}
                         />
                         {errors.eventName && <p className="text-red-500 text-sm mt-1 error-message">Event Name is required.</p>}
                     </div>
@@ -158,7 +215,7 @@ function AddEvent({addEvent, onClose}){
                             placeholder="Event Date"
                             className={`mt-4 block w-full rounded-md px-3 py-2 ${errors.Date ? 'bg-red-100 border-red-500' : 'bg-white border-gray-300'}`}
                             name = "Date"
-                            onChange={(e) => { handleInputChange(e)}}
+                            onChange={handleInputChange}
                             value={eventData.Date}
                         />
                         {errors.Date && <p className="text-red-500 text-sm mt-1 error-message">Event Date is required.</p>}
@@ -169,7 +226,7 @@ function AddEvent({addEvent, onClose}){
                             placeholder="Event Description"
                             className={`mt-4 block w-full rounded-md px-3 py-2 ${errors.Description ? 'bg-red-100 border-red-500' : 'bg-white border-gray-300'}`}
                             name = "Description"
-                            onChange={(e) => { handleInputChange(e)}}
+                            onChange={handleInputChange}
                             value={eventData.Description}
                         />
                         {errors.Description && <p className="text-red-500 text-sm mt-1 error-message">Event Description is required.</p>}
@@ -193,21 +250,23 @@ function AddEvent({addEvent, onClose}){
                                 className="member-name" 
                                 onChange={handleSearchChange}    
                             />
-                            <button type='button' onClick={friendsCL}>Search</button>
+                            <button type='button'onClick={handleSearch}>Search</button>
                             {loading ? (<p>Loading...</p>
                             ) : searchPerformed ? (  
                                 filteredFriends.length>0?(
                                 filteredFriends.map(friend =>(
-                                    <div className="flex items-center justify-between p-2 friend" key={friend.id}>
+                                    <div className="flex items-center justify-between p-2 friend" key={friend._id}>
                                         <img src={friend.avatar}></img>
-                                        <span>{friend.name}</span>
-                                        <img
-                                            src = {addMemberButton}
-                                            alt = "Add Member"
-                                            className = "add-Member-Button"
-                                            onClick={() =>handleSelectedMember(friend.id)}
-                                            style = {{ width: "40px", height: "40px" }}
-                                        />
+                                        <span>{friend.username}</span>
+                                        {!selectedMember.includes(friend._id) && (
+                                            <img
+                                                src={addMemberButton}
+                                                alt="Add Member"
+                                                className="add-Member-Button"
+                                                onClick={() => handleSelectedMember(friend._id)}
+                                                style={{ width: "40px", height: "40px" }}
+                                            />
+                                        )}
                                     </div>
                                 ))
                             ) : searchPerformed?(

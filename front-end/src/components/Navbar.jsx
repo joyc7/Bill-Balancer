@@ -1,15 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "../styles/Navbar.css";
 import { useLocation } from "react-router-dom";
 import calendar from "../images/calendar.png";
 import group from "../images/group.png";
 import home from "../images/home.png";
 import person from "../images/person.png";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = ({ isDarkMode }) => {
   const location = useLocation();
   const pathName = location.pathname;
+
+  // extract userId for link to User Page
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const userId = decoded.id;
+  
 
   //changed up the events route and removed contact page
 
@@ -53,7 +60,7 @@ const Navbar = ({ isDarkMode }) => {
             style={{ width: "30px", height: "30px" }}
             className="user-image"
           />
-          <Link to="/user-info" className="pl-2">
+          <Link to={`/user-info/${userId}`} className="pl-2">
             User
           </Link>
         </li>

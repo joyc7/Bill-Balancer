@@ -39,7 +39,7 @@ function App() {
             }
           />
           <Route
-            path="/event"
+            path="/event/:eventId"
             element={
               <Event
                 event={event}
@@ -64,7 +64,7 @@ function App() {
             }
           />
           <Route
-            path="/expense/"
+            path="/expense/:expenseId"
             element={
               <Expense
                 isDarkMode={isDarkMode}
@@ -73,7 +73,7 @@ function App() {
             }
           />
           <Route
-            path="/user-info"
+            path="/user-info/:userId"
             element={
               <UserInfo
                 isDarkMode={isDarkMode}
@@ -82,7 +82,7 @@ function App() {
             }
           />
           <Route
-            path="/add-expense"
+            path="/add-expense/:eventId"
             element={
               <AddExpense
                 isDarkMode={isDarkMode}
