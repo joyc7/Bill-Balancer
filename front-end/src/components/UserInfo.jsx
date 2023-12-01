@@ -1,17 +1,16 @@
 /* UserInfo.jsx - components of User Info(Account) Page */
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
-  const [data, setData] = useState({
-    userName: "",
-    userEmail: "",
-  });
+  const [data, setData] = useState([]);
+  const { userId } = useParams();
+  console.log("User ID:", userId); // check the userId received
 
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -26,72 +25,60 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     navigate("/");
   };
 
-  const backupData = {
-    id: 1,
-    name: "Bryn",
-    email: "btaylot0@booking.com",
-    avatar: "https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1",
-    user: [
-      {
-        id: 5,
-        name: "Jdavie",
-        email: "jzecchinii0@yahoo.co.jp",
-      },
-      {
-        id: 2,
-        name: "Emmie",
-        email: "esworder1@xinhuanet.com",
-      },
-    ],
-  };
-
   useEffect(() => {
-    const getTokenFromLocalStorage = () => {
+    console.log("fetching the event");
+    const fetchData = async () => {
       const token = localStorage.getItem("token");
-      return token;
-    };
-
-    const decodeToken = (token) => {
-      try {
-        const currentUser = jwtDecode(token);
-        if (!currentUser || !currentUser.id) {
-          console.error("No current user found in local storage.");
-          return null;
-        }
-        return currentUser;
-      } catch (error) {
-        console.error("Error decoding token:", error);
+      if (!token) {
+        console.error("No token found");
+        navigate("/");
         return null;
       }
-    };
 
-    const fetchData = async () => {
+      const decoded = jwtDecode(token);
+      console.log("Decoded Token:", decoded);
+      // const userName = decoded.username;
+      // const userID = decoded.id;
+      // const userEmail = decoded.email;
+      console.log(userId)
+
       try {
-        const token = getTokenFromLocalStorage();
-        const currentUser = decodeToken(token);
+        const result = await axios.get(
+          `http://localhost:3001/user-info/${userId}`
+        );
+        setData({
+          ...result.data,
+          name: decoded.username // override `name` from the response data with `userName` from the token
+        });
+      } catch (err) {
+        console.error(err);
 
-        if (currentUser) {
-          console.log("Current User:", currentUser);
-          
-
-          const user = await axios.get("http://localhost:3001/user-info");
-    
-          const userName = currentUser.username || "";
-          const userEmail = currentUser.email || "";
-          console.log("Email:", currentUser);
-
-          setData({ userName, userEmail });
-        } else {
-          console.error("No valid user found.");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setData(backupData); // set to backup data in case of error
+        const backupData = {
+          id: 1,
+          name: "Bryn",
+          email: "btaylot0@booking.com",
+          avatar: "https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1",
+          user: [
+            {
+              id: 5,
+              name: "Jdavie",
+              email: "jzecchinii0@yahoo.co.jp",
+            },
+            {
+              id: 2,
+              name: "Emmie",
+              email: "esworder1@xinhuanet.com",
+            },
+          ],
+        };
+        setData(backupData);
       }
     };
 
     fetchData();
   }, []);
+
+  
 
   // This effect runs when the `isDarkMode` value changes
   useEffect(() => {
@@ -122,8 +109,8 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
                 className="avatar"
               />
               <div className="user-name-email">
-                <div className="name">{data.userName}</div>
-                <div className="email">{data.userEmail}</div>
+                <div className="name">{data.name}</div>
+                <div className="email">{data.email}</div>
               </div>
             </div>
             <div className="settings-list-general">
