@@ -211,7 +211,6 @@ const AddExpense = (props) => {
         const response = await axios.get(
           `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        console.log(response.data)
         setPeople(Array.isArray(response.data) ? response.data : [response.data]);
       } catch (error) {
         console.error("Failed to fetch people:", error);
@@ -284,8 +283,6 @@ const AddExpense = (props) => {
       }
     }
   };
-
-  console.log(typeof(selectedPeople))
 
   const handleRemovePerson = (personId) => {
     const person = selectedPeople.find((p) => p._id === personId);
@@ -371,7 +368,7 @@ const AddExpense = (props) => {
             >
               <option value="">Select who paid</option>
               {Array.isArray(people) && people.map((person) => (
-                <option key={person.id} value={person.id}>
+                <option key={person._id} value={person._id}>
                   {person.username}
                 </option>
               ))}
@@ -404,7 +401,7 @@ const AddExpense = (props) => {
             <div id="selected-container">
               {selectedPeople.map((person) => (
                 <div
-                  key={person.id}
+                  key={person._id}
                   style={{
                     display: "flex",
                     alignItems: "center",
