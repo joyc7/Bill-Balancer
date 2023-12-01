@@ -155,7 +155,7 @@ const AddExpense = (props) => {
             invalidAmounts = true;
           }
           return {
-            user: person.id,
+            user: person,
             amount: amount,
           };
         })
