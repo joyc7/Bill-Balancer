@@ -10,7 +10,6 @@ import { jwtDecode } from "jwt-decode";
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
   const { userId } = useParams();
-  console.log("User ID:", userId); // check the userId received
 
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -36,11 +35,9 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
       }
 
       const decoded = jwtDecode(token);
-      console.log("Decoded Token:", decoded);
       // const userName = decoded.username;
       // const userID = decoded.id;
       // const userEmail = decoded.email;
-      console.log(userId)
 
       try {
         const result = await axios.get(
@@ -52,26 +49,6 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         });
       } catch (err) {
         console.error(err);
-
-        const backupData = {
-          id: 1,
-          name: "Bryn",
-          email: "btaylot0@booking.com",
-          avatar: "https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1",
-          user: [
-            {
-              id: 5,
-              name: "Jdavie",
-              email: "jzecchinii0@yahoo.co.jp",
-            },
-            {
-              id: 2,
-              name: "Emmie",
-              email: "esworder1@xinhuanet.com",
-            },
-          ],
-        };
-        setData(backupData);
       }
     };
 
@@ -104,7 +81,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         
             <div className="user-detail-section">
               <img
-                src={`https://robohash.org/.png?size=50x50&set=set1`} // the user may change the avatar
+                src={data.avatar} // the user may change the avatar
                 alt="User's Avatar"
                 className="avatar"
               />
