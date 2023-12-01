@@ -91,7 +91,7 @@ function FriendsPage({ isDarkMode }) {
             <div className="space-to-scroll"></div>
 
             {showModal && (
-                <AddFriendModal showModal={showModal} onClose={() => setShowModal(false)} />
+                <AddFriendModal showModal={showModal} onClose={() => {setShowModal(false); window.location.reload();}} />
             )}
 
             <Navbar />

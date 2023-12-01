@@ -148,16 +148,18 @@ const AddExpense = (props) => {
 
     const amountNumber = parseFloat(formData.amount);
 
-    const peopleSplit = Array.isArray(selectedPeople) ? selectedPeople.map((person) => {
-      const amount = individualAmounts[person.id];
-      if (typeof amount !== "number" || isNaN(amount)) {
-        invalidAmounts = true;
-      }
-      return {
-        user: person.id,
-        amount: amount,
-      };
-    }) : [];
+    const peopleSplit = Array.isArray(selectedPeople)
+      ? selectedPeople.map((person) => {
+          const amount = individualAmounts[person.id];
+          if (typeof amount !== "number" || isNaN(amount)) {
+            invalidAmounts = true;
+          }
+          return {
+            user: person.id,
+            amount: amount,
+          };
+        })
+      : [];
 
     if (invalidAmounts) {
       newValidationMessages.individualAmounts =
@@ -186,7 +188,7 @@ const AddExpense = (props) => {
         submissionData
       );
       // after adding an expense, navigate back to the event
-      navigate(`/event/${eventId}`);
+      window.location.href = `/event/${eventId}`;
     } catch (error) {
       if (error.response) {
         console.error("Validation errors:", error.response.data.errors);
@@ -307,7 +309,7 @@ const AddExpense = (props) => {
       {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
       <header>
         <h2>
-        <Link to={`/event/${eventId}`}>Event</Link>|Add New Expense
+          <Link to={`/event/${eventId}`}>Event</Link>|Add New Expense
         </h2>
       </header>
       <div id="addExpense">
