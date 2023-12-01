@@ -13,6 +13,7 @@ const Home = ({ isDarkMode }) => {
     friends: [],
     events: [],
   });
+  const [expenseSummary, setExpenseSummary] = useState([]);
 
   /* backupData from Expenses, Events, Friends.jsx */
   const backupData = {
@@ -93,15 +94,46 @@ const Home = ({ isDarkMode }) => {
   };
 
   function reformatDate(dateStr) {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const date = new Date(dateStr);
-  
+
     const monthName = months[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear();
 
     return `${monthName} ${day} ${year}`;
-}
+  }
+
+  function calculateExpenseSummary(expenses) {
+    const summary = expenses.reduce((acc, expense) => {
+      // If the event is already in the accumulator, add to its totalAmount
+      if (acc[expense.event._id]) {
+        acc[expense.event._id].totalAmount += expense.amount;
+      } else {
+        // Otherwise, create a new entry in the accumulator
+        acc[expense.event._id] = {
+          event: expense.event,
+          totalAmount: expense.amount,
+        };
+      }
+      return acc;
+    }, {});
+    // Convert the summary object back into an array
+    return Object.values(summary);
+  }
 
   useEffect(() => {
     const getTokenFromLocalStorage = () => {
@@ -131,32 +163,38 @@ const Home = ({ isDarkMode }) => {
         if (currentUser) {
           console.log("Current User:", currentUser);
 
-          const expenseRes = await axios.get(`http://localhost:3001/settlement/from/${currentUser.id}`);
-          console.log("Home Response:", expenseRes.data);
+          const expenseRes = await axios.get(
+            `http://localhost:3001/settlement/from/${currentUser.id}`
+          );
+          console.log("Response:", expenseRes.data);
           const newTotalSpending = calculateTotalSpending(expenseRes.data);
-          const newExpenses = expenseRes.data.map(settlement => {
+          const newExpenses = expenseRes.data.map((settlement) => {
             return {
-                event: settlement.event,
-                amount: settlement.amount
+              event: settlement.event,
+              amount: settlement.amount,
             };
-        });
+          });
 
           // Fetch events data
-          const eventsRes = await axios.get(`http://localhost:3001/events/for/${currentUser.id}`);
+          const eventsRes = await axios.get(
+            `http://localhost:3001/events/for/${currentUser.id}`
+          );
           const events = eventsRes.data.events || [];
 
           // Fetch friends data
-          const friendsRes = await axios.get(`http://localhost:3001/friends/${currentUser.id}`);
+          const friendsRes = await axios.get(
+            `http://localhost:3001/friends/${currentUser.id}`
+          );
           const friends = friendsRes.data.friends || [];
 
           const userName = currentUser.username || "";
 
-          setData({ 
-            userName, 
-            totalSpending: newTotalSpending, 
-            expenses: newExpenses, 
-            friends, 
-            events 
+          setData({
+            userName,
+            totalSpending: newTotalSpending,
+            expenses: newExpenses,
+            friends,
+            events,
           });
         } else {
           console.error("No valid user found.");
@@ -170,10 +208,15 @@ const Home = ({ isDarkMode }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const newExpenseSummary = calculateExpenseSummary(data.expenses);
+    setExpenseSummary(newExpenseSummary);
+  }, [data.expenses]);
+
   function calculateTotalSpending(settlements) {
     let total = 0;
-    settlements.forEach(settlement => {
-        total += settlement.amount;
+    settlements.forEach((settlement) => {
+      total += settlement.amount;
     });
     return total;
   }
@@ -205,12 +248,12 @@ const Home = ({ isDarkMode }) => {
           <h2>Expenses Summary</h2>
           {/* <p className="heading2 total-amount">${calculateTotalSpending(data.expenses || [])}</p> */}
           <ul className="home-list">
-            {data.expenses.map((event) => (
-              <li key={event.event._id} className="small">
+            {expenseSummary.map((item) => (
+              <li key={item.event._id} className="small">
                 <div className="center">
-                  <p className="home-expense-text">{event.event.name}</p>
+                  <p className="home-expense-text">{item.event.name}</p>
                   <p className="home-expense-amount">
-                    ${event.amount.toFixed(2)}
+                    ${item.totalAmount.toFixed(2)}
                   </p>
                 </div>
               </li>
@@ -222,12 +265,14 @@ const Home = ({ isDarkMode }) => {
           <ul className="home-list">
             {eventsPending.length > 0 ? (
               eventsPending.map((event) => (
-              <li key={event.id} className="small">
-                <div className="center">
-                  <p className="home-expense-text">{event.name}</p>
-                  <p className="home-expense-amount">{reformatDate(event.date)}</p>
-                </div>
-              </li>
+                <li key={event._id} className="small">
+                  <div className="center">
+                    <p className="home-expense-text">{event.name}</p>
+                    <p className="home-expense-amount">
+                      {reformatDate(event.date)}
+                    </p>
+                  </div>
+                </li>
               ))
             ) : (
               <div>No Events Added Yet.</div>
@@ -242,12 +287,12 @@ const Home = ({ isDarkMode }) => {
           <ul className="home-list">
             {friendsPendingPayment.length > 0 ? (
               friendsPendingPayment.map((friend) => (
-              <li key={friend.id} className="small">
-                <div className="center">
-                  <p className="home-expense-text">{friend.username}</p>
-                  <p className="home-expense-amount">{friend.balance}</p>
-                </div>
-              </li>
+                <li key={friend._id} className="small">
+                  <div className="center">
+                    <p className="home-expense-text">{friend.username}</p>
+                    <p className="home-expense-amount">{friend.balance}</p>
+                  </div>
+                </li>
               ))
             ) : (
               <div>No Friends Added Yet.</div>
