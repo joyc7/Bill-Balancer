@@ -150,7 +150,7 @@ const AddExpense = (props) => {
 
     const peopleSplit = Array.isArray(selectedPeople)
       ? selectedPeople.map((person) => {
-          const amount = individualAmounts[person.id];
+          const amount = individualAmounts[person._id];
           if (typeof amount !== "number" || isNaN(amount)) {
             invalidAmounts = true;
           }
@@ -211,7 +211,9 @@ const AddExpense = (props) => {
         const response = await axios.get(
           `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        setPeople(Array.isArray(response.data) ? response.data : [response.data]);
+        setPeople(
+          Array.isArray(response.data) ? response.data : [response.data]
+        );
       } catch (error) {
         console.error("Failed to fetch people:", error);
       }
@@ -287,7 +289,9 @@ const AddExpense = (props) => {
   const handleRemovePerson = (personId) => {
     const person = selectedPeople.find((p) => p._id === personId);
     if (person) {
-      const updatedSelectedPeople = selectedPeople.filter((p) => p._id !== personId);
+      const updatedSelectedPeople = selectedPeople.filter(
+        (p) => p._id !== personId
+      );
       setSelectedPeople(updatedSelectedPeople);
 
       if (!availablePeople.some((p) => p.id === personId)) {
@@ -296,7 +300,7 @@ const AddExpense = (props) => {
     }
   };
 
-  const [amountError, setAmountError] = useState('');
+  const [amountError, setAmountError] = useState("");
   const isValidAmount = () => {
     const amount = parseFloat(formData.amount);
     return !isNaN(amount) && amount > 0;
@@ -305,12 +309,11 @@ const AddExpense = (props) => {
     e.preventDefault();
     if (isValidAmount()) {
       setShowModal(true);
-      setAmountError(''); 
+      setAmountError("");
     } else {
-      setAmountError('Please enter a valid amount.'); 
+      setAmountError("Please enter a valid amount.");
     }
   };
-
 
   return (
     <div className="add-expense-page-container">
@@ -383,11 +386,12 @@ const AddExpense = (props) => {
               onChange={handlePaidByChange}
             >
               <option value="">Select who paid</option>
-              {Array.isArray(people) && people.map((person) => (
-                <option key={person._id} value={person._id}>
-                  {person.username}
-                </option>
-              ))}
+              {Array.isArray(people) &&
+                people.map((person) => (
+                  <option key={person._id} value={person._id}>
+                    {person.username}
+                  </option>
+                ))}
             </select>
           </div>
           <div id="split">
@@ -400,14 +404,15 @@ const AddExpense = (props) => {
             <br />
             <div>
               <select id="available-container" size="5">
-                {Array.isArray(availablePeople) && availablePeople.map((person) => (
-                  <option
-                    key={person._id}
-                    onClick={() => handleSelectPerson(person._id)}
-                  >
-                    {person.username}
-                  </option>
-                ))}
+                {Array.isArray(availablePeople) &&
+                  availablePeople.map((person) => (
+                    <option
+                      key={person._id}
+                      onClick={() => handleSelectPerson(person._id)}
+                    >
+                      {person.username}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
