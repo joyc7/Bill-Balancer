@@ -9,8 +9,6 @@ function FriendsPage({ isDarkMode }) {
     const [userData, setUserData] = useState(null);
     const [showModal, setShowModal] = useState(false); 
 
-    const backupData = {"id":1,"name":"Bryn","email":"btaylot0@booking.com","phone":"850-479-2094","avatar":"https://robohash.org/utetquibusdam.png?size=50x50\u0026set=set1","friends":[{"id":5,"name":"Jdavie","email":"jzecchinii0@yahoo.co.jp","phone":"967-156-0272","balance":"$57.06"},{"id":2,"name":"Emmie","email":"esworder1@xinhuanet.com","phone":"832-141-0597","balance":"$60.04"}]}; 
-
     // useEffect for dark mode
     useEffect(() => {
         if (isDarkMode) {
@@ -33,15 +31,45 @@ function FriendsPage({ isDarkMode }) {
                 const userId = currentUser.id; 
                 const result = await axios.get(`http://localhost:3001/friends/${userId}`);
                 setUserData(result.data); 
+                console.log(result.data); 
             } catch (err) {
                 console.error(err); 
-                setUserData(backupData);
             }
         }
         fetchData();
     }, []);
 
+    const fetchSettlementsForFriends = async () => {
+        if (!userData || !userData.friends) return;
+
+        const settlements = await Promise.all(userData.friends.map(async (friend) => {
+            try {
+                const fromUserToFriend = await axios.get(`http://localhost:3001/settlement/from/${userData._id}/to/${friend._id}`);
+                const fromFriendToUser = await axios.get(`http://localhost:3001/settlement/from/${friend._id}/to/${userData._id}`);
+
+                return {
+                    friendId: friend,
+                    fromUserToFriend: fromUserToFriend.data,
+                    fromFriendToUser: fromFriendToUser.data,
+                };
+            } catch (error) {
+                console.error('Error fetching settlements:', error);
+                return null; 
+            }
+        }));
+
+        console.log(settlements); 
+    };
+
+    useEffect(() => {
+        fetchSettlementsForFriends();
+    }, [userData]);
+
+    console.log('typeof userdata is', typeof userData); 
+
     if (!userData) return <div>Loading...</div>;
+
+    
 
     // const totalBalance = userData.friends && userData.friends.length ? userData.friends.reduce((acc, friend) => acc + parseFloat(friend.balance.replace('$', '')), 0) : 0;
 
