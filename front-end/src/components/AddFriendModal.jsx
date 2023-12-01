@@ -7,11 +7,6 @@ function AddFriendModal({ showModal, onClose }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Function to return avatar URL
-    const getAvatarUrl = (username) => {
-        return `https://robohash.org/${username}.png?size=50x50&set=set1`;
-    };
-
     async function handleSearchClick() {
         setUserData(null); 
         setError('');
@@ -84,9 +79,7 @@ function AddFriendModal({ showModal, onClose }) {
                 {loading && <div>Loading...</div>}
                 {userData && (
                     <div className="add-friend-item">
-                        <img src={userData.avatar || getAvatarUrl(userData.username)} 
-                        alt={`avatar`} 
-                        className="friend-avatar"/>
+                        <img src={userData.avatar} alt={`avatar`} className="friend-avatar"/>
                         <span className="add-friend-name">{userData.username}</span>
                         <img 
                             src={addFriendButton}
