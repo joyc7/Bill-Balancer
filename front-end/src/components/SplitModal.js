@@ -85,7 +85,7 @@ function SplitModal({
     if (activeTab === "equally") {
       const equalAmount = parseFloat(totalAmount) / participants.length;
       const amounts = participants.reduce((acc, participant) => {
-        acc[participant.id] = equalAmount;
+        acc[participant._id] = equalAmount;
         return acc;
       }, {});
       onAmountsChange(amounts);
@@ -183,9 +183,9 @@ function SplitModal({
                   <div className="percentageContent">
                     <input
                       type="number"
-                      value={participantPercentages[participant.id] || ""}
+                      value={participantPercentages[participant._id] || ""}
                       onChange={(e) =>
-                        handlePercentageChange(e, participant.id)
+                        handlePercentageChange(e, participant._id)
                       }
                     />
                     % =
@@ -193,7 +193,7 @@ function SplitModal({
                       {" " +
                         "$" +
                         calculateAmount(
-                          participant.id,
+                          participant._id,
                           totalAmount,
                           participantPercentages
                         ).toFixed(2)}
@@ -205,7 +205,7 @@ function SplitModal({
                     ${" "}
                     <input
                       type="number"
-                      onChange={(e) => handleAmountChange(e, participant.id)}
+                      onChange={(e) => handleAmountChange(e, participant._id)}
                     />
                   </div>
                 )}

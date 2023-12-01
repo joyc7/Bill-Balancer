@@ -296,6 +296,22 @@ const AddExpense = (props) => {
     }
   };
 
+  const [amountError, setAmountError] = useState('');
+  const isValidAmount = () => {
+    const amount = parseFloat(formData.amount);
+    return !isNaN(amount) && amount > 0;
+  };
+  const handleSplitMethodClick = (e) => {
+    e.preventDefault();
+    if (isValidAmount()) {
+      setShowModal(true);
+      setAmountError(''); 
+    } else {
+      setAmountError('Please enter a valid amount.'); 
+    }
+  };
+
+
   return (
     <div className="add-expense-page-container">
       {" "}
@@ -436,13 +452,12 @@ const AddExpense = (props) => {
           )}
           <div className="splitMethods">
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                setShowModal(true);
-              }}
+              onClick={handleSplitMethodClick}
+              disabled={!isValidAmount()}
             >
               {splitMethod === "equally" ? "Equally" : "By " + splitMethod}
             </button>
+            {amountError && <div style={{ color: "red" }}>{amountError}</div>}
           </div>
           <div className="submitBtn">
             <button type="submit">Done</button>
