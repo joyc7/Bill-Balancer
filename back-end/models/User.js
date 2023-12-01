@@ -75,6 +75,10 @@ UserSchema.methods.toAuthJSON = function () {
   };
 };
 
+UserSchema.methods.resetPassword = function (newPassword) {
+  this.password = newPassword;
+};
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = {
