@@ -5,10 +5,14 @@ import { useNavigate } from "react-router-dom";
 import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
-  const [userData, setUserData] = useState(null);
-  const [randomUser, setRandomUser] = useState(null);
+  const [data, setData] = useState({
+    userName: "",
+    userEmail: "",
+  });
+
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -41,6 +45,54 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     ],
   };
 
+  useEffect(() => {
+    const getTokenFromLocalStorage = () => {
+      const token = localStorage.getItem("token");
+      return token;
+    };
+
+    const decodeToken = (token) => {
+      try {
+        const currentUser = jwtDecode(token);
+        if (!currentUser || !currentUser.id) {
+          console.error("No current user found in local storage.");
+          return null;
+        }
+        return currentUser;
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        return null;
+      }
+    };
+
+    const fetchData = async () => {
+      try {
+        const token = getTokenFromLocalStorage();
+        const currentUser = decodeToken(token);
+
+        if (currentUser) {
+          console.log("Current User:", currentUser);
+          
+
+          const user = await axios.get("http://localhost:3001/user-info");
+    
+          const userName = currentUser.username || "";
+          const userEmail = currentUser.email || "";
+          console.log("Email:", currentUser);
+
+          setData({ userName, userEmail });
+        } else {
+          console.error("No valid user found.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setData(backupData); // set to backup data in case of error
+      }
+    };
+
+    fetchData();
+  }, []);
+
   // This effect runs when the `isDarkMode` value changes
   useEffect(() => {
     if (isDarkMode) {
@@ -54,47 +106,24 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     };
   }, [isDarkMode]);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get("http://localhost:3001/user-info");
-        const data = response.data;
-        setUserData(data);
-
-        // handle potential undefined data.user
-        const userArray = data.user || [];
-        if (userArray.length > 0) {
-          const randomIdx = Math.floor(Math.random() * userArray.length);
-          setRandomUser(userArray[randomIdx]);
-        } else {
-          console.error("User data or user array is empty.");
-          setRandomUser(null);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setUserData(backupData);
-        const randomIdx = Math.floor(Math.random() * backupData.user.length);
-        setRandomUser(backupData.user[randomIdx]);
-      }
-    }
-    fetchData();
-  }, []);
+  if (!data) {
+    return <div>Loading user data...</div>;
+  }
 
   return (
     <div className={`UserInfo-full-height ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="UserInfo">
         <h1 className="page-title">Account</h1>
-        {randomUser && (
-          <>
+        
             <div className="user-detail-section">
               <img
-                src={userData.avatar}
+                src={`https://robohash.org/.png?size=50x50&set=set1`} // the user may change the avatar
                 alt="User's Avatar"
                 className="avatar"
               />
               <div className="user-name-email">
-                <div className="name">{randomUser.name}</div>
-                <div className="email">{randomUser.email}</div>
+                <div className="name">{data.userName}</div>
+                <div className="email">{data.userEmail}</div>
               </div>
             </div>
             <div className="settings-list-general">
@@ -141,8 +170,6 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
                 </li>
               </ul>
             </div>
-          </>
-        )}
         <Navbar isDarkMode={isDarkMode} />
       </div>
     </div>
