@@ -65,7 +65,7 @@ const Event = (props) => {
           : { amount: 0 }; // Add other fields as needed
       } else {
         // User is not a participant, create a settlement object with amount 0
-        settlement = { amount: 0 }; // Add other fields as needed
+        settlement = { amount: 0 };
       }
 
       return {
