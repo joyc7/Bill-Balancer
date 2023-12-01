@@ -120,14 +120,14 @@ const Event = (props) => {
         <section className="expenses">
           {data.expenses &&
             data.expenses.map((item) => (
-              <div className="expenseItem" key={item.id}>
+              <div className="expenseItem" key={item._id}>
                 <div className="date">{reformatDate(item.date)}</div>
                 <div className="name">
                   <Link to="/expense">
                     <div>{item.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.amount}</div>
+                <div className="amount">${item.totalAmount}</div>
                 <div className="checkbox">
                   <input type="checkbox" name={item.id} />
                 </div>

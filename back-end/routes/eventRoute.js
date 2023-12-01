@@ -5,8 +5,11 @@ const Event = require("../models/Event.js");
 router.get("/:eventId", async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    const event = await Event.findById(eventId);
-
+    const event = await Event.findById(eventId).populate({
+      path: "expenses",
+      model: "Expense"
+    });
+    
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
