@@ -20,6 +20,7 @@ router.post(
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
+    const avatar = `https://robohash.org/${username}.png?size=50x50&set=set1`; 
 
     if (!username || !password || !email) {
       res.status(401).json({
@@ -42,7 +43,7 @@ router.post(
         return;
       }
 
-      const user = await new User({ username, password, email }).save();
+      const user = await new User({ username, password, email, avatar }).save();
       console.error(`New user: ${user}`);
       const token = user.generateJWT();
       res.json({

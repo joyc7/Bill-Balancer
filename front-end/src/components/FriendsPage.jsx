@@ -49,7 +49,7 @@ function FriendsPage({ isDarkMode }) {
         <div className="friends-page">
             <h1 className="page-title">Friends</h1>
             <div className="balance-section">
-                <img src={`https://robohash.org/${userData.username}.png?size=50x50&set=set1`} alt="User Avatar" className="user-avatar"/>
+                <img src={userData.avatar} alt="User Avatar" className="user-avatar"/>
                 <div>
                     <div className="balance-title">Total balance</div>
                     {/* <div className="balance-details">
@@ -71,7 +71,7 @@ function FriendsPage({ isDarkMode }) {
                     {userData.friends.map((friend) => (
                         <li key={friend.username} className="friend-item">
                             <span className='item-name-avatar'>
-                                <img src={`https://robohash.org/${friend.username}.png?size=50x50&set=set1`} alt={`${friend.username}'s avatar`} className="friend-avatar"/>
+                                <img src={friend.avatar} alt={`${friend.username}'s avatar`} className="friend-avatar"/>
                                 <span>{friend.username}</span>
                             </span>
                             {/* <span className={parseFloat(friend.balance.replace('$', '')) < 0 ? "negative-balance" : "positive-balance"}>
