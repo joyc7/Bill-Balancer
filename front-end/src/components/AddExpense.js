@@ -270,9 +270,9 @@ const AddExpense = (props) => {
   }, []);
 
   const handleSelectPerson = (personId) => {
-    const person = availablePeople.find((p) => p.id === personId);
+    const person = availablePeople.find((p) => p._id === personId);
     if (person) {
-      setAvailablePeople(availablePeople.filter((p) => p.id !== personId));
+      setAvailablePeople(availablePeople.filter((p) => p._id !== personId));
       const updatedSelectedPeople = [...selectedPeople, person];
       setSelectedPeople(updatedSelectedPeople);
 
@@ -288,19 +288,13 @@ const AddExpense = (props) => {
   console.log(typeof(selectedPeople))
 
   const handleRemovePerson = (personId) => {
-    const person = selectedPeople.find((p) => p.id === personId);
+    const person = selectedPeople.find((p) => p._id === personId);
     if (person) {
-      const updatedSelectedPeople = selectedPeople.filter(
-        (p) => p.id !== personId
-      );
+      const updatedSelectedPeople = selectedPeople.filter((p) => p._id !== personId);
       setSelectedPeople(updatedSelectedPeople);
-      setAvailablePeople([...availablePeople, person]);
 
-      if (updatedSelectedPeople.length === 0) {
-        setValidationMessages((prevMessages) => ({
-          ...prevMessages,
-          selectedPeople: "Selection required",
-        }));
+      if (!availablePeople.some((p) => p.id === personId)) {
+        setAvailablePeople([...availablePeople, person]);
       }
     }
   };
@@ -395,8 +389,8 @@ const AddExpense = (props) => {
               <select id="available-container" size="5">
                 {Array.isArray(availablePeople) && availablePeople.map((person) => (
                   <option
-                    key={person.id}
-                    onClick={() => handleSelectPerson(person.id)}
+                    key={person._id}
+                    onClick={() => handleSelectPerson(person._id)}
                   >
                     {person.username}
                   </option>
@@ -429,7 +423,7 @@ const AddExpense = (props) => {
                   <span>{person.username}</span>
                   <button
                     className="remove-button"
-                    onClick={() => handleRemovePerson(person.id)}
+                    onClick={() => handleRemovePerson(person._id)}
                   >
                     {" "}
                     x{" "}
