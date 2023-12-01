@@ -92,6 +92,17 @@ const Home = ({ isDarkMode }) => {
     ],
   };
 
+  function reformatDate(dateStr) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const date = new Date(dateStr);
+  
+    const monthName = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    return `${monthName} ${day} ${year}`;
+}
+
   useEffect(() => {
     const getTokenFromLocalStorage = () => {
       const token = localStorage.getItem("token");
@@ -126,11 +137,11 @@ const Home = ({ isDarkMode }) => {
           const totalSpending = calculateTotalSpending(expenses);
 
           // Fetch events data
-          const eventsRes = await axios.get("http://localhost:3001/events");
+          const eventsRes = await axios.get(`http://localhost:3001/events/for/${currentUser.id}`);
           const events = eventsRes.data.events || [];
 
           // Fetch friends data
-          const friendsRes = await axios.get("http://localhost:3001/friends");
+          const friendsRes = await axios.get(`http://localhost:3001/friends/${currentUser.id}`);
           const friends = friendsRes.data.friends || [];
 
           const userName = currentUser.username || "";
@@ -191,7 +202,7 @@ const Home = ({ isDarkMode }) => {
               <li key={event.id} className="small">
                 <div className="center">
                   <p className="home-expense-text">{event.name}</p>
-                  <p className="home-expense-amount">{event.date}</p>
+                  <p className="home-expense-amount">{reformatDate(event.date)}</p>
                 </div>
               </li>
             ))}
@@ -225,7 +236,7 @@ const Home = ({ isDarkMode }) => {
             {friendsPendingPayment.map((friend) => (
               <li key={friend.id} className="small">
                 <div className="center">
-                  <p className="home-expense-text">{friend.name}</p>
+                  <p className="home-expense-text">{friend.username}</p>
                   <p className="home-expense-amount">{friend.balance}</p>
                 </div>
               </li>

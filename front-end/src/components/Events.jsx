@@ -293,7 +293,7 @@ function Events({ isDarkMode }) {
                             <div className="Event-name" style={{ marginBottom: '5px' }}>
                                 <span>{event.name}</span>
                             </div>
-                            <Link to='/event'>
+                            <Link to={`/event/${event._id}`}>
                             <button onClick={() => EventClick(event.id)}>View Event</button>
                             </Link>
                         </li>
@@ -303,7 +303,7 @@ function Events({ isDarkMode }) {
 
 
             {addEvent && (
-                <AddEvent addEvent = {addEvent} onClose={() => setaddEvent(false)} />
+                <AddEvent addEvent = {addEvent} onClose={() => {setaddEvent(false); window.location.reload();}} />
             )}
             <div className="navbar-placeholder" style={{ height: '4rem' }}></div>
             <div className="mt-6"><Navbar/></div>

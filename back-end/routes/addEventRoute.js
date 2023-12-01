@@ -54,7 +54,7 @@ router.post(
         data: savedEvent,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(400).json({
         status: "Error",
         message: "Error creating event or updating users",

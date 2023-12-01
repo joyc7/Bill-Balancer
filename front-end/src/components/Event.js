@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../styles/Event.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const Event = (props) => {
   const [data, setData] = useState([]);
   const isDarkMode = props.isDarkMode;
+  const { eventId } = useParams();
+  console.log("Event ID:", eventId); // check the eventID received
 
   function reformatDate(dateStr) {
     const months = [
@@ -49,8 +51,11 @@ const Event = (props) => {
     console.log("fetching the event");
     const fetchEvent = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/event");
+        const result = await axios.get(
+          `http://localhost:3001/event/${eventId}`
+        );
         setData(result.data);
+        console.log(result.data);
       } catch (err) {
         console.error(err);
 
@@ -115,14 +120,14 @@ const Event = (props) => {
         <section className="expenses">
           {data.expenses &&
             data.expenses.map((item) => (
-              <div className="expenseItem" key={item.id}>
+              <div className="expenseItem" key={item._id}>
                 <div className="date">{reformatDate(item.date)}</div>
                 <div className="name">
                   <Link to="/expense">
                     <div>{item.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.amount}</div>
+                <div className="amount">${item.totalAmount}</div>
                 <div className="checkbox">
                   <input type="checkbox" name={item.id} />
                 </div>
@@ -131,7 +136,7 @@ const Event = (props) => {
         </section>
 
         <div className="addExpenseBtnDiv">
-          <Link to="/add-expense" className="btn addExpenseBtn">
+          <Link to={`/add-expense/${eventId}`} className="btn addExpenseBtn"> {/* <Link to="/add-expense" className="btn addExpenseBtn"> */}
             Add Expense
           </Link>
         </div>

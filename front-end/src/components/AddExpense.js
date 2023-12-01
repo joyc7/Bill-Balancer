@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import SplitModal from "./SplitModal";
 import "../styles/AddExpense.css";
@@ -8,6 +8,7 @@ import "../styles/AddExpense.css";
 const AddExpense = (props) => {
   const navigate = useNavigate();
   const isDarkMode = props.isDarkMode;
+  const { eventId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [splitMethod, setSplitMethod] = useState("Choose Split Method");
   const [formData, setFormData] = useState({
@@ -147,16 +148,18 @@ const AddExpense = (props) => {
 
     const amountNumber = parseFloat(formData.amount);
 
-    const peopleSplit = selectedPeople.map((person) => {
-      const amount = individualAmounts[person.id];
-      if (typeof amount !== "number" || isNaN(amount)) {
-        invalidAmounts = true;
-      }
-      return {
-        user: person.id,
-        amount: amount,
-      };
-    });
+    const peopleSplit = Array.isArray(selectedPeople)
+      ? selectedPeople.map((person) => {
+          const amount = individualAmounts[person.id];
+          if (typeof amount !== "number" || isNaN(amount)) {
+            invalidAmounts = true;
+          }
+          return {
+            user: person.id,
+            amount: amount,
+          };
+        })
+      : [];
 
     if (invalidAmounts) {
       newValidationMessages.individualAmounts =
@@ -176,6 +179,7 @@ const AddExpense = (props) => {
       date: new Date(formData.date),
       paidBy: formData.personPaid,
       peopleSplit: peopleSplit,
+      event: eventId, // make sure it is not "undefined"
     };
     console.log(submissionData);
     try {
@@ -183,7 +187,8 @@ const AddExpense = (props) => {
         "http://localhost:3001/add-expense",
         submissionData
       );
-      navigate("/event");
+      // after adding an expense, navigate back to the event
+      window.location.href = `/event/${eventId}`;
     } catch (error) {
       if (error.response) {
         console.error("Validation errors:", error.response.data.errors);
@@ -204,16 +209,16 @@ const AddExpense = (props) => {
     const fetchPeople = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/addExpensePayer"
+          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        setPeople(response.data);
+        console.log(response)
+        setPeople(response.data.participants);
       } catch (error) {
         console.error("Failed to fetch people:", error);
       }
     };
-
     fetchPeople();
-  }, []);
+  }, [people]);
 
   const handlePaidByChange = (event) => {
     const selectedUserId = event.target.value;
@@ -254,8 +259,9 @@ const AddExpense = (props) => {
     const fetchAvailablePeople = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/addExpensePayer"
+          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
+        console.log(response)
         setAvailablePeople(response.data);
       } catch (error) {
         console.error("Failed to fetch people:", error);
@@ -304,7 +310,7 @@ const AddExpense = (props) => {
       {/* add this container to control the dark mode between the outtermost backgroud and the section box*/}
       <header>
         <h2>
-          <Link to="/event">Event</Link>|Add New Expense
+          <Link to={`/event/${eventId}`}>Event</Link>|Add New Expense
         </h2>
       </header>
       <div id="addExpense">
@@ -369,7 +375,7 @@ const AddExpense = (props) => {
               onChange={handlePaidByChange}
             >
               <option value="">Select who paid</option>
-              {people.map((person) => (
+              {Array.isArray(people) && people.map((person) => (
                 <option key={person.id} value={person.id}>
                   {person.first_name}
                 </option>
@@ -386,7 +392,7 @@ const AddExpense = (props) => {
             <br />
             <div>
               <select id="available-container" size="5">
-                {availablePeople.map((person) => (
+                {Array.isArray(availablePeople) && availablePeople.map((person) => (
                   <option
                     key={person.id}
                     onClick={() => handleSelectPerson(person.id)}
