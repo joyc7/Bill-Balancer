@@ -2,6 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const { Expense } = require("../models/Expense.js");
+const { Settlement } = require("../models/Settlement.js");
 const Event = require("../models/Event");
 
 router.post(
@@ -24,6 +25,24 @@ router.post(
     console.log("validation passed");
 
     try {
+
+      let splitDetailsWithSettlements = [];
+      // Create Settlement objects
+      for (const split of req.body.peopleSplit) {
+        if (split.user !== req.body.paidBy) {
+          let newSettlement = new Settlement({
+            status: false,
+            amount: split.amount,
+            settleTo: req.body.paidBy,
+            settleFrom: split.user,
+            event: req.body.event,
+          });
+          console.log(newSettlement);
+          await newSettlement.save();
+          splitDetailsWithSettlements.push({ user: split.user, settlement: newSettlement._id });
+        }
+      }
+
       // Create a new Expense object
       const newExpense = new Expense({
         name: req.body.name,
@@ -31,18 +50,13 @@ router.post(
         totalAmount: req.body.totalAmount,
         date: new Date(req.body.date),
         paidBy: req.body.paidBy,
-        splitDetails: req.body.peopleSplit.map((split) => ({
-          user: split.user,
-          settlement: split.settlement,
-        })),
+        splitDetails: splitDetailsWithSettlements,
         event: req.body.event,
       });
 
       console.log(newExpense);
 
       // Save the Expense object to the database
-      await newExpense.save();
-
       const event = await Event.findById(req.body.event);
       if (!event) {
         return res
