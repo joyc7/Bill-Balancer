@@ -239,9 +239,9 @@ const Home = ({ isDarkMode }) => {
               </li>
             ))}
           </ul>
-          <Link to="/event" className="view-all">
+          {/* <Link to="/event" className="view-all">
             View All
-          </Link>
+          </Link> */}
         </div>
         <div className="box friends-pending">
           <h2 className="heading2">Friends Summary</h2>
