@@ -207,16 +207,16 @@ const AddExpense = (props) => {
     const fetchPeople = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/addExpensePayer"
+          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        setPeople(response.data);
+        console.log(response)
+        setPeople(response.data.participants);
       } catch (error) {
         console.error("Failed to fetch people:", error);
       }
     };
-
     fetchPeople();
-  }, []);
+  }, [people]);
 
   const handlePaidByChange = (event) => {
     const selectedUserId = event.target.value;
@@ -257,8 +257,9 @@ const AddExpense = (props) => {
     const fetchAvailablePeople = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/addExpensePayer"
+          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
+        console.log(response)
         setAvailablePeople(response.data);
       } catch (error) {
         console.error("Failed to fetch people:", error);
@@ -372,7 +373,7 @@ const AddExpense = (props) => {
               onChange={handlePaidByChange}
             >
               <option value="">Select who paid</option>
-              {people.map((person) => (
+              {Array.isArray(people) && people.map((person) => (
                 <option key={person.id} value={person.id}>
                   {person.first_name}
                 </option>
@@ -389,7 +390,7 @@ const AddExpense = (props) => {
             <br />
             <div>
               <select id="available-container" size="5">
-                {availablePeople.map((person) => (
+                {Array.isArray(availablePeople) && availablePeople.map((person) => (
                   <option
                     key={person.id}
                     onClick={() => handleSelectPerson(person.id)}

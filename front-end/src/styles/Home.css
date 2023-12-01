@@ -7,13 +7,13 @@
 }
 
 .dashboard {
-  @apply grid gap-2 mb-4 place-content-center;
+  @apply flex flex-col justify-center items-center; 
 }
 
 .box {
-  @apply p-4 rounded-md bg-cyan-100 my-2 flex flex-col cursor-pointer;
-  width: 100%;
+  @apply p-4 rounded-md bg-cyan-100 my-2 flex flex-col cursor-pointer justify-center;
   @apply overflow-auto; 
+  width: 100%;
   height: 170px; /* if the sections exceed the page, reduce this height */
 }
 

@@ -92,6 +92,17 @@ const Home = ({ isDarkMode }) => {
     ],
   };
 
+  function reformatDate(dateStr) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const date = new Date(dateStr);
+  
+    const monthName = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    return `${monthName} ${day} ${year}`;
+}
+
   useEffect(() => {
     const getTokenFromLocalStorage = () => {
       const token = localStorage.getItem("token");
@@ -191,7 +202,7 @@ const Home = ({ isDarkMode }) => {
               <li key={event.id} className="small">
                 <div className="center">
                   <p className="home-expense-text">{event.name}</p>
-                  <p className="home-expense-amount">{event.date}</p>
+                  <p className="home-expense-amount">{reformatDate(event.date)}</p>
                 </div>
               </li>
             ))}
