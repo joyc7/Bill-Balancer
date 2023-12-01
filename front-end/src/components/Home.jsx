@@ -190,8 +190,8 @@ const Home = ({ isDarkMode }) => {
             {eventsPending.map((event) => (
               <li key={event.id} className="small">
                 <div className="center">
-                  <p className="home-expense-text">{event.EventName}</p>
-                  <p className="home-expense-amount">{event.Date}</p>
+                  <p className="home-expense-text">{event.name}</p>
+                  <p className="home-expense-amount">{event.date}</p>
                 </div>
               </li>
             ))}
