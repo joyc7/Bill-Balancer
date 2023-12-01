@@ -64,7 +64,7 @@ function App() {
             }
           />
           <Route
-            path="/expense/"
+            path="/expense/:expenseId"
             element={
               <Expense
                 isDarkMode={isDarkMode}
