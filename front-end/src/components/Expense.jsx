@@ -57,18 +57,17 @@ function Expense({ isDarkMode }) {
                 </div>
             <div className="expense-container">
                 
-                {/* Default: assume all expenses are positive */}
-                <div className="expense-list">
-                    {/* Assume a headcount limit to split the bill */}
-                    {Array.isArray(expensesData) && expensesData.slice(0, 7).map(item => (
-                    <div key={expensesData._id} className="expense-item">
-                        <span>{item.name}</span> {/* This is the first child */}
-                        <span className={parseFloat(item.expense.replace('$', '')) > 0 ? 'positive' : 'negative'}>{item.expense}</span> {/* This is the second child */}
-                        <div className="checkbox"><input type="checkbox" name={item.id} /></div>
-                        </div>
+                {expensesData && (
+                    <div className="expense-list">
+                        {expensesData.splitDetails && expensesData.splitDetails.map(split => (
+                            <div className="expense-item" key={split.settlement._id}>
+                                <span>{split.user.username}</span>
+                                <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount}</span>
+                                <div className="checkbox"><input type="checkbox" name={split.settlement._id} /></div>
+                            </div>
                         ))}
-                        
-                        </div>
+                    </div>
+                )}
             </div>
             <Navbar />
         </div>
