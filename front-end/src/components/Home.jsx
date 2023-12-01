@@ -128,13 +128,21 @@ const Home = ({ isDarkMode }) => {
         const token = getTokenFromLocalStorage();
         const currentUser = decodeToken(token);
 
+        let totalSpending = 0;
+        let expenses = [];
+
         if (currentUser) {
           console.log("Current User:", currentUser);
 
-          const homeRes = await axios.get("http://localhost:3001/home");
-          console.log("Home Response:", homeRes.data);
-          const expenses = homeRes.data.expenses || [];
-          const totalSpending = calculateTotalSpending(expenses);
+          const expenseRes = await axios.get(`http://localhost:3001/settlement/from/${currentUser.id}`);
+          console.log("Home Response:", expenseRes.data);
+          const newTotalSpending = calculateTotalSpending(expenseRes.data);
+          const newExpenses = expenseRes.data.map(settlement => {
+            return {
+                event: settlement.event,
+                amount: settlement.amount
+            };
+        });
 
           // Fetch events data
           const eventsRes = await axios.get(`http://localhost:3001/events/for/${currentUser.id}`);
@@ -146,7 +154,13 @@ const Home = ({ isDarkMode }) => {
 
           const userName = currentUser.username || "";
 
-          setData({ userName, friends, events, expenses, totalSpending });
+          setData({ 
+            userName, 
+            totalSpending: newTotalSpending, 
+            expenses: newExpenses, 
+            friends, 
+            events 
+          });
         } else {
           console.error("No valid user found.");
         }
@@ -159,16 +173,13 @@ const Home = ({ isDarkMode }) => {
     fetchData();
   }, []);
 
-  function calculateTotalSpending(expenses) {
-    return expenses.reduce((total, expense) => total + expense.amount, 0);
+  function calculateTotalSpending(settlements) {
+    let total = 0;
+    settlements.forEach(settlement => {
+        total += settlement.amount;
+    });
+    return total;
   }
-
-  const eventsWithTotalExpenses = data.events
-    ? data.events.map((event) => ({
-        ...event,
-        totalExpense: calculateTotalSpending(event.expenses || []),
-      }))
-    : [];
 
   /* useEffect for controlling DarkMode of the margin around the page */
   useEffect(() => {
@@ -185,9 +196,7 @@ const Home = ({ isDarkMode }) => {
 
   /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
   const friendsPendingPayment = data.friends ? data.friends.slice(0, 3) : [];
-  const expensesPending = data.expenses ? data.expenses.slice(0, 3) : [];
   const eventsPending = data.events ? data.events.slice(0, 3) : [];
-  console.log(eventsPending);
 
   return (
     <div className="home-container">
@@ -219,10 +228,10 @@ const Home = ({ isDarkMode }) => {
           <h2>Expenses Summary</h2>
           {/* <p className="heading2 total-amount">${calculateTotalSpending(data.expenses || [])}</p> */}
           <ul className="home-list">
-            {expensesPending.map((event) => (
-              <li key={event.id} className="small">
+            {data.expenses.map((event) => (
+              <li key={event.event._id} className="small">
                 <div className="center">
-                  <p className="home-expense-text">{event.name}</p>
+                  <p className="home-expense-text">{event.event.name}</p>
                   <p className="home-expense-amount">
                     ${event.amount.toFixed(2)}
                   </p>

@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 
 const eventRoute = require("./routes/eventRoute");
 const addExpenseRoute = require("./routes/addExpenseRoute");
-const homeRoute = require("./routes/homeRoute");
 const friendsPageRoute = require("./routes/friendsPageRoute");
 const addFriendRoute = require("./routes/addFriendRoute");
 const eventsRoute = require("./routes/eventsRoute");
@@ -19,8 +18,9 @@ const userInfoPageRoute = require("./routes/userInfoPageRoute");
 const signupRoute = require("./routes/signupRoute");
 const forgotPasswordRoute = require("./routes/forgotPasswordRoute");
 const logoutRoute = require("./routes/logoutRoute");
-const searchFriendRoute = require('./routes/searchFriendRoute'); 
+const searchFriendRoute = require("./routes/searchFriendRoute");
 const expenseRoute = require("./routes/expenseRoute");
+const settlementRoute = require("./routes/settlementRoute");
 
 // connect to the database
 // console.log(`Conneting to MongoDB at ${process.env.MONGODB_URI}`)
@@ -46,7 +46,6 @@ app.get("/signup", (req, res) => {
 app.use("/addExpensePayer", addExpensePayerRoute);
 app.use("/add-expense", addExpenseRoute);
 app.use("/event", eventRoute);
-app.use("/home", homeRoute);
 app.use("/friends", friendsPageRoute);
 app.use("/addFriends", addFriendRoute);
 app.use("/events", eventsRoute);
@@ -57,8 +56,9 @@ app.use("/addEventMember", addEventMemberRoute);
 app.use("/signup", signupRoute);
 app.use("/forgot-password", forgotPasswordRoute);
 app.use("/logout", logoutRoute);
-app.use("/searchFriend", searchFriendRoute); 
+app.use("/searchFriend", searchFriendRoute);
 app.use("/expense", expenseRoute);
+app.use("/settlement", settlementRoute);
 
 // export the express app we created to make it available to other modules
 module.exports = app;
