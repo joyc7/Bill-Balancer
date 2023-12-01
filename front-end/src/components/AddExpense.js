@@ -211,14 +211,14 @@ const AddExpense = (props) => {
         const response = await axios.get(
           `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        console.log(response)
-        setPeople(response.data.participants);
+        console.log(response.data)
+        setPeople(Array.isArray(response.data) ? response.data : [response.data]);
       } catch (error) {
         console.error("Failed to fetch people:", error);
       }
     };
     fetchPeople();
-  }, [people]);
+  }, []);
 
   const handlePaidByChange = (event) => {
     const selectedUserId = event.target.value;
@@ -261,7 +261,6 @@ const AddExpense = (props) => {
         const response = await axios.get(
           `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
         );
-        console.log(response)
         setAvailablePeople(response.data);
       } catch (error) {
         console.error("Failed to fetch people:", error);
@@ -285,6 +284,8 @@ const AddExpense = (props) => {
       }
     }
   };
+
+  console.log(typeof(selectedPeople))
 
   const handleRemovePerson = (personId) => {
     const person = selectedPeople.find((p) => p.id === personId);
@@ -377,7 +378,7 @@ const AddExpense = (props) => {
               <option value="">Select who paid</option>
               {Array.isArray(people) && people.map((person) => (
                 <option key={person.id} value={person.id}>
-                  {person.first_name}
+                  {person.username}
                 </option>
               ))}
             </select>
@@ -397,7 +398,7 @@ const AddExpense = (props) => {
                     key={person.id}
                     onClick={() => handleSelectPerson(person.id)}
                   >
-                    {person.first_name}
+                    {person.username}
                   </option>
                 ))}
               </select>
@@ -418,14 +419,14 @@ const AddExpense = (props) => {
                 >
                   <img
                     src={person.avatar}
-                    alt={person.first_name}
+                    alt={person.username}
                     style={{
                       width: "30px",
                       height: "30px",
                       marginRight: "10px",
                     }}
                   />
-                  <span>{person.first_name}</span>
+                  <span>{person.username}</span>
                   <button
                     className="remove-button"
                     onClick={() => handleRemovePerson(person.id)}

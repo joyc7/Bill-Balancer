@@ -198,14 +198,18 @@ const Home = ({ isDarkMode }) => {
         <div className="box events-summary">
           <h2 className="heading2">Events Summary</h2>
           <ul className="home-list">
-            {eventsPending.map((event) => (
+            {eventsPending.length > 0 ? (
+              eventsPending.map((event) => (
               <li key={event.id} className="small">
                 <div className="center">
                   <p className="home-expense-text">{event.name}</p>
                   <p className="home-expense-amount">{reformatDate(event.date)}</p>
                 </div>
               </li>
-            ))}
+              ))
+            ) : (
+              <div>No Events Added Yet.</div>
+            )}
           </ul>
           <Link to="/events" className="view-all">
             View All
@@ -233,14 +237,18 @@ const Home = ({ isDarkMode }) => {
         <div className="box friends-pending">
           <h2 className="heading2">Friends Summary</h2>
           <ul className="home-list">
-            {friendsPendingPayment.map((friend) => (
+            {friendsPendingPayment.length > 0 ? (
+              friendsPendingPayment.map((friend) => (
               <li key={friend.id} className="small">
                 <div className="center">
                   <p className="home-expense-text">{friend.username}</p>
                   <p className="home-expense-amount">{friend.balance}</p>
                 </div>
               </li>
-            ))}
+              ))
+            ) : (
+              <div>No Friends Added Yet.</div>
+            )}
           </ul>
           <Link to="/friends" className="view-all">
             View All

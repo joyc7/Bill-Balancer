@@ -285,7 +285,7 @@ function Events({ isDarkMode }) {
 
             <div className="events-list">
                 <ul>
-                    {eventData.events && eventData.events.map(event =>(
+                    {eventData.events && eventData.events.length > 0 ? (eventData.events.map(event =>(
                         <li key = {event._id} className="event-list">
                             <div className="Event-date">
                                 {reformatDate(event.date)}
@@ -297,7 +297,10 @@ function Events({ isDarkMode }) {
                             <button onClick={() => EventClick(event.id)}>View Event</button>
                             </Link>
                         </li>
-                    ))}
+                        ))
+                    ) : (
+                        <div className="no-events-message">Please add your first event!</div>
+                    )}
                 </ul>
             </div>
 
