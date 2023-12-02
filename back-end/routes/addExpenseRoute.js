@@ -31,9 +31,6 @@ router.post(
         const settleTo = req.body.paidBy;
         const settleFrom = split.user;
         let newSettlement;
-        // Debugging: Log the values and types
-        console.log(`settleTo: ${settleTo}, Type: ${typeof settleTo}`);
-        console.log(`settleFrom: ${settleFrom}, Type: ${typeof settleFrom}`);
 
         if (settleTo.toString() === settleFrom._id.toString()) {
           newSettlement = new Settlement({
