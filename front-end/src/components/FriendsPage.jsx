@@ -39,33 +39,53 @@ function FriendsPage({ isDarkMode }) {
         fetchData();
     }, []);
 
+    const [settlements, setSettlements] = useState([]);
     const fetchSettlementsForFriends = async () => {
         if (!userData || !userData.friends) return;
-
-        const settlements = await Promise.all(userData.friends.map(async (friend) => {
+    
+        let settlements = [];
+        for (const friend of userData.friends) {
             try {
                 const fromUserToFriend = await axios.get(`http://localhost:3001/settlement/from/${userData._id}/to/${friend._id}`);
                 const fromFriendToUser = await axios.get(`http://localhost:3001/settlement/from/${friend._id}/to/${userData._id}`);
-
-                return {
-                    friendId: friend,
+    
+                settlements.push({
+                    friend: friend,
                     fromUserToFriend: fromUserToFriend.data,
                     fromFriendToUser: fromFriendToUser.data,
-                };
+                });
             } catch (error) {
-                console.error('Error fetching settlements:', error);
-                return null; 
+                console.error('Error fetching settlements for friend:', friend._id, error);
+                // Optionally, you can push a default value or skip the friend
+                settlements.push({ friend: friend, fromUserToFriend: [], fromFriendToUser: [] });
             }
-        }));
-
-        console.log(settlements); 
+        }
+    
+        console.log(settlements);
+        setSettlements(settlements);
     };
 
     useEffect(() => {
         fetchSettlementsForFriends();
     }, [userData]);
 
-    console.log('typeof userdata is', typeof userData); 
+    const calculateBalances = (items) => {
+        return items.map(item => {
+            const balance = item.fromUserToFriend.reduce((acc, settlement) => acc - settlement.amount, 0)
+                           + item.fromFriendToUser.reduce((acc, settlement) => acc + settlement.amount, 0);
+            return {
+                ...item.friend,
+                balance: balance
+            };
+        });
+    };
+
+    const totalBalance = settlements.reduce((acc, item) => {
+        return acc + item.fromUserToFriend.reduce((sum, settlement) => sum - settlement.amount, 0)
+                     + item.fromFriendToUser.reduce((sum, settlement) => sum + settlement.amount, 0);
+    }, 0);
+    
+    
 
     if (!userData) return <div>Loading...</div>;
 
@@ -80,31 +100,29 @@ function FriendsPage({ isDarkMode }) {
                 <img src={userData.avatar} alt="User Avatar" className="user-avatar"/>
                 <div>
                     <div className="balance-title">Total balance</div>
-                    {/* <div className="balance-details">
-                        {totalBalance < 0 && (
+                    <div className="balance-details">
+                        {totalBalance < 0 ? (
                             <div> You owe ${Math.abs(totalBalance).toFixed(2)}</div>
-                        )}
-                        {totalBalance > 0 && (
+                        ) : totalBalance > 0 ? (
                             <div> You are owed ${totalBalance.toFixed(2)}</div>
-                        )}
-                        {totalBalance === 0 && (
+                        ) : (
                             <div> All Balances are Settled!</div>
                         )}
-                    </div> */}
+                    </div>
                 </div>
             </div>
 
             <div className="friends-list">
                 <ul className='p-6 divide-y divide-slate-200'>
-                    {userData.friends.map((friend) => (
-                        <li key={friend.username} className="friend-item">
+                    {calculateBalances(settlements).map((friend) => (
+                        <li key={friend._id} className="friend-item">
                             <span className='item-name-avatar'>
                                 <img src={friend.avatar} alt={`${friend.username}'s avatar`} className="friend-avatar"/>
                                 <span>{friend.username}</span>
                             </span>
-                            {/* <span className={parseFloat(friend.balance.replace('$', '')) < 0 ? "negative-balance" : "positive-balance"}>
-                                 {friend.balance}
-                            </span> */}
+                            <span className={friend.balance < 0 ? "negative-balance" : "positive-balance"}>
+                                ${friend.balance.toFixed(2)}
+                            </span>
                         </li>
                     ))}
                 </ul>
