@@ -25,22 +25,39 @@ router.post(
     console.log("validation passed");
 
     try {
-
       let splitDetailsWithSettlements = [];
       // Create Settlement objects
       for (const split of req.body.peopleSplit) {
-        if (split.user !== req.body.paidBy) {
-          let newSettlement = new Settlement({
-            status: false,
+        const settleTo = req.body.paidBy;
+        const settleFrom = split.user;
+        let newSettlement;
+        // Debugging: Log the values and types
+        console.log(`settleTo: ${settleTo}, Type: ${typeof settleTo}`);
+        console.log(`settleFrom: ${settleFrom}, Type: ${typeof settleFrom}`);
+
+        if (settleTo.toString() === settleFrom._id.toString()) {
+          newSettlement = new Settlement({
+            status: true,
             amount: split.amount,
-            settleTo: req.body.paidBy,
-            settleFrom: split.user,
+            settleTo: settleTo,
+            settleFrom: settleFrom,
             event: req.body.event,
           });
-          console.log(newSettlement);
-          await newSettlement.save();
-          splitDetailsWithSettlements.push({ user: split.user, settlement: newSettlement._id });
+        } else {
+          newSettlement = new Settlement({
+            status: false,
+            amount: split.amount,
+            settleTo: settleTo,
+            settleFrom: settleFrom,
+            event: req.body.event,
+          });
         }
+        console.log(newSettlement);
+        await newSettlement.save();
+        splitDetailsWithSettlements.push({
+          user: split.user,
+          settlement: newSettlement._id,
+        });
       }
 
       // Create a new Expense object
