@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User.js");
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const { username } = req.query;
   try {
-    const userData = await User.findOne({ username: username }).select("username avatar _id");
+    const userData = await User.findOne({ username: username }).select(
+      "username avatar _id"
+    );
     if (!userData) {
       return res.status(404).send("User not found");
     }
@@ -15,4 +17,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;
