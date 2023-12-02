@@ -22,6 +22,16 @@ function Expense({ isDarkMode }) {
         }
     };
 
+    const settleExpenses = async(settlementId, newStatus) => {
+        try{
+            const response = await axios.post(`http://localhost:3001/expenseStatus/${settlementId}`, {status: newStatus});
+            await console.log('Settlements updated:', response.data);
+        } catch (error) {
+            console.error('Error updating settlements:', error);
+            console.log(error.response.data);
+          }
+    }
+
     useEffect(() => {
         // Toggle the 'body-dark-mode' class on the body element
         if (isDarkMode) {
@@ -45,6 +55,12 @@ function Expense({ isDarkMode }) {
         navigate(-1); 
     };
     
+    const handleSettlementChange = (e, settlementId, newStatus) => {
+        if(e.target.checked){
+            settleExpenses(settlementId, newStatus)
+        }
+    };
+
     return (
         <div className="expense">
             <h1 className="page-title" onClick={handleTitleClick}>
@@ -63,7 +79,13 @@ function Expense({ isDarkMode }) {
                             <div className="expense-item" key={split.settlement._id}>
                                 <span>{split.user.username}</span>
                                 <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount}</span>
-                                <div className="checkbox"><input type="checkbox" name={split.settlement._id} /></div>
+                                <div className="checkbox">
+                                    <input 
+                                        type="checkbox" 
+                                        name={split.settlement._id} 
+                                        onChange={(e) => handleSettlementChange(e, split.settlement._id, true)}
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>
