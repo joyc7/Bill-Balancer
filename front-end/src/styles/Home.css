@@ -56,6 +56,10 @@
   @apply text-gray-600 flex-1 text-right;
 }
 
+.total-spent {
+  @apply text-center font-bold;
+}
+
 .view-all {
   @apply text-center text-sm text-blue-500 mx-auto;
 }
