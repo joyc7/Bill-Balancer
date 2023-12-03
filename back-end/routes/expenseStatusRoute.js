@@ -18,7 +18,6 @@ router.post(
       try {
         const settlementId  = req.params.settlementId;
         const status = req.body.status;
-        console.log("__________________________")
         console.log(status);
 
       const updatedSettlement = await Settlement.findByIdAndUpdate(

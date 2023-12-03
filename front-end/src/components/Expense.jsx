@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Expense.css';
 import axios from "axios";
 import Navbar from "./Navbar";
-import { Link, useNavigate, useParams } from "react-router-dom"; 
+import { useNavigate, useParams } from "react-router-dom"; 
 
 
 function Expense({ isDarkMode }) {
@@ -15,7 +15,7 @@ function Expense({ isDarkMode }) {
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/expense/ExpenseDetail/${expenseId}`);
-            console.log(response.data); 
+            console.log("Fetched Data:", response.data); // Debug
             setExpensesData(response.data);
         }catch(error){
             console.error("There was an error fetching the data:", error);
@@ -25,7 +25,7 @@ function Expense({ isDarkMode }) {
     const settleExpenses = async(settlementId, newStatus) => {
         try{
             const response = await axios.post(`http://localhost:3001/expenseStatus/${settlementId}`, {status: newStatus});
-            await console.log('Settlements updated:', response.data);
+            console.log('Settlements updated:', response.data);
         } catch (error) {
             console.error('Error updating settlements:', error);
             console.log(error.response.data);
@@ -50,15 +50,16 @@ function Expense({ isDarkMode }) {
         fetchData();
     }, []);
 
+    
     {/* navigates to the previous page */}
     const handleTitleClick = () => {
         navigate(-1); 
     };
     
-    const handleSettlementChange = (e, settlementId, newStatus) => {
-        if(e.target.checked){
-            settleExpenses(settlementId, newStatus)
-        }
+    const handleSettlementChange = async (e, settlementId) => {
+        const newStatus = e.target.checked;
+        await settleExpenses(settlementId, newStatus);
+        fetchData();
     };
 
     return (
@@ -75,7 +76,9 @@ function Expense({ isDarkMode }) {
                 
                 {expensesData && (
                     <div className="expense-list">
-                        {expensesData.splitDetails && expensesData.splitDetails.map(split => (
+                        {expensesData.splitDetails && expensesData.splitDetails
+                        .sort((a, b) => a.settlement.status === b.settlement.status ? 0 : a.settlement.status ? 1 : -1)
+                        .map(split => (
                             <div className="expense-item" key={split.settlement._id}>
                                 <span>{split.user.username}</span>
                                 <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount}</span>
@@ -83,7 +86,9 @@ function Expense({ isDarkMode }) {
                                     <input 
                                         type="checkbox" 
                                         name={split.settlement._id} 
-                                        onChange={(e) => handleSettlementChange(e, split.settlement._id, true)}
+                                        checked = {split.settlement.isChecked}
+                                        onChange={(e) => handleSettlementChange(e, split.settlement._id)}
+                                        defaultChecked={split.settlement.status}
                                     />
                                 </div>
                             </div>
