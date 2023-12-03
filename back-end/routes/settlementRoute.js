@@ -27,7 +27,9 @@ router.get("/from/:userId1/to/:userId2", async (req, res) => {
     const settlements = await Settlement.find({
       settleFrom: userId1,
       settleTo: userId2,
-    });
+    })
+      .populate("expense")
+      .populate("event");
 
     res.status(200).json(settlements);
   } catch (error) {

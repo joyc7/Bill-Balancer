@@ -1,0 +1,27 @@
+header {
+  @apply text-2xl font-bold;
+}
+
+.user-avatar {
+  @apply w-20 h-20 rounded-full border-4 border-cyan-300;
+}
+
+.balance {
+  @apply flex space-x-4 items-center p-4 rounded-lg;
+}
+
+.settlements-section {
+  @apply h-64 w-full overflow-auto flex flex-col space-y-4 mt-6 bg-cyan-100 bg-opacity-50;
+}
+
+.settlements-section h3 {
+  @apply text-lg font-bold;
+}
+
+.settlements-section .settlement-label {
+  @apply text-base font-bold;
+}
+
+.settlements-section .settlement-item {
+  @apply flex justify-between items-center p-4 border-b border-gray-200;
+}

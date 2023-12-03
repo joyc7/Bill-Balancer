@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/FriendsPage.css";
 import AddFriendModal from "./AddFriendModal";
 import Navbar from "./Navbar";
@@ -32,7 +33,6 @@ function FriendsPage({ isDarkMode }) {
           `http://localhost:3001/friends/${userId}`
         );
         setUserData(result.data);
-        console.log(result.data);
       } catch (err) {
         console.error(err);
       }
@@ -65,7 +65,6 @@ function FriendsPage({ isDarkMode }) {
           friend._id,
           error
         );
-        // Optionally, you can push a default value or skip the friend
         settlements.push({
           friend: friend,
           fromUserToFriend: [],
@@ -73,8 +72,6 @@ function FriendsPage({ isDarkMode }) {
         });
       }
     }
-
-    console.log(settlements);
     setSettlements(settlements);
   };
 
@@ -86,17 +83,23 @@ function FriendsPage({ isDarkMode }) {
     return items.map((item) => {
       const balance =
         item.fromUserToFriend.reduce(
-          (acc, settlement) => acc - settlement.amount,
+          (acc, settlement) =>
+            acc - (settlement.status === false ? settlement.amount : 0),
           0
         ) +
         item.fromFriendToUser.reduce(
-          (acc, settlement) => acc + settlement.amount,
+          (acc, settlement) =>
+            acc + (settlement.status === false ? settlement.amount : 0),
           0
         );
 
       const settlementIds = [
-        ...item.fromUserToFriend.map((settlement) => settlement._id),
-        ...item.fromFriendToUser.map((settlement) => settlement._id),
+        ...item.fromUserToFriend
+          .filter((settlement) => settlement.status === false)
+          .map((settlement) => settlement._id),
+        ...item.fromFriendToUser
+          .filter((settlement) => settlement.status === false)
+          .map((settlement) => settlement._id),
       ];
 
       return {
@@ -123,8 +126,6 @@ function FriendsPage({ isDarkMode }) {
 
   if (!userData) return <div>Loading...</div>;
 
-  // const totalBalance = userData.friends && userData.friends.length ? userData.friends.reduce((acc, friend) => acc + parseFloat(friend.balance.replace('$', '')), 0) : 0;
-
   return (
     <div className="friends-page">
       <h1 className="page-title">Friends</h1>
@@ -148,29 +149,25 @@ function FriendsPage({ isDarkMode }) {
         <ul className="p-6 divide-y divide-slate-200">
           {calculateBalances(settlements).map((friend) => (
             <li key={friend._id} className="friend-item">
-              <span className="item-name-avatar">
-                <img
-                  src={friend.avatar}
-                  alt={`${friend.username}'s avatar`}
-                  className="friend-avatar"
-                />
-                <span>{friend.username}</span>
-              </span>
-              <div>
-                <span
-                  className={
-                    friend.balance < 0 ? "negative-balance" : "positive-balance"
-                  }
-                >
-                  ${friend.balance.toFixed(2)}
-                </span>
-                <div className="checkbox">
-                  <input
-                    type="checkbox"
-                    name={friend.settlementIds.join(",")}
+              <span>
+                <Link to={`/friend/${friend._id}`} className="item-name-avatar">
+                  <img
+                    src={friend.avatar}
+                    alt={`${friend.username}'s avatar`}
+                    className="friend-avatar"
                   />
-                </div>
-              </div>
+                  <span>{friend.username}</span>
+                </Link>
+              </span>
+              <span
+                className={
+                  friend.balance < 0 ? "negative-balance" : "positive-balance"
+                }
+              >
+                {friend.balance === 0
+                  ? "Settled"
+                  : `$${friend.balance.toFixed(2)}`}
+              </span>
             </li>
           ))}
         </ul>

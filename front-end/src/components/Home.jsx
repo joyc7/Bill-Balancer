@@ -242,6 +242,9 @@ const Home = ({ isDarkMode }) => {
     <div className="home-container">
       <div className="greeting">
         <h1>Welcome, {data.userName}</h1>
+        <p className="total-spent">
+          You have spent ${data.totalSpending.toFixed(2)} in total!
+          </p>
       </div>
       <div className="dashboard">
         <div className="box events-pending">
