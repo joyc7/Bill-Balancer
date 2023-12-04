@@ -54,8 +54,48 @@ function FriendDetailPage({ isDarkMode }) {
     };
   }, [isDarkMode]);
 
+  const settleExpenses = async (settlementId, newStatus) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/expenseStatus/${settlementId}`,
+        { status: newStatus }
+      );
+      console.log("Settlements updated:", response.data);
+    } catch (error) {
+      console.error("Error updating settlements:", error);
+      console.log(error.response.data);
+    }
+  };
+
+  const handleSettlementChange = async (e, settlementId) => {
+    const newStatus = e.target.checked;
+    await settleExpenses(settlementId, newStatus);
+    setSettlements((prevSettlements) => {
+      const updateSettlements = (settlements) => {
+        return settlements.map((settlement) => {
+          if (settlement._id === settlementId) {
+            return { ...settlement, status: newStatus };
+          }
+          return settlement;
+        });
+      };
+      return {
+        fromUserToFriend: updateSettlements(prevSettlements.fromUserToFriend),
+        fromFriendToUser: updateSettlements(prevSettlements.fromFriendToUser),
+      };
+    });
+  };
+
   const renderSettlements = (settlementList, isFromUser) => {
-    return settlementList.map((settlement, index) => {
+    // Sort the settlements: unchecked items first, then checked items
+    const sortedSettlements = [...settlementList].sort((a, b) => {
+      if (a.status === b.status) {
+        return 0; // Keep original order if both have the same status
+      }
+      return a.status ? 1 : -1; // Move checked (true) items to the end
+    });
+
+    return sortedSettlements.map((settlement, index) => {
       const expenseName = settlement.expense?.name || "Unknown";
       return (
         <div key={index} className="settlement-item">
@@ -65,9 +105,14 @@ function FriendDetailPage({ isDarkMode }) {
           <span className={isFromUser ? "negative" : "positive"}>
             {isFromUser ? "-" : "+"}${Math.abs(settlement.amount).toFixed(2)}
           </span>
-          <span className="settlement-status">
-            {settlement.status ? "Settled" : ""}
-          </span>
+          <div className="checkbox">
+            <input
+              type="checkbox"
+              name={settlement._id}
+              checked={settlement.status}
+              onChange={(e) => handleSettlementChange(e, settlement._id)}
+            />
+          </div>
         </div>
       );
     });
