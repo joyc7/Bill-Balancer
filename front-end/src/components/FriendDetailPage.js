@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import "../styles/FriendDetailPage.css";
 
-function FriendDetailPage() {
+function FriendDetailPage({ isDarkMode }) {
   const [settlements, setSettlements] = useState({
     fromUserToFriend: [],
     fromFriendToUser: [],
@@ -40,6 +40,19 @@ function FriendDetailPage() {
 
     fetchSettlements();
   }, [friendId, userId]);
+
+  /* useEffect for controlling DarkMode of the margin around the page */
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("body-dark-mode");
+    } else {
+      document.body.classList.remove("body-dark-mode");
+    }
+    // if not in dark mode, remove this effect
+    return () => {
+      document.body.classList.remove("body-dark-mode");
+    };
+  }, [isDarkMode]);
 
   const renderSettlements = (settlementList, isFromUser) => {
     return settlementList.map((settlement, index) => {
