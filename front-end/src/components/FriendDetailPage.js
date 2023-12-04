@@ -87,12 +87,11 @@ function FriendDetailPage({ isDarkMode }) {
   };
 
   const renderSettlements = (settlementList, isFromUser) => {
-    // Sort the settlements: unchecked items first, then checked items
     const sortedSettlements = [...settlementList].sort((a, b) => {
       if (a.status === b.status) {
-        return 0; // Keep original order if both have the same status
+        return 0;
       }
-      return a.status ? 1 : -1; // Move checked (true) items to the end
+      return a.status ? 1 : -1;
     });
 
     return sortedSettlements.map((settlement, index) => {
@@ -118,25 +117,56 @@ function FriendDetailPage({ isDarkMode }) {
     });
   };
 
-  const calculateTotalBalance = () => {
-    const amountYouOwe = settlements.fromUserToFriend.reduce(
+  const [amountYouOwe, setAmountYouOwe] = useState(0);
+  const [amountFriendOwesYou, setAmountFriendOwesYou] = useState(0);
+
+  useEffect(() => {
+    const calculatedAmountYouOwe = settlements.fromUserToFriend.reduce(
       (total, settlement) => {
-        return settlement.status ? total : total + settlement.amount;
+        return !settlement.status ? total + settlement.amount : total;
       },
       0
     );
 
-    const amountFriendOwesYou = settlements.fromFriendToUser.reduce(
+    const calculatedAmountFriendOwesYou = settlements.fromFriendToUser.reduce(
       (total, settlement) => {
-        return settlement.status ? total : total + settlement.amount;
+        return !settlement.status ? total + settlement.amount : total;
       },
       0
     );
 
-    return { amountYouOwe, amountFriendOwesYou };
+    setAmountYouOwe(calculatedAmountYouOwe);
+    setAmountFriendOwesYou(calculatedAmountFriendOwesYou);
+  }, [settlements]);
+
+  const handleSettleAllClick = async () => {
+    const updateSettlements = (settlements) =>
+      settlements.map((settlement) => ({ ...settlement, status: true }));
+
+    setSettlements({
+      fromUserToFriend: updateSettlements(settlements.fromUserToFriend),
+      fromFriendToUser: updateSettlements(settlements.fromFriendToUser),
+    });
+
+    await updateSettlementsInBackend(true);
   };
 
-  const { amountYouOwe, amountFriendOwesYou } = calculateTotalBalance();
+  const updateSettlementsInBackend = async (newStatus) => {
+    const settlementIds = [
+      ...settlements.fromUserToFriend.map((s) => s._id),
+      ...settlements.fromFriendToUser.map((s) => s._id),
+    ];
+
+    try {
+      await axios.post(`http://localhost:3001/expenseStatus/all`, {
+        settlementIds,
+        status: newStatus,
+      });
+      console.log("All settlements updated");
+    } catch (error) {
+      console.error("Error updating all settlements:", error);
+    }
+  };
 
   // Check if friend is not null before rendering
   if (!friend) {
@@ -172,6 +202,12 @@ function FriendDetailPage({ isDarkMode }) {
         </div>
       </section>
 
+      <div className="settle-all-section">
+        <button id="settle-all-btn" onClick={handleSettleAllClick}>
+          Settle All
+        </button>
+      </div>
+
       <div className="settlements-section">
         <h3>Amount You Owe {friend.username}</h3>
         {renderSettlements(settlements.fromUserToFriend, true)}
@@ -180,6 +216,7 @@ function FriendDetailPage({ isDarkMode }) {
         <h3>Amount {friend.username} Owes You</h3>
         {renderSettlements(settlements.fromFriendToUser, false)}
       </div>
+      <div className="space-to-scroll"></div>
       <Navbar />
     </div>
   );
