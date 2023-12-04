@@ -74,10 +74,11 @@ const Event = (props) => {
             }
           })
         } else {
+          const user = expense.splitDetails.find(split => split.user)
           //user is not the one who paid, find what the user owe to the person who paid
-          const paidBy = expense.splitDetails.find(split => split.user === expense.paidBy);
-          if(paidBy){
-            userBalance = paidBy.settlement.status ? 0 : -paidBy.settlement.amount;
+          //const paidBy = expense.splitDetails.find(split => split.user === expense.paidBy);
+          if(user){
+            userBalance = user.settlement.status ? 0 : -user.settlement.amount;
           }
         }
       } else {
