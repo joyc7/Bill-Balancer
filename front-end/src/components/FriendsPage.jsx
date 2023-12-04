@@ -110,19 +110,16 @@ function FriendsPage({ isDarkMode }) {
     });
   };
 
-  const totalBalance = settlements.reduce((acc, item) => {
-    return (
-      acc +
-      item.fromUserToFriend.reduce(
-        (sum, settlement) => sum - settlement.amount,
-        0
-      ) +
-      item.fromFriendToUser.reduce(
-        (sum, settlement) => sum + settlement.amount,
-        0
-      )
-    );
-  }, 0);
+  let totalOwed = 0;
+  let totalOwing = 0;
+  const balances = calculateBalances(settlements);
+  balances.forEach((friend) => {
+    if (friend.balance < 0) {
+      totalOwed += Math.abs(friend.balance);
+    } else {
+      totalOwing += friend.balance;
+    }
+  });
 
   if (!userData) return <div>Loading...</div>;
 
@@ -134,12 +131,10 @@ function FriendsPage({ isDarkMode }) {
         <div>
           <div className="balance-title">Total balance</div>
           <div className="balance-details">
-            {totalBalance < 0 ? (
-              <div> You owe ${Math.abs(totalBalance).toFixed(2)}</div>
-            ) : totalBalance > 0 ? (
-              <div> You are owed ${totalBalance.toFixed(2)}</div>
-            ) : (
-              <div> All Balances are Settled!</div>
+            {totalOwed > 0 && <div>You owe ${totalOwed.toFixed(2)}</div>}
+            {totalOwing > 0 && <div>You are owed ${totalOwing.toFixed(2)}</div>}
+            {totalOwed === 0 && totalOwing === 0 && (
+              <div>All Balances are Settled!</div>
             )}
           </div>
         </div>
