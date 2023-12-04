@@ -120,7 +120,7 @@ const Login = () => {
             </a>
             <span className="mx-2"> | </span>
             <a href="/forgot-password" className="login-link">
-              Forgot Password
+              Reset Password
             </a>
           </div>
         </div>
