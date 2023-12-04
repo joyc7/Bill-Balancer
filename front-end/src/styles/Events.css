@@ -92,6 +92,12 @@
     min-height: 100vh;
 }
 
+.dark-mode .Event-date {
+    @apply bg-gray-600; 
+    @apply text-white; 
+    @apply opacity-100; 
+}
+
 .dark-mode .add_events_button {
     @apply bg-gray-500 border-gray-600 hover:bg-gray-600 active:bg-gray-700;
 }

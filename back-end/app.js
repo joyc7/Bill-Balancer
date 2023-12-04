@@ -22,6 +22,7 @@ const searchFriendRoute = require("./routes/searchFriendRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const settlementRoute = require("./routes/settlementRoute");
 const expenseStatusRoute = require("./routes/expenseStatusRoute");
+const searchUserInfoRoute = require("./routes/searchUserInfoRoute");
 
 // connect to the database
 // console.log(`Conneting to MongoDB at ${process.env.MONGODB_URI}`)
@@ -60,7 +61,7 @@ app.use("/logout", logoutRoute);
 app.use("/searchFriend", searchFriendRoute);
 app.use("/expense", expenseRoute);
 app.use("/settlement", settlementRoute);
-app.use("/expenseStatus", expenseStatusRoute);
+app.use("/search-user-info", searchUserInfoRoute);
 
 // export the express app we created to make it available to other modules
 module.exports = app;
