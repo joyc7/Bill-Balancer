@@ -10,7 +10,7 @@ const Event = (props) => {
   const [userExpenses, setUserExpenses] = useState([]);
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
-  const [balance, setBalance] = useState(0);
+  //const [balance, setBalance] = useState(0);
   console.log("Event ID:", eventId); // check the eventID received
 
   function reformatDate(dateStr) {
@@ -166,7 +166,7 @@ const Event = (props) => {
         </header>
 
         <section className="description">
-          <p>{data.description}</p>
+          <p>{data.description}</p >
         </section>
 
         <section className="operations">
