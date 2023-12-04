@@ -62,6 +62,7 @@ app.use("/searchFriend", searchFriendRoute);
 app.use("/expense", expenseRoute);
 app.use("/settlement", settlementRoute);
 app.use("/search-user-info", searchUserInfoRoute);
+app.use("/expenseStatus", expenseStatusRoute);
 
 // export the express app we created to make it available to other modules
 module.exports = app;
