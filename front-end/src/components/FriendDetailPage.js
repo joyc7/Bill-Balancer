@@ -62,13 +62,19 @@ function FriendDetailPage() {
 
   const calculateTotalBalance = () => {
     const amountYouOwe = settlements.fromUserToFriend.reduce(
-      (total, settlement) => total + settlement.amount,
+      (total, settlement) => {
+        return settlement.status ? total : total + settlement.amount;
+      },
       0
     );
+
     const amountFriendOwesYou = settlements.fromFriendToUser.reduce(
-      (total, settlement) => total + settlement.amount,
+      (total, settlement) => {
+        return settlement.status ? total : total + settlement.amount;
+      },
       0
     );
+
     return { amountYouOwe, amountFriendOwesYou };
   };
 
@@ -92,12 +98,18 @@ function FriendDetailPage() {
         <div>
           <div className="balance-title">Balance Overview</div>
           <div className="balance-amounts">
-            <div className="amount-you-owe">
-              You owe: ${amountYouOwe.toFixed(2)}
-            </div>
-            <div className="amount-friend-owes-you">
-              {friend.username} owes: ${amountFriendOwesYou.toFixed(2)}
-            </div>
+            {amountYouOwe === 0 && amountFriendOwesYou === 0 ? (
+              <div className="balance-settled">Your balances are settled!</div>
+            ) : (
+              <>
+                <div className="amount-you-owe">
+                  You owe: ${amountYouOwe.toFixed(2)}
+                </div>
+                <div className="amount-friend-owes-you">
+                  {friend.username} owes: ${amountFriendOwesYou.toFixed(2)}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -107,7 +119,7 @@ function FriendDetailPage() {
         {renderSettlements(settlements.fromUserToFriend, true)}
       </div>
       <div className="settlements-section">
-        <h3>Amount {friend.username} Owe You</h3>
+        <h3>Amount {friend.username} Owes You</h3>
         {renderSettlements(settlements.fromFriendToUser, false)}
       </div>
       <Navbar />
