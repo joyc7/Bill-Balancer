@@ -25,3 +25,23 @@ header {
 .settlements-section .settlement-item {
   @apply flex justify-between items-center p-4 border-b border-gray-200;
 }
+
+/* Dark Mode for Friend Detail Page */
+.dark-mode #friend-detail-page {
+  @apply bg-gray-800 text-white; /* add dark mode to the outter most background on the page (area around the container) */
+}
+
+.dark-mode .balance {
+  @apply bg-gray-700;
+}
+
+.dark-mode .user-avatar {
+  @apply border-cyan-600;
+}
+
+.dark-mode .settlements-section {
+  @apply bg-gray-700 mb-4;
+}
+
+
+
