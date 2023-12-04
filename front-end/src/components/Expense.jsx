@@ -48,7 +48,7 @@ function Expense({ isDarkMode }) {
     return (
         <div className="expense">
             <h1 className="page-title" onClick={handleTitleClick}>
-                {expensesData.event ? expensesData.event.name : 'Loading...'} | 
+                {expensesData.event ? expensesData.event.name : 'Loading...'}| 
                 {expensesData.name ? expensesData.name : 'Loading...'}            
             </h1>
             <div className="buttons">

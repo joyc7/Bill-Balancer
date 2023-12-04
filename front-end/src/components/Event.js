@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import "../styles/Event.css";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
+import { jwtDecode } from "jwt-decode";
 
 const Event = (props) => {
   const [data, setData] = useState([]);
+  const [userExpenses, setUserExpenses] = useState([]);
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
   console.log("Event ID:", eventId); // check the eventID received
@@ -45,6 +47,35 @@ const Event = (props) => {
       document.body.classList.remove("body-dark-mode");
     };
   }, [isDarkMode]);
+
+  const processUserExpenses = (expenses, userId) => {
+    const processedExpenses = expenses.map((expense) => {
+      const isParticipant = expense.splitDetails.find(
+        (detail) => detail.user === userId
+      );
+      let settlement;
+
+      if (isParticipant) {
+        // User is a participant, find the settlement from splitDetails
+        const userSplitDetail = expense.splitDetails.find(
+          (detail) => detail.user === userId
+        );
+        settlement = userSplitDetail
+          ? userSplitDetail.settlement
+          : { amount: 0 }; // Add other fields as needed
+      } else {
+        // User is not a participant, create a settlement object with amount 0
+        settlement = { amount: 0 };
+      }
+
+      return {
+        expense: expense,
+        settlement: settlement,
+      };
+    });
+
+    setUserExpenses(processedExpenses);
+  };
 
   useEffect(() => {
     // fetch some mock data about expense
@@ -95,6 +126,14 @@ const Event = (props) => {
     fetchEvent();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const currentUser = jwtDecode(token);
+    if (data.expenses && currentUser) {
+      processUserExpenses(data.expenses, currentUser.id);
+    }
+  }, [data]);
+
   return (
     <div className="event-page-container">
       {" "}
@@ -118,25 +157,27 @@ const Event = (props) => {
         </section>
 
         <section className="expenses">
-          {data.expenses &&
-            data.expenses.map((item) => (
-              <div className="expenseItem" key={item._id}>
-                <div className="date">{reformatDate(item.date)}</div>
+          {userExpenses &&
+            userExpenses.map((item) => (
+              <div className="expenseItem" key={item.expense._id}>
+                <div className="date">{reformatDate(item.expense.date)}</div>
                 <div className="name">
-                  <Link to={`/expense/${item._id}`}>
-                    <div>{item.name}</div>
+                  <Link to={`/expense/${item.expense._id}`}>
+                    <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.totalAmount}</div>
+                <div className="amount">${item.settlement.amount}</div>
                 <div className="checkbox">
-                  <input type="checkbox" name={item.id} />
+                  <input type="checkbox" name={item.settlement._id} />
                 </div>
               </div>
             ))}
         </section>
 
         <div className="addExpenseBtnDiv">
-          <Link to={`/add-expense/${eventId}`} className="btn addExpenseBtn"> {/* <Link to="/add-expense" className="btn addExpenseBtn"> */}
+          <Link to={`/add-expense/${eventId}`} className="btn addExpenseBtn">
+            {" "}
+            {/* <Link to="/add-expense" className="btn addExpenseBtn"> */}
             Add Expense
           </Link>
         </div>
