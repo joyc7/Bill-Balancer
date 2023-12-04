@@ -91,7 +91,9 @@ function App() {
               />
             }
           />
-          <Route path="/friend/:friendId" element={<FriendDetailPage />} />
+          <Route path="/friend/:friendId" element={<FriendDetailPage
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode} />} />
         </Routes>
       </Router>
     </div>
