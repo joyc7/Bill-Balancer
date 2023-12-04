@@ -20,7 +20,6 @@ function Expense({ isDarkMode }) {
             const processedData = processExpenses(response.data, currentuserId);
             setExpensesData(response.data);
             setFilteredData(processedData);
-            console.log(":", processedData)
         }catch(error){
             console.error("There was an error fetching the data:", error);
         }
@@ -69,9 +68,9 @@ function Expense({ isDarkMode }) {
         let filteredExpenses =[];
 
         if(expensesData.paidBy._id === userId){
-            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId).map(split => ({ ...split, displayName: split.user.username }));
+            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId).map(split => ({ ...split, displayName: split.user.username, amount: split.settlement.amount}));
         }else{
-            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId).map(split => ({ ...split, displayName: expensesData.paidBy.username }));;
+            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId).map(split => ({ ...split, displayName: expensesData.paidBy.username, amount: -split.settlement.amount}));;
         }
         return filteredExpenses;
     }
@@ -106,7 +105,7 @@ function Expense({ isDarkMode }) {
                         .map(split => (
                             <div className="expense-item" key={split.settlement._id}>
                                 <span>{split.displayName}</span>
-                                <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount.toFixed(2)}</span>
+                                <span className={parseFloat(split.amount) > 0 ? 'positive' : 'negative'}>{split.amount.toFixed(2)}</span>
                                 <div className="checkbox">
                                     <input 
                                         type="checkbox" 
