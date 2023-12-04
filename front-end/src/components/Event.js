@@ -10,13 +10,14 @@ const Event = (props) => {
   const [userExpenses, setUserExpenses] = useState([]);
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
+  const [balance, setBalance] = useState(0);
   console.log("Event ID:", eventId); // check the eventID received
 
   function reformatDate(dateStr) {
     const months = [
       "Jan",
       "Feb",
-      "Mar",
+      "Mar", 
       "Apr",
       "May",
       "Jun",
@@ -53,28 +54,44 @@ const Event = (props) => {
       const isParticipant = expense.splitDetails.find(
         (detail) => detail.user === userId
       );
-      let settlement;
+      //let settlement;
+      let userBalance = 0;
 
       if (isParticipant) {
         // User is a participant, find the settlement from splitDetails
+        /*
         const userSplitDetail = expense.splitDetails.find(
           (detail) => detail.user === userId
         );
         settlement = userSplitDetail
           ? userSplitDetail.settlement
           : { amount: 0 }; // Add other fields as needed
+          */
+        if(expense.paidBy === userId){
+          expense.splitDetails.forEach(split =>{
+            if(!split.settlement.status){
+              userBalance += split.settlement.amount;
+            }
+          })
+        } else {
+          //user is not the one who paid, find what the user owe to the person who paid
+          const paidBy = expense.splitDetails.find(split => split.user === expense.paidBy);
+          if(paidBy){
+            userBalance = paidBy.settlement.status ? 0 : -paidBy.settlement.amount;
+          }
+        }
       } else {
         // User is not a participant, create a settlement object with amount 0
-        settlement = { amount: 0 };
+        userBalance = 0 ;
       }
 
       return {
         expense: expense,
-        settlement: settlement,
+        settlement: userBalance,
       };
     });
 
-    setUserExpenses(processedExpenses);
+    return processedExpenses;
   };
 
   useEffect(() => {
@@ -129,8 +146,10 @@ const Event = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const currentUser = jwtDecode(token);
+    //const currentUserId = currentUser.id;
     if (data.expenses && currentUser) {
-      processUserExpenses(data.expenses, currentUser.id);
+      const processedExpenses = processUserExpenses(data.expenses, currentUser.id);
+      setUserExpenses(processedExpenses)
     }
   }, [data]);
 
@@ -166,10 +185,7 @@ const Event = (props) => {
                     <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.settlement.amount}</div>
-                <div className="checkbox">
-                  <input type="checkbox" name={item.settlement._id} />
-                </div>
+                <div className="amount">${item.settlement}</div>
               </div>
             ))}
         </section>

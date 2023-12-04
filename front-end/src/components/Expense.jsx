@@ -5,10 +5,11 @@ import '../styles/Expense.css';
 import axios from "axios";
 import Navbar from "./Navbar";
 import { useNavigate, useParams } from "react-router-dom"; 
-
+import { jwtDecode } from "jwt-decode";
 
 function Expense({ isDarkMode }) {
     const [expensesData, setExpensesData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const navigate = useNavigate();
     const { expenseId } = useParams();
 
@@ -16,7 +17,9 @@ function Expense({ isDarkMode }) {
         try {
             const response = await axios.get(`http://localhost:3001/expense/ExpenseDetail/${expenseId}`);
             console.log("Fetched Data:", response.data); // Debug
+            const processedData = processExpenses(response.data, currentuserId);
             setExpensesData(response.data);
+            setFilteredData(processedData);
         }catch(error){
             console.error("There was an error fetching the data:", error);
         }
@@ -50,6 +53,27 @@ function Expense({ isDarkMode }) {
         fetchData();
     }, []);
 
+    const token = localStorage.getItem("token")
+    const currentUser = jwtDecode(token);
+    const currentuserId = currentUser.id
+
+    const processExpenses = (expensesData, userId) =>{
+        const isParticipant = expensesData.splitDetails.some(split => split.user._id === userId);
+
+        if (!isParticipant) {
+            // If not a participant, return an empty array or another appropriate value
+            return [];
+        }
+    
+        let filteredExpenses;
+
+        if(expensesData.paidBy === userId){
+            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId)
+        }else{
+            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId);
+        }
+        return filteredExpenses;
+    }
     
     {/* navigates to the previous page */}
     const handleTitleClick = () => {
@@ -76,11 +100,11 @@ function Expense({ isDarkMode }) {
                 
                 {expensesData && (
                     <div className="expense-list">
-                        {expensesData.splitDetails && expensesData.splitDetails
+                        {filteredData && filteredData
                         .sort((a, b) => a.settlement.status === b.settlement.status ? 0 : a.settlement.status ? 1 : -1)
                         .map(split => (
                             <div className="expense-item" key={split.settlement._id}>
-                                <span>{split.user.username}</span>
+                                <span>{split.user?.username || 'Unknown User'}</span>
                                 <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount}</span>
                                 <div className="checkbox">
                                     <input 
