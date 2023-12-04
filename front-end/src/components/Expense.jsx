@@ -105,7 +105,7 @@ function Expense({ isDarkMode }) {
                         .map(split => (
                             <div className="expense-item" key={split.settlement._id}>
                                 <span>{split.user?.username || 'Unknown User'}</span>
-                                <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount}</span>
+                                <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount.toFixed(2)}</span>
                                 <div className="checkbox">
                                     <input 
                                         type="checkbox" 

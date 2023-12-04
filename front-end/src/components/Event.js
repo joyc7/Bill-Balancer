@@ -66,7 +66,7 @@ const Event = (props) => {
         settlement = userSplitDetail
           ? userSplitDetail.settlement
           : { amount: 0 }; // Add other fields as needed
-          */
+        */
         if(expense.paidBy === userId){
           expense.splitDetails.forEach(split =>{
             if(!split.settlement.status){
@@ -186,7 +186,7 @@ const Event = (props) => {
                     <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.settlement}</div>
+                <div className="amount">${item.settlement.toFixed(2)}</div>
               </div>
             ))}
         </section>
