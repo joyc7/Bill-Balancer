@@ -19,6 +19,10 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     setMessage("");
   };
 
+  const redirectToForgotPassword = () => {
+    navigate('/forgot-password');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -106,7 +110,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
                     <span className="slider round"></span>
                   </label>
                 </li>
-                <li className="setting-item">Password</li>
+                <li className="setting-item" onClick={redirectToForgotPassword} style={{cursor: 'pointer'}}> Reset Password</li>
                 <button onClick={handleLogout} className="logout">
                   Logout
                 </button>
