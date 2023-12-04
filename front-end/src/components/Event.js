@@ -74,7 +74,7 @@ const Event = (props) => {
             }
           })
         } else {
-          const user = expense.splitDetails.find(split => split.user)
+          const user = expense.splitDetails.find(split => split.user === userId)
           //user is not the one who paid, find what the user owe to the person who paid
           //const paidBy = expense.splitDetails.find(split => split.user === expense.paidBy);
           if(user){
