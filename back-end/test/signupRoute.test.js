@@ -12,13 +12,14 @@ describe("POST for Signup", () => {
         .request(app)
         .post("/signup")
         .send({
-          email: "wrongnewtest01@gmail9.com",
-          username: "wrongnewtestuser019",
+          email: "wrongnewtest01@gmail129.com",
+          username: "wrongnewtestuser01129",
           password: "wrongnewtestpassword",
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.a("object");
+          expect(res.body).to.have.property("success", true);
           expect(res.body).to.have.property("message");
           done();
         });
@@ -26,7 +27,7 @@ describe("POST for Signup", () => {
   });
 
   describe("POST /signup", () => {
-    it("should return a unsuccess response", (done) => {
+    it("should return a unsuccessful response", (done) => {
       chai
         .request(app)
         .post("/signup")
@@ -38,6 +39,7 @@ describe("POST for Signup", () => {
         .end((err, res) => {
           expect(res).to.have.status(409);
           expect(res.body).to.be.a("object");
+          expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("message");
           done();
         });

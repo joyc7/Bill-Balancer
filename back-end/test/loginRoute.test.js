@@ -17,6 +17,7 @@ describe("POST for Login", () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.a("object");
+          expect(res.body).to.have.property("success", true);
           expect(res.body).to.have.property("message");
           done();
         });
@@ -32,6 +33,7 @@ describe("POST for Login", () => {
         .end((err, res) => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.a("object");
+          expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("message");
           done();
         });
