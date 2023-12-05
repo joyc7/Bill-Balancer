@@ -58,7 +58,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         const decoded = jwtDecode(token);
         const userId = decoded.id;
         const result = await axios.get(
-          `http://localhost:3001/user-info/${userId}`
+          `${process.env.REACT_APP_BACKEND}/user-info/${userId}`
         );
         setData({
           ...result.data,

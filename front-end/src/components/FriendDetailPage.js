@@ -20,13 +20,13 @@ function FriendDetailPage({ isDarkMode }) {
     const fetchSettlements = async () => {
       try {
         const friendInfo = await axios.get(
-          `http://localhost:3001/search-user-info/${friendId}`
+          `${process.env.REACT_APP_BACKEND}/search-user-info/${friendId}`
         );
         const fromUserToFriend = await axios.get(
-          `http://localhost:3001/settlement/from/${userId}/to/${friendId}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${userId}/to/${friendId}`
         );
         const fromFriendToUser = await axios.get(
-          `http://localhost:3001/settlement/from/${friendId}/to/${userId}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${friendId}/to/${userId}`
         );
         setFriend(friendInfo.data);
         setSettlements({
@@ -57,7 +57,7 @@ function FriendDetailPage({ isDarkMode }) {
   const settleExpenses = async (settlementId, newStatus) => {
     try {
       const response = await axios.post(
-        `http://localhost:3001/expenseStatus/${settlementId}`,
+        `${process.env.REACT_APP_BACKEND}/expenseStatus/${settlementId}`,
         { status: newStatus }
       );
       console.log("Settlements updated:", response.data);
@@ -158,7 +158,7 @@ function FriendDetailPage({ isDarkMode }) {
     ];
 
     try {
-      await axios.post(`http://localhost:3001/expenseStatus/all`, {
+      await axios.post(`${process.env.REACT_APP_BACKEND}/expenseStatus/all`, {
         settlementIds,
         status: newStatus,
       });

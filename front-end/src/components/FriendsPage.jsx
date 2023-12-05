@@ -44,7 +44,7 @@ function FriendsPage({ isDarkMode }) {
         const currentUser = jwtDecode(token);
         const userId = currentUser.id;
         const result = await axios.get(
-          `http://localhost:3001/friends/${userId}`
+          `${process.env.REACT_APP_BACKEND}/friends/${userId}`
         );
         setUserData(result.data);
       } catch (err) {
@@ -62,10 +62,10 @@ function FriendsPage({ isDarkMode }) {
     for (const friend of userData.friends) {
       try {
         const fromUserToFriend = await axios.get(
-          `http://localhost:3001/settlement/from/${userData._id}/to/${friend._id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${userData._id}/to/${friend._id}`
         );
         const fromFriendToUser = await axios.get(
-          `http://localhost:3001/settlement/from/${friend._id}/to/${userData._id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${friend._id}/to/${userData._id}`
         );
 
         settlements.push({

@@ -49,7 +49,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/", formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND}/`, formData, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -208,7 +208,7 @@ const AddExpense = (props) => {
     console.log(submissionData);
     try {
       const response = await axios.post(
-        "http://localhost:3001/add-expense",
+        `${process.env.REACT_APP_BACKEND}/add-expense`,
         submissionData
       );
       // after adding an expense, navigate back to the event
@@ -233,7 +233,7 @@ const AddExpense = (props) => {
     const fetchPeople = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
+          `${process.env.REACT_APP_BACKEND}/addExpensePayer/EventMember/${eventId}`
         );
         setPeople(
           Array.isArray(response.data) ? response.data : [response.data]
@@ -284,7 +284,7 @@ const AddExpense = (props) => {
     const fetchAvailablePeople = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/addExpensePayer/EventMember/${eventId}`
+          `${process.env.REACT_APP_BACKEND}/addExpensePayer/EventMember/${eventId}`
         );
         setAvailablePeople(response.data);
       } catch (error) {
