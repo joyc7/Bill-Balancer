@@ -121,6 +121,16 @@ function FriendsPage({ isDarkMode }) {
     }
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredSettlements = searchTerm
+    ? settlements.filter((settlement) =>
+        settlement.friend.username
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      )
+    : settlements;
+
   if (!userData) return <div>Loading...</div>;
 
   return (
@@ -140,31 +150,55 @@ function FriendsPage({ isDarkMode }) {
         </div>
       </div>
 
+      <input
+        type="text"
+        placeholder="Search for a friend..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="mt-4 search-input"
+      />
+
       <div className="friends-list">
         <ul className="p-6 divide-y divide-slate-200">
-          {calculateBalances(settlements).map((friend) => (
-            <li key={friend._id} className="friend-item">
-              <span>
-                <Link to={`/friend/${friend._id}`} className="item-name-avatar">
-                  <img
-                    src={friend.avatar}
-                    alt={`${friend.username}'s avatar`}
-                    className="friend-avatar"
-                  />
-                  <span>{friend.username}</span>
-                </Link>
-              </span>
-              <span
-                className={
-                  friend.balance < 0 ? "negative-balance" : "positive-balance"
-                }
-              >
-                {friend.balance === 0
-                  ? "Settled"
-                  : `$${friend.balance.toFixed(2)}`}
-              </span>
-            </li>
-          ))}
+          {filteredSettlements.map((settlement) => {
+            // Calculate balance for each friend
+            const balance =
+              settlement.fromUserToFriend.reduce(
+                (acc, transaction) =>
+                  acc - (transaction.status === false ? transaction.amount : 0),
+                0
+              ) +
+              settlement.fromFriendToUser.reduce(
+                (acc, transaction) =>
+                  acc + (transaction.status === false ? transaction.amount : 0),
+                0
+              );
+
+            return (
+              <li key={settlement.friend._id} className="friend-item">
+                <span>
+                  <Link
+                    to={`/friend/${settlement.friend._id}`}
+                    className="item-name-avatar"
+                  >
+                    <img
+                      src={settlement.friend.avatar}
+                      alt={`${settlement.friend.username}'s avatar`}
+                      className="friend-avatar"
+                    />
+                    <span>{settlement.friend.username}</span>
+                  </Link>
+                </span>
+                <span
+                  className={
+                    balance < 0 ? "negative-balance" : "positive-balance"
+                  }
+                >
+                  {balance === 0 ? "Settled" : `$${balance.toFixed(2)}`}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
