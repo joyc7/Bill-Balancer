@@ -8,6 +8,7 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
 
     const expenseSplit = await Expense.findById(expenseId)
       .populate("event")
+      .populate('paidBy', 'username')
       .populate({
         path: "splitDetails",
         populate: {

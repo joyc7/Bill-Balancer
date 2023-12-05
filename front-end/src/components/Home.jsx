@@ -15,84 +15,6 @@ const Home = ({ isDarkMode }) => {
   });
   const [expenseSummary, setExpenseSummary] = useState([]);
 
-  /* backupData from Expenses, Events, Friends.jsx */
-  const backupData = {
-    userName: "Bryn",
-    totalSpending: 0,
-    expenses: [
-      {
-        id: 1,
-        name: "Lunch",
-        amount: 358,
-        creator: "Jane",
-        date: "06/16/2023",
-      },
-      {
-        id: 2,
-        name: "Flights to LA",
-        amount: 261,
-        creator: "Tom",
-        date: "01/21/2023",
-      },
-      {
-        id: 3,
-        name: "Hotels",
-        amount: 170,
-        creator: "David",
-        date: "08/02/2023",
-      },
-    ],
-    events: [
-      {
-        id: 1,
-        EventName: "Cooro",
-        Date: "06/16/2023",
-        balance: "$358.00",
-        description: "Lunch at local restaurant",
-        members: [{ names: "Jane" }, { names: "John" }],
-      },
-      {
-        id: 2,
-        EventName: "Kobe",
-        Date: "01/21/2023",
-        balance: "$262.00",
-        description: "Flight tickets for LA trip",
-        members: [{ names: "Tom" }, { names: "Lucy" }],
-      },
-      {
-        id: 3,
-        EventName: "Cuiji",
-        Date: "08/02/2023",
-        balance: "$170.00",
-        description: "Accommodation expenses",
-        members: [{ names: "David" }, { names: "Sarah" }],
-      },
-    ],
-    friends: [
-      {
-        id: 2,
-        name: "Jdavie",
-        email: "jzecchinii0@yahoo.co.jp",
-        phone: "967-156-0272",
-        balance: "$57.06",
-      },
-      {
-        id: 4,
-        name: "Emmie",
-        email: "esworder1@xinhuanet.com",
-        phone: "832-141-0597",
-        balance: "$60.04",
-      },
-      {
-        id: 5,
-        name: "Jason",
-        email: "jsathep@pehisbd.com",
-        phone: "212-121-0437",
-        balance: "$70.41",
-      },
-    ],
-  };
-
   function reformatDate(dateStr) {
     const months = [
       "Jan",
@@ -201,7 +123,6 @@ const Home = ({ isDarkMode }) => {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        setData(backupData); // set to backup data in case of error
       }
     };
 
@@ -220,6 +141,95 @@ const Home = ({ isDarkMode }) => {
     });
     return total;
   }
+
+  /* For Friends summary */
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const currentUser = jwtDecode(token);
+        const userId = currentUser.id;
+        const result = await axios.get(
+          `http://localhost:3001/friends/${userId}`
+        );
+        setUserData(result.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const [settlements, setSettlements] = useState([]);
+  const fetchSettlementsForFriends = async () => {
+    if (!userData || !userData.friends) return;
+
+    let settlements = [];
+    for (const friend of userData.friends) {
+      try {
+        const fromUserToFriend = await axios.get(
+          `http://localhost:3001/settlement/from/${userData._id}/to/${friend._id}`
+        );
+        const fromFriendToUser = await axios.get(
+          `http://localhost:3001/settlement/from/${friend._id}/to/${userData._id}`
+        );
+
+        settlements.push({
+          friend: friend,
+          fromUserToFriend: fromUserToFriend.data,
+          fromFriendToUser: fromFriendToUser.data,
+        });
+      } catch (error) {
+        console.error(
+          "Error fetching settlements for friend:",
+          friend._id,
+          error
+        );
+        settlements.push({
+          friend: friend,
+          fromUserToFriend: [],
+          fromFriendToUser: [],
+        });
+      }
+    }
+    setSettlements(settlements);
+  };
+
+  useEffect(() => {
+    fetchSettlementsForFriends();
+  }, [userData]);
+
+  const calculateBalances = (items) => {
+    return items.map((item) => {
+      const balance =
+        item.fromUserToFriend.reduce(
+          (acc, settlement) =>
+            acc - (settlement.status === false ? settlement.amount : 0),
+          0
+        ) +
+        item.fromFriendToUser.reduce(
+          (acc, settlement) =>
+            acc + (settlement.status === false ? settlement.amount : 0),
+          0
+        );
+
+      const settlementIds = [
+        ...item.fromUserToFriend
+          .filter((settlement) => settlement.status === false)
+          .map((settlement) => settlement._id),
+        ...item.fromFriendToUser
+          .filter((settlement) => settlement.status === false)
+          .map((settlement) => settlement._id),
+      ];
+
+      return {
+        ...item.friend,
+        balance: balance,
+        settlementIds: settlementIds,
+      };
+    });
+  };
 
   /* useEffect for controlling DarkMode of the margin around the page */
   useEffect(() => {
@@ -244,7 +254,7 @@ const Home = ({ isDarkMode }) => {
         <h1>Welcome, {data.userName}</h1>
         <p className="total-spent">
           You have spent ${data.totalSpending.toFixed(2)} in total!
-          </p>
+        </p>
       </div>
       <div className="dashboard">
         <div className="box events-pending">
@@ -288,18 +298,18 @@ const Home = ({ isDarkMode }) => {
         <div className="box friends-pending">
           <h2 className="heading2">Friends Summary</h2>
           <ul className="home-list">
-            {friendsPendingPayment.length > 0 ? (
-              friendsPendingPayment.map((friend) => (
-                <li key={friend._id} className="small">
-                  <div className="center">
-                    <p className="home-expense-text">{friend.username}</p>
-                    <p className="home-expense-amount">{friend.balance}</p>
-                  </div>
-                </li>
-              ))
-            ) : (
-              <div>No Friends Added Yet.</div>
-            )}
+            {calculateBalances(settlements).map((friend) => (
+              <li key={friend._id} className="small">
+                <div className="center">
+                  <p className="home-expense-text">{friend.username}</p>
+                  <p className="home-expense-amount">
+                    {friend.balance === 0
+                      ? "Settled"
+                      : `$${friend.balance.toFixed(2)}`}
+                  </p>
+                </div>
+              </li>
+            ))}
           </ul>
           <Link to="/friends" className="view-all">
             View All
