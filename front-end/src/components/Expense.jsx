@@ -14,26 +14,15 @@ function Expense({ isDarkMode }) {
   const { expenseId } = useParams();
 
   function reformatDate(dateStr) {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const date = new Date(dateStr);
+  
     const monthName = months[date.getMonth()];
     const day = date.getDate();
+    const year = date.getFullYear();
 
-    return `${monthName} ${day}`;
-  }
+    return `${monthName} ${day} ${year}`;
+}
 
   const fetchData = async () => {
     try {
@@ -44,6 +33,7 @@ function Expense({ isDarkMode }) {
       const processedData = processExpenses(response.data, currentuserId);
       setExpensesData(response.data);
       setFilteredData(processedData);
+      console.log(":", processedData);
     } catch (error) {
       console.error("There was an error fetching the data:", error);
     }
@@ -70,55 +60,9 @@ function Expense({ isDarkMode }) {
       document.body.classList.remove("body-dark-mode");
     }
 
-    useEffect(() => {
-        // Toggle the 'body-dark-mode' class on the body element
-        if (isDarkMode) {
-            document.body.classList.add('body-dark-mode');
-        } else {
-            document.body.classList.remove('body-dark-mode');
-        }
-        
-        // Clean up function to remove the class when the component unmounts or when dark mode is turned off
-        return () => {
-            document.body.classList.remove('body-dark-mode');
-        };
-    }, [isDarkMode]);
-    
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const token = localStorage.getItem("token")
-    const currentUser = jwtDecode(token);
-    const currentuserId = currentUser.id
-
-    const processExpenses = (expensesData, userId) =>{
-        const isParticipant = expensesData.splitDetails.some(split => split.user._id === userId);
-
-        if (!isParticipant) {
-            // If not a participant, return an empty array or another appropriate value
-            return [];
-        }
-    
-        let filteredExpenses =[];
-
-        if(expensesData.paidBy._id === userId){
-            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId).map(split => ({ ...split, displayName: split.user.username }));
-        }else{
-            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId).map(split => ({ ...split, displayName: expensesData.paidBy.username }));;
-        }
-        return filteredExpenses;
-    }
-    
-    {/* navigates to the previous page */}
-    const handleTitleClick = () => {
-        navigate(-1); 
-    };
-    
-    const handleSettlementChange = async (e, settlementId) => {
-        const newStatus = e.target.checked;
-        await settleExpenses(settlementId, newStatus);
-        fetchData();
+    // Clean up function to remove the class when the component unmounts or when dark mode is turned off
+    return () => {
+      document.body.classList.remove("body-dark-mode");
     };
   }, [isDarkMode]);
 
@@ -140,16 +84,21 @@ function Expense({ isDarkMode }) {
       return [];
     }
 
-    let filteredExpenses;
+    let filteredExpenses = [];
 
-    if (expensesData.paidBy === userId) {
-      filteredExpenses = expensesData.splitDetails.filter(
-        (split) => split.user._id !== userId
-      );
+    if (expensesData.paidBy._id === userId) {
+      filteredExpenses = expensesData.splitDetails
+        .filter((split) => split.user._id !== userId)
+        .map((split) => ({ ...split, displayName: split.user.username }));
     } else {
-      filteredExpenses = expensesData.splitDetails.filter(
-        (split) => split.user._id === userId && expensesData.paidBy !== userId
-      );
+      filteredExpenses = expensesData.splitDetails
+        .filter(
+          (split) => split.user._id === userId && expensesData.paidBy !== userId
+        )
+        .map((split) => ({
+          ...split,
+          displayName: expensesData.paidBy.username,
+        }));
     }
     return filteredExpenses;
   };
@@ -184,29 +133,45 @@ function Expense({ isDarkMode }) {
         </div>
       </div>
       <div className="expense-container">
-                
-      {expensesData && (
+        {expensesData && (
           <div className="expense-list">
-              {filteredData && filteredData
-              .sort((a, b) => a.settlement.status === b.settlement.status ? 0 : a.settlement.status ? 1 : -1)
-              .map(split => (
+            {filteredData &&
+              filteredData
+                .sort((a, b) =>
+                  a.settlement.status === b.settlement.status
+                    ? 0
+                    : a.settlement.status
+                    ? 1
+                    : -1
+                )
+                .map((split) => (
                   <div className="expense-item" key={split.settlement._id}>
-                      <span>{split.displayName}</span>
-                      <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount.toFixed(2)}</span>
-                      <div className="checkbox">
-                          <input 
-                              type="checkbox" 
-                              name={split.settlement._id} 
-                              checked = {split.settlement.isChecked}
-                              onChange={(e) => handleSettlementChange(e, split.settlement._id)}
-                              defaultChecked={split.settlement.status}
-                          />
-                      </div>
+                    <span>{split.displayName}</span>
+                    <span
+                      className={
+                        parseFloat(split.settlement.amount) > 0
+                          ? "positive"
+                          : "negative"
+                      }
+                    >
+                      {split.settlement.amount.toFixed(2)}
+                    </span>
+                    <div className="checkbox">
+                      <input
+                        type="checkbox"
+                        name={split.settlement._id}
+                        checked={split.settlement.isChecked}
+                        onChange={(e) =>
+                          handleSettlementChange(e, split.settlement._id)
+                        }
+                        defaultChecked={split.settlement.status}
+                      />
+                    </div>
                   </div>
-              ))}
+                ))}
           </div>
-      )}
-  </div>
+        )}
+      </div>
       <Navbar />
     </div>
   );
