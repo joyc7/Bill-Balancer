@@ -21,6 +21,7 @@ const logoutRoute = require("./routes/logoutRoute");
 const searchFriendRoute = require("./routes/searchFriendRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const settlementRoute = require("./routes/settlementRoute");
+const expenseStatusRoute = require("./routes/expenseStatusRoute");
 const searchUserInfoRoute = require("./routes/searchUserInfoRoute");
 
 // connect to the database
@@ -61,6 +62,7 @@ app.use("/searchFriend", searchFriendRoute);
 app.use("/expense", expenseRoute);
 app.use("/settlement", settlementRoute);
 app.use("/search-user-info", searchUserInfoRoute);
+app.use("/expenseStatus", expenseStatusRoute);
 
 // export the express app we created to make it available to other modules
 module.exports = app;

@@ -4,23 +4,37 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Expense.css';
 import axios from "axios";
 import Navbar from "./Navbar";
-import { Link, useNavigate, useParams } from "react-router-dom"; 
-
+import { useNavigate, useParams } from "react-router-dom"; 
+import { jwtDecode } from "jwt-decode";
 
 function Expense({ isDarkMode }) {
     const [expensesData, setExpensesData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const navigate = useNavigate();
     const { expenseId } = useParams();
 
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/expense/ExpenseDetail/${expenseId}`);
-            console.log(response.data); 
+            console.log("Fetched Data:", response.data); // Debug
+            const processedData = processExpenses(response.data, currentuserId);
             setExpensesData(response.data);
+            setFilteredData(processedData);
+            console.log(":", processedData)
         }catch(error){
             console.error("There was an error fetching the data:", error);
         }
     };
+
+    const settleExpenses = async(settlementId, newStatus) => {
+        try{
+            const response = await axios.post(`http://localhost:3001/expenseStatus/${settlementId}`, {status: newStatus});
+            console.log('Settlements updated:', response.data);
+        } catch (error) {
+            console.error('Error updating settlements:', error);
+            console.log(error.response.data);
+          }
+    }
 
     useEffect(() => {
         // Toggle the 'body-dark-mode' class on the body element
@@ -40,11 +54,39 @@ function Expense({ isDarkMode }) {
         fetchData();
     }, []);
 
+    const token = localStorage.getItem("token")
+    const currentUser = jwtDecode(token);
+    const currentuserId = currentUser.id
+
+    const processExpenses = (expensesData, userId) =>{
+        const isParticipant = expensesData.splitDetails.some(split => split.user._id === userId);
+
+        if (!isParticipant) {
+            // If not a participant, return an empty array or another appropriate value
+            return [];
+        }
+    
+        let filteredExpenses =[];
+
+        if(expensesData.paidBy._id === userId){
+            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId).map(split => ({ ...split, displayName: split.user.username }));
+        }else{
+            filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId).map(split => ({ ...split, displayName: expensesData.paidBy.username }));;
+        }
+        return filteredExpenses;
+    }
+    
     {/* navigates to the previous page */}
     const handleTitleClick = () => {
         navigate(-1); 
     };
     
+    const handleSettlementChange = async (e, settlementId) => {
+        const newStatus = e.target.checked;
+        await settleExpenses(settlementId, newStatus);
+        fetchData();
+    };
+
     return (
         <div className="expense">
             <h1 className="page-title" onClick={handleTitleClick}>
@@ -59,11 +101,21 @@ function Expense({ isDarkMode }) {
                 
                 {expensesData && (
                     <div className="expense-list">
-                        {expensesData.splitDetails && expensesData.splitDetails.map(split => (
+                        {filteredData && filteredData
+                        .sort((a, b) => a.settlement.status === b.settlement.status ? 0 : a.settlement.status ? 1 : -1)
+                        .map(split => (
                             <div className="expense-item" key={split.settlement._id}>
-                                <span>{split.user.username}</span>
-                                <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount}</span>
-                                <div className="checkbox"><input type="checkbox" name={split.settlement._id} /></div>
+                                <span>{split.displayName}</span>
+                                <span className={parseFloat(split.settlement.amount) > 0 ? 'positive' : 'negative'}>{split.settlement.amount.toFixed(2)}</span>
+                                <div className="checkbox">
+                                    <input 
+                                        type="checkbox" 
+                                        name={split.settlement._id} 
+                                        checked = {split.settlement.isChecked}
+                                        onChange={(e) => handleSettlementChange(e, split.settlement._id)}
+                                        defaultChecked={split.settlement.status}
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>
