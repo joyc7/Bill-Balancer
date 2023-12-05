@@ -101,6 +101,23 @@ const AddExpense = (props) => {
 
   const handleAmountsChange = (amounts) => {
     setIndividualAmounts(amounts);
+
+    // Check all amounts are valid now
+    let allAmountsValid = true;
+    for (const amount of Object.values(amounts)) {
+      if (typeof amount !== "number" || isNaN(amount) || amount <= 0) {
+        allAmountsValid = false;
+        break;
+      }
+    }
+
+    // Clear the error message if all amounts are valid
+    if (allAmountsValid) {
+      setValidationMessages((prevMessages) => ({
+        ...prevMessages,
+        individualAmounts: "",
+      }));
+    }
   };
 
   const handleAddExpense = async () => {
@@ -148,11 +165,14 @@ const AddExpense = (props) => {
 
     const amountNumber = parseFloat(formData.amount);
 
+    let allAmountsValid = true;
+
     const peopleSplit = Array.isArray(selectedPeople)
       ? selectedPeople.map((person) => {
           const amount = individualAmounts[person._id];
-          if (typeof amount !== "number" || isNaN(amount)) {
-            invalidAmounts = true;
+          if (typeof amount !== "number" || isNaN(amount) || amount <= 0) {
+            invalidAmounts = true; // Found an invalid amount
+            allAmountsValid = false; // Set the flag to false as we found an invalid amount
           }
           return {
             user: person,
@@ -164,8 +184,12 @@ const AddExpense = (props) => {
     if (invalidAmounts) {
       newValidationMessages.individualAmounts =
         "Invalid amount(s) in split details";
-      isValid = false;
+    } else {
+      // If all amounts are valid, clear the error message
+      newValidationMessages.individualAmounts = "";
     }
+
+    isValid = !invalidAmounts;
 
     setValidationMessages(newValidationMessages);
 
@@ -314,6 +338,15 @@ const AddExpense = (props) => {
       setAmountError("Please enter a valid amount.");
     }
   };
+  /* Click Handler Function for button Select All  */
+  const handleSelectAll = () => {
+    setSelectedPeople([...selectedPeople, ...availablePeople]);
+    setAvailablePeople([]);
+    setValidationMessages((prevMessages) => ({
+      ...prevMessages,
+      selectedPeople: "",
+    }));
+  };
 
   return (
     <div className="add-expense-page-container">
@@ -414,6 +447,9 @@ const AddExpense = (props) => {
                     </option>
                   ))}
               </select>
+              <button type="button" onClick={handleSelectAll}>
+                Select All
+              </button>
             </div>
           </div>
           <div>
