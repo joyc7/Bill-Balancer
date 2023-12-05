@@ -314,6 +314,15 @@ const AddExpense = (props) => {
       setAmountError("Please enter a valid amount.");
     }
   };
+  /* Click Handler Function for button Select All  */
+  const handleSelectAll = () => {
+    setSelectedPeople([...selectedPeople, ...availablePeople]);
+    setAvailablePeople([]);
+    setValidationMessages((prevMessages) => ({
+      ...prevMessages,
+      selectedPeople: "",
+    }));
+  };
 
   return (
     <div className="add-expense-page-container">
@@ -414,6 +423,7 @@ const AddExpense = (props) => {
                     </option>
                   ))}
               </select>
+              <button onClick={handleSelectAll}>Select All</button>
             </div>
           </div>
           <div>
