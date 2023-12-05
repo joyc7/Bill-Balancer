@@ -423,7 +423,9 @@ const AddExpense = (props) => {
                     </option>
                   ))}
               </select>
-              <button onClick={handleSelectAll}>Select All</button>
+              <button type="button" onClick={handleSelectAll}>
+                Select All
+              </button>
             </div>
           </div>
           <div>
