@@ -27,7 +27,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/forgot-password",
+        `${process.env.REACT_APP_BACKEND}/forgot-password`,
         formData,
         {
           headers: {

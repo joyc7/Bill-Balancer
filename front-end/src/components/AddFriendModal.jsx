@@ -14,7 +14,7 @@ function AddFriendModal({ showModal, onClose }) {
     const username = document.querySelector(".input-content").value;
     try {
       const response = await fetch(
-        `http://localhost:3001/searchFriend?username=${username}`
+        `${process.env.REACT_APP_BACKEND}/searchFriend?username=${username}`
       );
       if (!response.ok) {
         if (response.status === 404) {
@@ -48,7 +48,7 @@ function AddFriendModal({ showModal, onClose }) {
       return;
     }
 
-    fetch("http://localhost:3001/addFriends", {
+    fetch(`${process.env.REACT_APP_BACKEND}/addFriends`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -6,16 +6,12 @@ import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import emailjs from "emailjs-com";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-
-  const sendMessage = () => {
-    console.log(message);
-    setMessage("");
-  };
 
   const redirectToForgotPassword = () => {
     navigate("/forgot-password");
@@ -24,6 +20,30 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    const templateParams = {
+      from_name: data.name,
+      message: message
+    };
+    
+    emailjs
+      .send(
+        process.env.REACT_APP_EMAIL_SERVICE_ID,
+        process.env.REACT_APP_EMAIL_TEMPLATE_ID,
+        templateParams,
+        process.env.REACT_APP_EMAIL_USER_ID
+      )
+      .then(
+        (result) => {
+          window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
   useEffect(() => {
@@ -38,7 +58,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         const decoded = jwtDecode(token);
         const userId = decoded.id;
         const result = await axios.get(
-          `http://localhost:3001/user-info/${userId}`
+          `${process.env.REACT_APP_BACKEND}/user-info/${userId}`
         );
         setData({
           ...result.data,
@@ -120,17 +140,20 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
             <li className="setting-item setting-item-feedback">
               <div className="contact-us-title">Contact us</div>
               <div className="chatbox-container">
-                <textarea
-                  id="userMessage"
-                  name="userMessage"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type your message here..."
-                  className="chatbox-input"
-                />
-                <button onClick={sendMessage} className="send-button">
-                  Send
-                </button>
+                <form onSubmit={sendEmail}>
+                  <input
+                    type="text"
+                    id="userMessage"
+                    name="userMessage"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                    className="chatbox-input"
+                  />
+                  <button type="submit" className="send-button">
+                    Send
+                  </button>
+                </form>
               </div>
             </li>
           </ul>
