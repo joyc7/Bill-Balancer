@@ -26,6 +26,17 @@ header {
   @apply flex justify-between items-center p-4 border-b border-gray-200;
 }
 
+.settle-all-section {
+  text-align: right;
+  padding-right: 20px;
+}
+
+#settle-all-btn {
+  @apply bg-cyan-100 font-bold py-2 px-4 rounded shadow-md;
+  @apply focus:outline-none;
+  @apply transition-colors duration-300 ease-in-out;
+}
+
 /* Dark Mode for Friend Detail Page */
 .dark-mode #friend-detail-page {
   @apply bg-gray-800 text-white; /* add dark mode to the outter most background on the page (area around the container) */
@@ -42,6 +53,3 @@ header {
 .dark-mode .settlements-section {
   @apply bg-gray-700 mb-4;
 }
-
-
-
