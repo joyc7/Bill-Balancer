@@ -4,8 +4,16 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Home = ({ isDarkMode }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/");
+  };
+
   const [data, setData] = useState({
     userName: "",
     totalSpending: 0,
@@ -58,10 +66,10 @@ const Home = ({ isDarkMode }) => {
   }
 
   useEffect(() => {
-    const getTokenFromLocalStorage = () => {
-      const token = localStorage.getItem("token");
-      return token;
-    };
+    // const getTokenFromLocalStorage = () => {
+    //   const token = localStorage.getItem("token");
+    //   return token;
+    // };
 
     const decodeToken = (token) => {
       try {
@@ -79,7 +87,14 @@ const Home = ({ isDarkMode }) => {
 
     const fetchData = async () => {
       try {
-        const token = getTokenFromLocalStorage();
+        // const token = getTokenFromLocalStorage();
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          console.error("Plese login in view pages");
+          setIsLoggedIn(false);
+          return;
+        }
         const currentUser = decodeToken(token);
 
         if (currentUser) {
@@ -148,6 +163,12 @@ const Home = ({ isDarkMode }) => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          console.error("Plese login in view pages");
+          setIsLoggedIn(false);
+          return;
+        }
         const currentUser = jwtDecode(token);
         const userId = currentUser.id;
         const result = await axios.get(
@@ -246,6 +267,16 @@ const Home = ({ isDarkMode }) => {
 
   /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
   const eventsPending = data.events ? data.events.slice(0, 3) : [];
+
+  if (!isLoggedIn)
+    return (
+      <div>
+        <div className="text-center">Please log in to view pages!</div>
+        <button onClick={handleButtonClick} className="login-button">
+          Click here to log in
+        </button>
+      </div>
+    );
 
   return (
     <div className="home-container">

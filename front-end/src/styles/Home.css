@@ -110,3 +110,7 @@
 .dark-mode .greeting h1 {
   @apply text-left;
 }
+
+.login-button {
+  @apply w-full bg-blue-500 text-white rounded p-2 hover:bg-blue-700 mb-4 mt-6;
+}
