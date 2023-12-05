@@ -25,7 +25,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
   const sendEmail = (e) => {
     e.preventDefault();
     const templateParams = {
-      from_name: userId,
+      from_name: data.name,
       message: message
     };
     
