@@ -6,7 +6,6 @@ import axios from "axios";
 import AddEvent from "./AddEvent";
 import EventsFilter from "../images/filter.png";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 
 function Events({ isDarkMode }) {
   const [eventData, setEventData] = useState([]);
@@ -18,14 +17,6 @@ function Events({ isDarkMode }) {
   //const[showFilter, setShowFilter] = useState(false);
   //const[selectedFilter, setSelectedFilter] = useState('all');
   //const[filteredEvents, setFilteredEvents] = useState([]);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const navigate = useNavigate();
-  const [decode, setDecode] = useState(0); // Declare decode at the top level
-
-  const handleButtonClick = () => {
-    navigate("/");
-  };
 
   function reformatDate(dateStr) {
     const months = [
@@ -65,24 +56,8 @@ function Events({ isDarkMode }) {
     };
   }, [isDarkMode]);
 
-  useEffect(() => {
-    async function check() {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found");
-          console.error("Please log in to view pages");
-          setIsLoggedIn(false);
-          return;
-        }
-        const decodedToken = jwtDecode(token);
-        setDecode(decodedToken);
-      } catch (error) {
-        console.error("There was an error fetching the data:", error);
-      }
-    }
-    check();
-  }, []);
+  const token = localStorage.getItem("token");
+  const decode = jwtDecode(token);
 
   useEffect(() => {
     //fetch mock data about a user's events list
@@ -106,7 +81,7 @@ function Events({ isDarkMode }) {
       }
     }
     dataFetch();
-  }, [decode]);
+  }, []);
 
   useEffect(() => {
     console.log(decode.id);
@@ -124,7 +99,7 @@ function Events({ isDarkMode }) {
     };
 
     fetchSettlements();
-  }, [decode]);
+  }, []);
 
   function calculateAmounts(expenses, currentUserId) {
     let amountOwed = 0; // Amount the current user owes to others
@@ -162,16 +137,6 @@ function Events({ isDarkMode }) {
   function EventClick(eventId) {
     console.log(`Event ${eventId} was clicked`);
   }
-
-  if (!isLoggedIn)
-    return (
-      <div>
-        <div className="text-center">Please log in to view pages!</div>
-        <button onClick={handleButtonClick} className="login-button">
-          Click here to log in
-        </button>
-      </div>
-    );
 
   return (
     <div className="Events">
