@@ -26,8 +26,12 @@ header {
     @apply col-span-3 hover:text-orange-200;
 }
 
-.date, .name, .amount, .checkbox {
-    @apply inline-block m-auto;
+.date, .name, .amount {
+    @apply inline-block m-auto mr-4;
+}
+
+.settled{
+    @apply text-green-500
 }
 
 .name {
