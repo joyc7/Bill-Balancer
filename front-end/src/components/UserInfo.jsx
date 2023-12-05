@@ -1,7 +1,7 @@
 /* UserInfo.jsx - components of User Info(Account) Page */
 
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
@@ -10,8 +10,6 @@ import emailjs from "emailjs-com";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
-  const { userId } = useParams();
-
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -50,19 +48,15 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found");
-        navigate("/");
-        return null;
-      }
-
-      const decoded = jwtDecode(token);
-      // const userName = decoded.username;
-      // const userID = decoded.id;
-      // const userEmail = decoded.email;
-
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          navigate("/");
+          return null;
+        }
+        const decoded = jwtDecode(token);
+        const userId = decoded.id;
         const result = await axios.get(
           `http://localhost:3001/user-info/${userId}`
         );
@@ -74,7 +68,6 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         console.error(err);
       }
     };
-
     fetchData();
   }, []);
 

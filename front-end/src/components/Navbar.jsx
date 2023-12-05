@@ -23,7 +23,6 @@ const Navbar = ({ isDarkMode }) => {
   const userId = decoded.id;
 
   //changed up the events route and removed contact page
-
   return (
     <nav className={`navbar ${isDarkMode ? "dark-mode" : ""}`}>
       <ul>
@@ -64,7 +63,7 @@ const Navbar = ({ isDarkMode }) => {
             style={{ width: "30px", height: "30px" }}
             className="user-image"
           />
-          <Link to={`/user-info/${userId}`} className="pl-2">
+          <Link to={"/user-info"} className="pl-2">
             User
           </Link>
         </li>

@@ -266,7 +266,6 @@ const Home = ({ isDarkMode }) => {
   }, [isDarkMode]);
 
   /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
-  const friendsPendingPayment = data.friends ? data.friends.slice(0, 3) : [];
   const eventsPending = data.events ? data.events.slice(0, 3) : [];
 
   if (!isLoggedIn)
