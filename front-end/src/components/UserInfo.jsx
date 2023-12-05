@@ -6,6 +6,7 @@ import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import emailjs from "emailjs-com";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
@@ -14,13 +15,8 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const sendMessage = () => {
-    console.log(message);
-    setMessage("");
-  };
-
   const redirectToForgotPassword = () => {
-    navigate('/forgot-password');
+    navigate("/forgot-password");
   };
 
   const handleLogout = () => {
@@ -28,8 +24,31 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     navigate("/");
   };
 
+  const sendEmail = (e) => {
+    e.preventDefault();
+    const templateParams = {
+      from_name: userId,
+      message: message
+    };
+    
+    emailjs
+      .send(
+        process.env.REACT_APP_EMAIL_SERVICE_ID,
+        process.env.REACT_APP_EMAIL_TEMPLATE_ID,
+        templateParams,
+        process.env.REACT_APP_EMAIL_USER_ID
+      )
+      .then(
+        (result) => {
+          window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
+
   useEffect(() => {
-    console.log("fetching the event");
     const fetchData = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -49,7 +68,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         );
         setData({
           ...result.data,
-          name: decoded.username // override `name` from the response data with `userName` from the token
+          name: decoded.username, // override `name` from the response data with `userName` from the token
         });
       } catch (err) {
         console.error(err);
@@ -58,8 +77,6 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
 
     fetchData();
   }, []);
-
-  
 
   // This effect runs when the `isDarkMode` value changes
   useEffect(() => {
@@ -82,62 +99,72 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     <div className={`UserInfo-full-height ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="UserInfo">
         <h1 className="page-title">Account</h1>
-        
-            <div className="user-detail-section">
-              <img
-                src={data.avatar} // the user may change the avatar
-                alt="User's Avatar"
-                className="avatar"
-              />
-              <div className="user-name-email">
-                <div className="name">{data.name}</div>
-                <div className="email">{data.email}</div>
+
+        <div className="user-detail-section">
+          <img
+            src={data.avatar} // the user may change the avatar
+            alt="User's Avatar"
+            className="avatar"
+          />
+          <div className="user-name-email">
+            <div className="name">{data.name}</div>
+            <div className="email">{data.email}</div>
+          </div>
+        </div>
+        <div className="settings-list-general">
+          <ul>
+            <li className="setting-title">Settings</li>
+            <li className="setting-item">
+              Dark Mode
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  id="darkModeToggle"
+                  name="darkModeToggle"
+                  checked={isDarkMode}
+                  onChange={toggleDarkMode}
+                />
+                <span className="slider round"></span>
+              </label>
+            </li>
+            <li
+              className="setting-item"
+              onClick={redirectToForgotPassword}
+              style={{ cursor: "pointer" }}
+            >
+              {" "}
+              Reset Password
+            </li>
+            <button onClick={handleLogout} className="logout">
+              Logout
+            </button>
+            {/* Add additional settings here */}
+          </ul>
+        </div>
+        <div className="settings-list-feedback">
+          <ul>
+            <li className="setting-title">Feedback</li>
+            <li className="setting-item setting-item-feedback">
+              <div className="contact-us-title">Contact us</div>
+              <div className="chatbox-container">
+                <form onSubmit={sendEmail}>
+                  <input
+                    type="text"
+                    id="userMessage"
+                    name="userMessage"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                    className="chatbox-input"
+                  />
+                  <button type="submit" className="send-button">
+                    Send
+                  </button>
+                </form>
               </div>
-            </div>
-            <div className="settings-list-general">
-              <ul>
-                <li className="setting-title">Settings</li>
-                <li className="setting-item">
-                  Dark Mode
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      id="darkModeToggle"
-                      name="darkModeToggle"
-                      checked={isDarkMode}
-                      onChange={toggleDarkMode}
-                    />
-                    <span className="slider round"></span>
-                  </label>
-                </li>
-                <li className="setting-item" onClick={redirectToForgotPassword} style={{cursor: 'pointer'}}> Reset Password</li>
-                <button onClick={handleLogout} className="logout">
-                  Logout
-                </button>
-                {/* Add additional settings here */}
-              </ul>
-            </div>
-            <div className="settings-list-feedback">
-              <ul>
-                <li className="setting-title">Feedback</li>
-                <li className="setting-item setting-item-feedback">
-                  <div className="contact-us-title">Contact us</div>
-                  <div className="chatbox-container">
-                    <textarea
-                      id="userMessage"
-                      name="userMessage"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Type your message here..."
-                      className="chatbox-input"
-                    />
-                    <button onClick={sendMessage} className="send-button">
-                      Send
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            </li>
+          </ul>
+        </div>
         <Navbar isDarkMode={isDarkMode} />
       </div>
     </div>
