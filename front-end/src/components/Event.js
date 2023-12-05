@@ -10,14 +10,12 @@ const Event = (props) => {
   const [userExpenses, setUserExpenses] = useState([]);
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
-  //const [balance, setBalance] = useState(0);
-  console.log("Event ID:", eventId); // check the eventID received
 
   function reformatDate(dateStr) {
     const months = [
       "Jan",
       "Feb",
-      "Mar", 
+      "Mar",
       "Apr",
       "May",
       "Jun",
@@ -58,32 +56,24 @@ const Event = (props) => {
       let userBalance = 0;
 
       if (isParticipant) {
-        // User is a participant, find the settlement from splitDetails
-        /*
-        const userSplitDetail = expense.splitDetails.find(
-          (detail) => detail.user === userId
-        );
-        settlement = userSplitDetail
-          ? userSplitDetail.settlement
-          : { amount: 0 }; // Add other fields as needed
-        */
-        if(expense.paidBy === userId){
-          expense.splitDetails.forEach(split =>{
-            if(!split.settlement.status){
+        if (expense.paidBy === userId) {
+          expense.splitDetails.forEach((split) => {
+            if (!split.settlement.status) {
               userBalance += split.settlement.amount;
             }
-          })
+          });
         } else {
-          const user = expense.splitDetails.find(split => split.user === userId)
           //user is not the one who paid, find what the user owe to the person who paid
-          //const paidBy = expense.splitDetails.find(split => split.user === expense.paidBy);
-          if(user){
+          const user = expense.splitDetails.find(
+            (split) => split.user === userId
+          );
+          if (user) {
             userBalance = user.settlement.status ? 0 : -user.settlement.amount;
           }
         }
       } else {
         // User is not a participant, create a settlement object with amount 0
-        userBalance = 0 ;
+        userBalance = 0;
       }
 
       return {
@@ -149,8 +139,11 @@ const Event = (props) => {
     const currentUser = jwtDecode(token);
     //const currentUserId = currentUser.id;
     if (data.expenses && currentUser) {
-      const processedExpenses = processUserExpenses(data.expenses, currentUser.id);
-      setUserExpenses(processedExpenses)
+      const processedExpenses = processUserExpenses(
+        data.expenses,
+        currentUser.id
+      );
+      setUserExpenses(processedExpenses);
     }
   }, [data]);
 
@@ -166,14 +159,15 @@ const Event = (props) => {
         </header>
 
         <section className="description">
-          <p>{data.description}</p >
+          <p>{data.description}</p>
         </section>
 
-        <section className="operations">
-          {/* to see the remaining unsettled balance */}
-          <button>Balance</button>
-          {/* to see the history of all bill/transaction */}
-          <button>Total</button>
+        <section className="summary">
+          <div>• Date: {reformatDate(data.date)}</div>
+          <div>
+            • Total{" "}
+            {data.participants ? data.participants.length : "Loading..."} people
+          </div>
         </section>
 
         <section className="expenses">
@@ -186,7 +180,8 @@ const Event = (props) => {
                     <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">${item.settlement.toFixed(2)}</div>
+                <div className="amount">{item.settlement.toFixed(2) === "0.00" ? 
+                <span className="settled"> Settled </span>: `$${item.settlement.toFixed(2)}`}</div>
               </div>
             ))}
         </section>
