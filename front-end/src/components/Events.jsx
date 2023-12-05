@@ -118,8 +118,6 @@ function Events({ isDarkMode }) {
         console.log(`Event ${eventId} was clicked`)
     }
 
-    const filteredEvents = eventData.events.filter(event => event.name.toLowerCase().includes(searchTerm.toLowerCase()));
-
     return(
         <div className = "Events">
             <h1 className = "title">Events</h1>
