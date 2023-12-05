@@ -128,6 +128,7 @@ function Events({ isDarkMode }) {
             <div className="Total_Balance_Section">
                 <img src={eventData.avatar} alt="User's Avatar" className="Total_Balance_avatar"></img>
                 <div>
+                    <div className="Total_Balance_title">Total Balance</div>
                     <div className="balance_details">
                         { (
                             <div> You owe ${Math.abs(amountOwed).toFixed(2)}</div>
@@ -149,7 +150,7 @@ function Events({ isDarkMode }) {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mt-4 search-input"
             />
-
+            
             <div className="events-list">
                 <ul>
                     {eventData.events && eventData.events.length > 0 ? (eventData.events
