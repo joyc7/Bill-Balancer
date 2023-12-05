@@ -15,7 +15,6 @@ function Events({ isDarkMode }) {
   const [amountOwed, setAmountOwed] = useState(0);
   const [amountOwedBy, setAmountOwedBy] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-
   //const[showFilter, setShowFilter] = useState(false);
   //const[selectedFilter, setSelectedFilter] = useState('all');
   //const[filteredEvents, setFilteredEvents] = useState([]);
