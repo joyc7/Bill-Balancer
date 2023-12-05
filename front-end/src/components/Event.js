@@ -10,8 +10,6 @@ const Event = (props) => {
   const [userExpenses, setUserExpenses] = useState([]);
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
-  //const [balance, setBalance] = useState(0);
-  console.log("Event ID:", eventId); // check the eventID received
 
   function reformatDate(dateStr) {
     const months = [
