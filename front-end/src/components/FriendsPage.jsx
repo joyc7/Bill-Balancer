@@ -5,10 +5,18 @@ import "../styles/FriendsPage.css";
 import AddFriendModal from "./AddFriendModal";
 import Navbar from "./Navbar";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function FriendsPage({ isDarkMode }) {
   const [userData, setUserData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/");
+  };
 
   // useEffect for dark mode
   useEffect(() => {
@@ -27,6 +35,12 @@ function FriendsPage({ isDarkMode }) {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          console.error("Plese login in view pages");
+          setIsLoggedIn(false);
+          return;
+        }
         const currentUser = jwtDecode(token);
         const userId = currentUser.id;
         const result = await axios.get(
@@ -121,6 +135,15 @@ function FriendsPage({ isDarkMode }) {
     }
   });
 
+  if (!isLoggedIn)
+    return (
+      <div>
+        <div className="text-center">Please log in to view pages!</div>
+        <button onClick={handleButtonClick} className="login-button">
+          Click here to log in
+        </button>
+      </div>
+    );
   if (!userData) return <div>Loading...</div>;
 
   return (
