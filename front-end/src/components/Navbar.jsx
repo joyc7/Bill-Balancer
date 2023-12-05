@@ -12,16 +12,9 @@ const Navbar = ({ isDarkMode }) => {
   const location = useLocation();
   const pathName = location.pathname;
 
-  // extract userId for link to User Page
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const userId = decoded.id;
-  
-
   //changed up the events route and removed contact page
-
   return (
-    <nav className={`navbar ${isDarkMode ? 'dark-mode' : ''}`}>
+    <nav className={`navbar ${isDarkMode ? "dark-mode" : ""}`}>
       <ul>
         <li className={pathName === "/home" ? "active" : "normal"}>
           <img
@@ -60,7 +53,7 @@ const Navbar = ({ isDarkMode }) => {
             style={{ width: "30px", height: "30px" }}
             className="user-image"
           />
-          <Link to={`/user-info/${userId}`} className="pl-2">
+          <Link to={"/user-info"} className="pl-2">
             User
           </Link>
         </li>
