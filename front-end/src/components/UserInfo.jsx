@@ -6,7 +6,7 @@ import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import emailjs from "emailjs-com";
+// import emailjs from "emailjs-com";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
@@ -24,26 +24,26 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
 
   const sendEmail = (e) => {
     e.preventDefault();
-    const templateParams = {
-      from_name: data.name,
-      message: message
-    };
+    // const templateParams = {
+    //   from_name: data.name,
+    //   message: message
+    // };
     
-    emailjs
-      .send(
-        process.env.REACT_APP_EMAIL_SERVICE_ID,
-        process.env.REACT_APP_EMAIL_TEMPLATE_ID,
-        templateParams,
-        process.env.REACT_APP_EMAIL_USER_ID
-      )
-      .then(
-        (result) => {
-          window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+    // emailjs
+    //   .send(
+    //     process.env.REACT_APP_EMAIL_SERVICE_ID,
+    //     process.env.REACT_APP_EMAIL_TEMPLATE_ID,
+    //     templateParams,
+    //     process.env.REACT_APP_EMAIL_USER_ID
+    //   )
+    //   .then(
+    //     (result) => {
+    //       window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
+    //     },
+    //     (error) => {
+    //       console.log(error.text);
+    //     }
+    //   );
   };
 
   useEffect(() => {

@@ -9,6 +9,7 @@ services:
       - back-end
     env_file:
       - ./front-end/.env
+    command: npm start
 
   back-end:
     build: ./back-end
@@ -18,3 +19,4 @@ services:
       - ./back-end/.env
     volumes:
       - ./uploads:/uploads
+    command: npm start
