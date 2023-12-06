@@ -25,11 +25,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           script: |
             cd 4-final-project-group-bill-splitting-app
-            git pull
-            cd front-end
-            npm install
-            npm start
-            cd ../back-end
-            npm install
-            npm start
-            echo 'Success'
+            git pull origin master
+            docker-compose down
+            docker-compose up --build -d
+
+            # git pull
+            # cd front-end
+            # npm install
+            # npm start
+            # cd ../back-end
+            # npm install
+            # npm start
+            # echo 'Success'
