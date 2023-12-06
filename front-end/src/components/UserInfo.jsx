@@ -6,7 +6,6 @@ import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import emailjs from "emailjs-com";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
@@ -22,28 +21,22 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     navigate("/");
   };
 
-  const sendEmail = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
-    const templateParams = {
-      from_name: data.name,
+    const body = {
+      user: data.name,
       message: message
     };
     
-    emailjs
-      .send(
-        process.env.REACT_APP_EMAIL_SERVICE_ID,
-        process.env.REACT_APP_EMAIL_TEMPLATE_ID,
-        templateParams,
-        process.env.REACT_APP_EMAIL_USER_ID
-      )
-      .then(
-        (result) => {
-          window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+    try {
+      console.log('Submitting message:', body);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND}/sendMessage`, body);
+      console.log(`Message sent:`, response.data);
+      window.location.reload();
+    } catch (error) {
+        console.error('Failed to send message:', error.response);
+    }
+    
   };
 
   useEffect(() => {
@@ -140,7 +133,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
             <li className="setting-item setting-item-feedback">
               <div className="contact-us-title">Contact us</div>
               <div className="chatbox-container">
-                <form onSubmit={sendEmail}>
+                <form onSubmit={sendMessage}>
                   <input
                     type="text"
                     id="userMessage"
