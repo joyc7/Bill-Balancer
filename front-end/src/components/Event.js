@@ -180,8 +180,11 @@ const Event = (props) => {
                     <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">{item.settlement.toFixed(2) === "0.00" ? 
-                <span className="settled"> Settled </span>: `$${item.settlement.toFixed(2)}`}</div>
+                <div className={`amount ${item.settlement < 0 ? 'negative' : 'positive'}`}>
+                    {item.settlement.toFixed(2) === "0.00" ? 
+                    <span className="settled">Settled</span> : 
+                    `$${item.settlement.toFixed(2)}`}
+                </div>
               </div>
             ))}
         </section>

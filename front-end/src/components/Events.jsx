@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import '../styles/Events.css';
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ function Events({ isDarkMode }) {
     const [amountOwed, setAmountOwed] = useState(0);
     const [amountOwedBy, setAmountOwedBy] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
+    const decodeRef = useRef(null);
     //const[showFilter, setShowFilter] = useState(false);
     //const[selectedFilter, setSelectedFilter] = useState('all');
     //const[filteredEvents, setFilteredEvents] = useState([]);
@@ -43,21 +44,18 @@ function Events({ isDarkMode }) {
         };
     }, [isDarkMode]);
 
-    const token = localStorage.getItem("token");
-    const decode = jwtDecode(token);
-
-    useEffect(()=>{
+    
         //fetch mock data about a user's events list
         async function dataFetch(){ 
             try{
-                if (!decode.id) {
+                if (!decodeRef.current.id) {
                     console.error("No current user found in local storage.");
                     return;
                 } else {
-                    console.log(decode.id);
+                    console.log(decodeRef.current.id);
                 }
                 //requesting data from the mock API endpoint
-                const response = await axios.get(`http://localhost:3001/events/for/${decode.id}`);
+                const response = await axios.get(`http://localhost:3001/events/for/${decodeRef.current.id}`);
                 console.log(response)
                 //return the data
                 setEventData(response.data)
@@ -66,14 +64,13 @@ function Events({ isDarkMode }) {
                 console.error("There was an error fetching the data:", error);
             }
         }
-        dataFetch();
-    },[]);
+        
    
-    useEffect(() => {
-        console.log(decode.id)
+    
+        //console.log(decodeRef.current.id)
         const fetchSettlements = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/settlement/from/${decode.id}`);
+                const response = await axios.get(`http://localhost:3001/settlement/from/${decodeRef.current.id}`);
                 console.log("Settlements:", response.data);
                 setSettlements(response.data);
                 // Process and use the fetched settlements here
@@ -82,9 +79,20 @@ function Events({ isDarkMode }) {
             }
         };
     
-        fetchSettlements();
         
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            decodeRef.current = jwtDecode(token);
+        }
+        // Fetch data related to the decoded user
+        if (decodeRef.current && decodeRef.current.id) {
+            dataFetch();
+            fetchSettlements();
+        }
     }, []);
+    
 
     function calculateAmounts(expenses, currentUserId) {
         let amountOwed = 0; // Amount the current user owes to others
@@ -106,13 +114,13 @@ function Events({ isDarkMode }) {
 
     useEffect(() => {
         if (settlements.length > 0) {
-            const { amountOwed, amountOwedBy } = calculateAmounts(settlements, decode.id);
+            const { amountOwed, amountOwedBy } = calculateAmounts(settlements, decodeRef.current.id);
             setAmountOwed(amountOwed);
             setAmountOwedBy(amountOwedBy);
             // Now you can use amountOwed and amountOwedBy in your component
             console.log(`Amount Owed: ${amountOwed}, Amount Owed By: ${amountOwedBy}`);
         }
-    }, [settlements, decode.id]);
+    }, [settlements]);
 
     function EventClick(eventId){
         console.log(`Event ${eventId} was clicked`)
