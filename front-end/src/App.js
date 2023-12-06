@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Event from "./components/Event";
 import "./index.css";
@@ -18,11 +18,18 @@ import Logout from "./components/Logout";
 function App() {
   // used to keep track of which specific event the user choose to see
   const [event, setEvent] = useState({});
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () =>
-    setIsDarkMode(
-      (prevMode) => !prevMode
-    ); /* global Dark Mode switch, controls for isDarkMode state */
+  // Initialize dark mode from local storage
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("darkMode", newMode); // Save to local storage
+      return newMode;
+    });
+  };
 
   return (
     <div className={`container ${isDarkMode ? "dark-mode" : ""}`}>
