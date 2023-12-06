@@ -79,17 +79,33 @@ function Expense({ isDarkMode }) {
       (split) => split.user._id === userId
     );
 
-    if (!isParticipant) {
-      // If not a participant, return an empty array or another appropriate value
-      return [];
-    }
-
     let filteredExpenses = [];
 
     if (expensesData.paidBy._id === userId) {
-      filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId).map(split => ({ ...split, displayName: split.user.username, amount: split.settlement.amount}));
-    } else {
-      filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId).map(split => ({ ...split, displayName: expensesData.paidBy.username, amount: -split.settlement.amount}));;
+      if (!isParticipant) {
+        // If currentUser is not a participant, then the amount will be negative (owed by others)
+        filteredExpenses = expensesData.splitDetails.map(split => ({
+          ...split,
+          displayName: split.user.username,
+          amount: -split.settlement.amount
+        }));
+      } else {
+        // If currentUser is also a participant
+        filteredExpenses = expensesData.splitDetails.filter(split => split.user._id !== userId).map(split => ({
+          ...split,
+          displayName: split.user.username,
+          amount: split.settlement.amount
+        }));
+      }
+    } else if (isParticipant) {
+      // When currentUser is not the one who paid but is a participant
+      filteredExpenses = expensesData.splitDetails.filter(split => split.user._id === userId && expensesData.paidBy !== userId).map(split => ({
+        ...split,
+        displayName: expensesData.paidBy.username,
+        amount: -split.settlement.amount
+      }));
+    }else{
+      filteredExpenses = [];
     }
     return filteredExpenses;
   };
