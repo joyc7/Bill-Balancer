@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import '../styles/Events.css';
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
 import EventsFilter from "../images/filter.png"; 
@@ -15,9 +15,16 @@ function Events({ isDarkMode }) {
     const [amountOwedBy, setAmountOwedBy] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
     const decodeRef = useRef(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     //const[showFilter, setShowFilter] = useState(false);
     //const[selectedFilter, setSelectedFilter] = useState('all');
     //const[filteredEvents, setFilteredEvents] = useState([]);
+
+    const navigate = useNavigate();
+
+    const handleButtonClick = () => {
+      navigate("/");
+    };
     
     function reformatDate(dateStr) {
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -78,24 +85,24 @@ function Events({ isDarkMode }) {
                 console.error("Error fetching settlements:", error.response);
             }
         };
-    
-        
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (token) {
+        if (typeof token === 'string') {
             decodeRef.current = jwtDecode(token);
-        }
-        if (!token) {
-          console.error("No token found");
-          console.error("Plese login in view pages");
-          setIsLoggedIn(false);
-          return;
-        }
-        // Fetch data related to the decoded user
-        if (decodeRef.current && decodeRef.current.id) {
-            dataFetch();
-            fetchSettlements();
+    
+            // Assuming fetchData and fetchSettlements are dependent on the decoded token
+            if (decodeRef.current && decodeRef.current.id) {
+                dataFetch();
+                fetchSettlements();
+            }
+        } else {
+            console.error("No token found");
+            console.error("Plese login in view pages");
+            setIsLoggedIn(false);
+            return;
+  
+            // Handle the absence of a valid token (e.g., redirect to login)
         }
     }, []);
     
@@ -131,6 +138,16 @@ function Events({ isDarkMode }) {
     function EventClick(eventId){
         console.log(`Event ${eventId} was clicked`)
     }
+
+    if (!isLoggedIn)
+    return (
+      <div>
+        <div className="text-center">Please log in to view pages!</div>
+        <button onClick={handleButtonClick} className="login-button">
+          Click here to log in
+        </button>
+      </div>
+    );
 
     return(
         <div className = "Events">
