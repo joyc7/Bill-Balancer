@@ -24,10 +24,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.SSH_USER }}
           script: |
+            pwd
+            hostname
             cd 4-final-project-group-bill-splitting-app
             git pull origin master
-            docker-compose down
-            docker-compose up --build -d
+            # docker-compose down
+            # docker-compose up --build -d
 
             # git pull
             # cd front-end

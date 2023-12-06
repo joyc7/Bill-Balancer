@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
@@ -24,6 +24,9 @@ jobs:
 
       - name: "Create Back-end .env File"
         run: |
+          pwd
+          hostname
+          cd back-end
           touch .env
           echo FRONT_END_DOMAIN=${{ secrets.FRONT_END_DOMAIN }} >> .env
           echo REACT_APP_BACKEND=${{ secrets.REACT_APP_BACKEND }} >> .env
@@ -31,7 +34,6 @@ jobs:
           echo JWT_EXP_DAYS=${{ secrets.JWT_EXP_DAYS }} >> .env
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
           echo AVATAR_GENERATOR=${{ secrets.AVATAR_GENERATOR }} >> .env
-        working-directory: ./back-end
 
       - name: Install front-end dependencies
         run: |
