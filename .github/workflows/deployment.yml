@@ -11,12 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Build and run Docker containers
-      - name: Build and run Docker containers
-        run: |
-          docker-compose up --build -d
-          docker-compose ps
-
       # SSH and Deploy to DigitalOcean Droplet
       - name: Deploy to DigitalOcean Droplet
         uses: appleboy/ssh-action@master
@@ -25,7 +19,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            pwd 
             cd 4-final-project-group-bill-splitting-app
-            git pull origin master
+            git pull origin cicd
             docker-compose down
             docker-compose up --build -d
