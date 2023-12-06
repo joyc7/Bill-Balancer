@@ -1,7 +1,7 @@
 /* UserInfo.jsx - components of User Info(Account) Page */
 
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
@@ -26,9 +26,9 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     e.preventDefault();
     const templateParams = {
       from_name: data.name,
-      message: message
+      message: message,
     };
-    
+
     emailjs
       .send(
         process.env.REACT_APP_EMAIL_SERVICE_ID,
@@ -69,7 +69,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
       }
     };
     fetchData();
-  }, []);
+  }, [navigate]);
 
   // This effect runs when the `isDarkMode` value changes
   useEffect(() => {
