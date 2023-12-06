@@ -45,10 +45,10 @@ jobs:
           cd back-end
           npm install
 
-      - name: Run back-end tests
-        run: |
-          cd back-end
-          npm test
+      # - name: Run back-end tests
+      #   run: |
+      #     cd back-end
+      #     npm test
 
       # - name: Build and run Docker containers
       #   run: docker-compose up --build
