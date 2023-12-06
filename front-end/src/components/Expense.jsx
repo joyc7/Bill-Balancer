@@ -27,7 +27,7 @@ function Expense({ isDarkMode }) {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/expense/ExpenseDetail/${expenseId}`
+        `${process.env.REACT_APP_BACKEND}/expense/ExpenseDetail/${expenseId}`
       );
       console.log("Fetched Data:", response.data); // Debug
       const processedData = processExpenses(response.data, currentuserId);
@@ -42,7 +42,7 @@ function Expense({ isDarkMode }) {
   const settleExpenses = async (settlementId, newStatus) => {
     try {
       const response = await axios.post(
-        `http://localhost:3001/expenseStatus/${settlementId}`,
+        `${process.env.REACT_APP_BACKEND}/expenseStatus/${settlementId}`,
         { status: newStatus }
       );
       console.log("Settlements updated:", response.data);

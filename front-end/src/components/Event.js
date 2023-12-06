@@ -91,7 +91,7 @@ const Event = (props) => {
     const fetchEvent = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3001/event/${eventId}`
+          `${process.env.REACT_APP_BACKEND}/event/${eventId}`
         );
         setData(result.data);
         console.log(result.data);

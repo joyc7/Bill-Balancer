@@ -7,19 +7,19 @@ chai.use(chaiHttp);
 
 describe("POST for Signup", () => {
   describe("POST /signup", () => {
-    it("should return a success response", (done) => {
+    it("should return a unsuccessful response", (done) => {
       chai
         .request(app)
         .post("/signup")
         .send({
-          email: "testemail",
-          username: "testuser",
-          password: "testpassword",
+          email: "cindyliang01@gmail.com",
+          username: "cindy",
+          password: "hi",
         })
         .end((err, res) => {
-          expect(res).to.have.status(200);
+          expect(res).to.have.status(409);
           expect(res.body).to.be.a("object");
-          expect(res.body).to.have.property("status", "Success");
+          expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("message");
           done();
         });

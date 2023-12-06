@@ -1,46 +1,60 @@
-const chai = require('chai');
+const chai = require("chai");
 const chaiHttp = require("chai-http");
-const app = require('../app')
-const expect = chai.expect;
-
+const app = require("../app");
+const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe('Events API', () => {
-    describe('GET /events', () => {
+describe("GET /events/for/:userId - Fetch User's Events", () => {
+  it("should return user's events with populated expenses and settlements", (done) => {
+    const userId = "656d6afdb41784541809ef05";
 
-        it('should return all events details', (done) => {
-            chai.request(app)
-            .get('/events')
-            .end((err, res) => {
-                expect(err).to.be.null;
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.a('object');
-                expect(res.body).to.have.property('id');
-                expect(res.body).to.have.property('name');
-                expect(res.body).to.have.property('email');
-                expect(res.body).to.have.property('phone');
-                expect(res.body).to.have.property('avatar');
-                expect(res.body).to.have.property('events').that.is.an('array');
+    chai
+      .request(app)
+      .get(`/events/for/${userId}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an("object");
+        expect(res.body).to.have.property("avatar").to.be.a("string");
+        expect(res.body).to.have.property("email").to.be.a("string");
+        expect(res.body).to.have.property("username").to.be.a("string");
+        expect(res.body).to.have.property("_id").to.be.a("string");
+        expect(res.body).to.have.property("events").to.be.an("array");
 
-                if (res.body.events) {
-                    res.body.events.forEach(event => {
-                        expect(event).to.be.an('object');
-                        expect(event).to.have.property('id');
-                        expect(event).to.have.property('EventName');
-                        expect(event).to.have.property('Date');
-                        expect(event).to.have.property('balance');
-                        expect(event).to.have.property('description');
-                        if (event.members) {
-                            event.members.forEach(member => {
-                                expect(member).to.be.an('object');
-                                expect(member).to.have.property('names');
-                            });
-                        }
-                    });
-                }
-                done();
-            });
+        res.body.events.forEach((event) => {
+          expect(event).to.be.an("object");
+          expect(event).to.have.property("_id").to.be.a("string");
+          expect(event).to.have.property("name").to.be.a("string");
+          expect(event).to.have.property("description").to.be.a("string");
+          expect(event).to.have.property("date").to.be.a("string");
+          expect(event).to.have.property("participants").to.be.an("array");
+
+          event.expenses.forEach((expense) => {
+            expect(expense).to.have.property("date").to.be.a("string");
+            expect(expense).to.have.property("event").to.be.a("string");
+            expect(expense).to.have.property("name").to.be.a("string");
+            expect(expense).to.have.property("paidBy").to.be.a("string");
+            expect(expense).to.have.property("_id").to.be.a("string");
+            expect(expense).to.have.property("totalAmount").to.be.a("number");
+            expect(expense).to.have.property("splitDetails").to.be.an("array");
+          });
         });
-    });
+
+        done();
+      });
+  });
+
+  it("should return 404 if the user is not found", (done) => {
+    const invalidUserId = "507f1f77bcf86cd799439011";
+
+    chai
+      .request(app)
+      .get(`/events/for/${invalidUserId}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body).to.be.an("object");
+        expect(res.body).to.have.property("message", "User not found");
+        done();
+      });
+  });
 });

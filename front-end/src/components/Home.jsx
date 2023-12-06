@@ -4,8 +4,16 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Home = ({ isDarkMode }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/");
+  };
+
   const [data, setData] = useState({
     userName: "",
     totalSpending: 0,
@@ -58,10 +66,10 @@ const Home = ({ isDarkMode }) => {
   }
 
   useEffect(() => {
-    const getTokenFromLocalStorage = () => {
-      const token = localStorage.getItem("token");
-      return token;
-    };
+    // const getTokenFromLocalStorage = () => {
+    //   const token = localStorage.getItem("token");
+    //   return token;
+    // };
 
     const decodeToken = (token) => {
       try {
@@ -79,16 +87,21 @@ const Home = ({ isDarkMode }) => {
 
     const fetchData = async () => {
       try {
-        const token = getTokenFromLocalStorage();
+        // const token = getTokenFromLocalStorage();
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          console.error("Plese login in view pages");
+          setIsLoggedIn(false);
+          return;
+        }
         const currentUser = decodeToken(token);
 
         if (currentUser) {
-          console.log("Current User:", currentUser);
 
           const expenseRes = await axios.get(
-            `http://localhost:3001/settlement/from/${currentUser.id}`
+            `${process.env.REACT_APP_BACKEND}/settlement/from/${currentUser.id}`
           );
-          console.log("Response:", expenseRes.data);
           const newTotalSpending = calculateTotalSpending(expenseRes.data);
           const newExpenses = expenseRes.data.map((settlement) => {
             return {
@@ -99,13 +112,13 @@ const Home = ({ isDarkMode }) => {
 
           // Fetch events data
           const eventsRes = await axios.get(
-            `http://localhost:3001/events/for/${currentUser.id}`
+            `${process.env.REACT_APP_BACKEND}/events/for/${currentUser.id}`
           );
           const events = eventsRes.data.events || [];
 
           // Fetch friends data
           const friendsRes = await axios.get(
-            `http://localhost:3001/friends/${currentUser.id}`
+            `${process.env.REACT_APP_BACKEND}/friends/${currentUser.id}`
           );
           const friends = friendsRes.data.friends || [];
 
@@ -148,10 +161,16 @@ const Home = ({ isDarkMode }) => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          console.error("Plese login in view pages");
+          setIsLoggedIn(false);
+          return;
+        }
         const currentUser = jwtDecode(token);
         const userId = currentUser.id;
         const result = await axios.get(
-          `http://localhost:3001/friends/${userId}`
+          `${process.env.REACT_APP_BACKEND}/friends/${userId}`
         );
         setUserData(result.data);
       } catch (err) {
@@ -169,10 +188,10 @@ const Home = ({ isDarkMode }) => {
     for (const friend of userData.friends) {
       try {
         const fromUserToFriend = await axios.get(
-          `http://localhost:3001/settlement/from/${userData._id}/to/${friend._id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${userData._id}/to/${friend._id}`
         );
         const fromFriendToUser = await axios.get(
-          `http://localhost:3001/settlement/from/${friend._id}/to/${userData._id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${friend._id}/to/${userData._id}`
         );
 
         settlements.push({
@@ -245,8 +264,17 @@ const Home = ({ isDarkMode }) => {
   }, [isDarkMode]);
 
   /* since spaces are limited, only display 3 event expenses/friends, the user can access the rest by clicking "view more" */
-  const friendsPendingPayment = data.friends ? data.friends.slice(0, 3) : [];
   const eventsPending = data.events ? data.events.slice(0, 3) : [];
+
+  if (!isLoggedIn)
+    return (
+      <div>
+        <div className="text-center">Please log in to view pages!</div>
+        <button onClick={handleButtonClick} className="login-button">
+          Click here to log in
+        </button>
+      </div>
+    );
 
   return (
     <div className="home-container">
