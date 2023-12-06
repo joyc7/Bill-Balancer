@@ -22,7 +22,7 @@ function Events({ isDarkMode }) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
-  const [decode, setDecode] = useState(0); // Declare decode at the top level
+  const [decode, setDecode] = useState(null); // Declare decode at the top level
 
   const handleButtonClick = () => {
     navigate("/");
