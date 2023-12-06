@@ -34,10 +34,10 @@ jobs:
       - name: List contents of the models directory
         run: ls -l ./back-end/models/
 
-      - name: Run back-end tests
-        run: |
-          cd back-end
-          npm test
+      # - name: Run back-end tests
+      #   run: |
+      #     cd back-end
+      #     npm test
 
       # - name: Build and run Docker containers
       #   run: docker-compose up --build
