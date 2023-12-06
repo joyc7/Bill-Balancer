@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const User = require("./User");
-const Expense = require("./Expense");
+const { User } = require("./User");
+const { Expense } = require("./Expense");
 
 const eventSchema = new Schema({
   name: {
