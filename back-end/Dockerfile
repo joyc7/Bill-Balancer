@@ -1,12 +1,14 @@
 # start from the node v16 base image
 FROM node:16
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/back-end
 
 # install dependencies into the image - doing this first will speed up subsequent builds, as Docker will cache this step
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --only=production
+
+RUN npm install nodemon forever -g
 
 # copy the remaining app source code into the default directory within the image
 COPY . .
@@ -15,4 +17,4 @@ COPY . .
 EXPOSE 3001
 
 # define the runtime command that will be executed when a container is made from the image
-CMD [ "node", "server.js" ]
+CMD [ "forever", "-o", "out.log", "-e", "err.log", "app.js" ]

@@ -1,6 +1,7 @@
 # start from the node v16 base image
 FROM node:16
 
+WORKDIR /usr/src/front-end
 
 # install dependencies into the image - doing this first will speed up subsequent builds, as Docker will cache this step
 COPY package*.json ./
@@ -11,4 +12,4 @@ COPY . .
 
 EXPOSE 80
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start" ]
