@@ -11,7 +11,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "18.x"
 
       - name: Build front-end
         run: |
@@ -26,7 +26,7 @@ jobs:
 
       - name: Run back-end tests
         env:
-          MONGO_ATLAS_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
           cd back-end
           npm test
