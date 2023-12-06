@@ -98,12 +98,10 @@ const Home = ({ isDarkMode }) => {
         const currentUser = decodeToken(token);
 
         if (currentUser) {
-          console.log("Current User:", currentUser);
 
           const expenseRes = await axios.get(
-            `http://localhost:3001/settlement/from/${currentUser.id}`
+            `${process.env.REACT_APP_BACKEND}/settlement/from/${currentUser.id}`
           );
-          console.log("Response:", expenseRes.data);
           const newTotalSpending = calculateTotalSpending(expenseRes.data);
           const newExpenses = expenseRes.data.map((settlement) => {
             return {
@@ -114,13 +112,13 @@ const Home = ({ isDarkMode }) => {
 
           // Fetch events data
           const eventsRes = await axios.get(
-            `http://localhost:3001/events/for/${currentUser.id}`
+            `${process.env.REACT_APP_BACKEND}/events/for/${currentUser.id}`
           );
           const events = eventsRes.data.events || [];
 
           // Fetch friends data
           const friendsRes = await axios.get(
-            `http://localhost:3001/friends/${currentUser.id}`
+            `${process.env.REACT_APP_BACKEND}/friends/${currentUser.id}`
           );
           const friends = friendsRes.data.friends || [];
 
@@ -172,7 +170,7 @@ const Home = ({ isDarkMode }) => {
         const currentUser = jwtDecode(token);
         const userId = currentUser.id;
         const result = await axios.get(
-          `http://localhost:3001/friends/${userId}`
+          `${process.env.REACT_APP_BACKEND}/friends/${userId}`
         );
         setUserData(result.data);
       } catch (err) {
@@ -190,10 +188,10 @@ const Home = ({ isDarkMode }) => {
     for (const friend of userData.friends) {
       try {
         const fromUserToFriend = await axios.get(
-          `http://localhost:3001/settlement/from/${userData._id}/to/${friend._id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${userData._id}/to/${friend._id}`
         );
         const fromFriendToUser = await axios.get(
-          `http://localhost:3001/settlement/from/${friend._id}/to/${userData._id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${friend._id}/to/${userData._id}`
         );
 
         settlements.push({

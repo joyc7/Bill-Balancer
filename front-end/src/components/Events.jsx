@@ -4,7 +4,6 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AddEvent from "./AddEvent";
-import EventsFilter from "../images/filter.png";
 import { jwtDecode } from "jwt-decode";
 
 function Events({ isDarkMode }) {
@@ -71,7 +70,7 @@ function Events({ isDarkMode }) {
         }
         //requesting data from the mock API endpoint
         const response = await axios.get(
-          `http://localhost:3001/events/for/${decode.id}`
+          `${process.env.REACT_APP_BACKEND}/events/for/${decode.id}`
         );
         console.log(response);
         //return the data
@@ -88,7 +87,7 @@ function Events({ isDarkMode }) {
     const fetchSettlements = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/settlement/from/${decode.id}`
+          `${process.env.REACT_APP_BACKEND}/settlement/from/${decode.id}`
         );
         console.log("Settlements:", response.data);
         setSettlements(response.data);

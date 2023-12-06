@@ -91,7 +91,7 @@ const Event = (props) => {
     const fetchEvent = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3001/event/${eventId}`
+          `${process.env.REACT_APP_BACKEND}/event/${eventId}`
         );
         setData(result.data);
         console.log(result.data);
@@ -180,8 +180,13 @@ const Event = (props) => {
                     <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">{item.settlement.toFixed(2) === "0.00" ? 
-                <span className="settled"> Settled </span>: `$${item.settlement.toFixed(2)}`}</div>
+                <div className="amount">
+                  {item.settlement.toFixed(2) === "0.00" ? (
+                    <span className="settled"> Settled </span>
+                  ) : (
+                    `$${item.settlement.toFixed(2)}`
+                  )}
+                </div>
               </div>
             ))}
         </section>
