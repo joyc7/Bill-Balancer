@@ -49,4 +49,7 @@ describe("Event Member Retrieval API", () => {
         });
     });
   });
+  after(async () => {
+    await mongoose.connection.close();
+  });
 });
