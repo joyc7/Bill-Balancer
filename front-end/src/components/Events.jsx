@@ -86,6 +86,12 @@ function Events({ isDarkMode }) {
         if (token) {
             decodeRef.current = jwtDecode(token);
         }
+        if (!token) {
+          console.error("No token found");
+          console.error("Plese login in view pages");
+          setIsLoggedIn(false);
+          return;
+        }
         // Fetch data related to the decoded user
         if (decodeRef.current && decodeRef.current.id) {
             dataFetch();
