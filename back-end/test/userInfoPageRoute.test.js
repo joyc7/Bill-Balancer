@@ -1,48 +1,38 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const app = require("../app"); 
-const expect = chai.expect;
+const app = require("../app"); // Replace with the actual path to your Express app
+const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe("User Info API", () => {
-  it("should return user information including id, name, email, avatar, and a list of users", (done) => {
+describe("GET /user-info/:userId - Get User Details", () => {
+  it("should return user details for a valid user ID", (done) => {
+    const validUserId = "656d6b9db41784541809ef20"; // valid id
+
     chai
       .request(app)
-      .get("/user-info") // match with the route
+      .get(`/user-info/${validUserId}`)
       .end((err, res) => {
-        expect(err).to.be.null;
         expect(res).to.have.status(200);
-        expect(res.body).to.be.an("object");
+        expect(res.body).to.have.property("_id").to.be.a("string");
+        expect(res.body).to.have.property("username").to.be.a("string");
+        expect(res.body).to.have.property("email").to.be.a("string");
+        expect(res.body).to.have.property("avatar").to.be.a("string");
+        expect(res.body).to.have.property("events").to.be.an("array");
+        expect(res.body).to.have.property("friends").to.be.an("array");
+        done();
+      });
+  });
 
-        // check main user info
-        expect(res.body).to.include.keys(
-          "id", "name", "email", "avatar", "user"
-        );
-        expect(res.body.id).to.equal(1);
-        expect(res.body.name).to.equal('Bryn');
-        expect(res.body.email).to.equal('btaylot0@booking.com');
-        expect(res.body.avatar).to.equal('https://robohash.org/utetquibusdam.png?size=50x50&set=set1');
+  it("should return a 404 error for an invalid user ID", (done) => {
+    const invalidUserId = "507f1f77bcf86cd799439011"; // nonexist id
 
-        // check user array
-        expect(res.body.user).to.be.an("array");
-        expect(res.body.user).to.have.lengthOf(2);
-
-        // check details of users in the array
-        res.body.user.forEach((user, index) => {
-          expect(user).to.include.keys("id", "name", "email");
-          if (index === 0) {
-            expect(user.id).to.equal(2);
-            expect(user.name).to.equal('Jdavie');
-            expect(user.email).to.equal('jzecchinii0@yahoo.co.jp');
-          }
-          if (index === 1) {
-            expect(user.id).to.equal(3);
-            expect(user.name).to.equal('Emmie');
-            expect(user.email).to.equal('esworder1@xinhuanet.com');
-          }
-        });
-
+    chai
+      .request(app)
+      .get(`/user-info/${invalidUserId}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body).to.have.property("message", "User not found");
         done();
       });
   });

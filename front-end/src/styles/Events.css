@@ -108,7 +108,7 @@
 }
 
 .dark-mode .Total_Balance_Section {
-  @apply bg-gray-700;
+  @apply bg-gray-800;
 }
 
 .dark-mode .Total_Balance_avatar {

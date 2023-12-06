@@ -203,6 +203,7 @@ function FriendsPage({ isDarkMode }) {
                   <Link
                     to={`/friend/${settlement.friend._id}`}
                     className="item-name-avatar"
+                    aria-label={`View details for ${settlement.friend.username}`}
                   >
                     <img
                       src={settlement.friend.avatar}

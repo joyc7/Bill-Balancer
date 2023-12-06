@@ -16,7 +16,6 @@ router.post("/", async (req, res) => {
     if (!currentUser.friends.includes(friendUserId)) {
       currentUser.friends.push(friendUserId);
       await currentUser.save();
-      console.log(`Added ${friendUserId} to ${currentUser.id}'s friends list.`);
     } else {
       return res.status(200).send("Already friends");
     }
