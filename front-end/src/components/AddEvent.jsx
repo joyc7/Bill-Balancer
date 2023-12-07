@@ -119,33 +119,6 @@ function AddEvent({addEvent, onClose}){
         }
     }
 
-/*
-    useEffect(() => {
-        // Retrieve the current user from local storage
-        const token = localStorage.getItem("token");
-        const decodedUser = jwtDecode(token);
-        if (decodedUser && decodedUser.id) {
-            console.log(decodedUser.id)
-            setselectedMember(prevMembers => {
-                // Check if the current user's ID is already in the selected members
-                if (prevMembers.some(member => member.id === decodedUser.id)) {
-                    return prevMembers;
-                }
-                // Add the current user's ID to the selected members
-                return [...prevMembers, decodedUser.id];
-            });
-        } else {
-            console.error("No valid user found in local storage.");
-        }
-    }, []);
-    */
-
-    /*
-    useEffect(() => {
-        console.log('Selected Members:', selectedMember);
-    }, [selectedMember]);
-    */
-
     const handleSearch = () => {
         const token = localStorage.getItem("token");
         const decodedUser = jwtDecode(token);
