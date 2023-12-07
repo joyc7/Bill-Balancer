@@ -14,26 +14,37 @@ function Expense({ isDarkMode }) {
   const { expenseId } = useParams();
 
   function reformatDate(dateStr) {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const date = new Date(dateStr);
-  
+
     const monthName = months[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear();
 
     return `${monthName} ${day} ${year}`;
-}
+  }
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND}/expense/ExpenseDetail/${expenseId}`
       );
-      console.log("Fetched Data:", response.data); // Debug
       const processedData = processExpenses(response.data, currentuserId);
       setExpensesData(response.data);
       setFilteredData(processedData);
-      console.log(":", processedData);
     } catch (error) {
       console.error("There was an error fetching the data:", error);
     }
@@ -45,10 +56,8 @@ function Expense({ isDarkMode }) {
         `${process.env.REACT_APP_BACKEND}/expenseStatus/${settlementId}`,
         { status: newStatus }
       );
-      console.log("Settlements updated:", response.data);
     } catch (error) {
       console.error("Error updating settlements:", error);
-      console.log(error.response.data);
     }
   };
 
@@ -110,9 +119,6 @@ function Expense({ isDarkMode }) {
     return filteredExpenses;
   };
 
-  {
-    /* navigates to the previous page */
-  }
   const handleTitleClick = () => {
     navigate(-1);
   };

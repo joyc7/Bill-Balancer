@@ -1,19 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User.js");
-const { Event } = require("../models/Event.js");
+const Event = require("../models/Event.js");
 const { body, validationResult } = require("express-validator");
 
-router.get('/friendsList/:userId', async (req, res) => {
+router.get("/friendsList/:userId", async (req, res) => {
   try {
     //fetch all data
     const userId = req.params.userId;
-    console.log("userId:", userId);
     const userWithFriends = await User.findById(userId).populate({
       path: "friends",
       model: "User",
     });
-    console.log(userWithFriends);
     if (!userWithFriends) {
       return res.status(404).send("User not found");
     }
