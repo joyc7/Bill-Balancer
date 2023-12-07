@@ -52,27 +52,35 @@ const Event = (props) => {
       const isParticipant = expense.splitDetails.find(
         (detail) => detail.user === userId
       );
-      //let settlement;
       let userBalance = 0;
-
-      if (isParticipant) {
-        if (expense.paidBy === userId) {
+  
+      if (expense.paidBy === userId) {
+        // Check if the currentUser is involved in the split
+        if (isParticipant) {
           expense.splitDetails.forEach((split) => {
             if (!split.settlement.status) {
               userBalance += split.settlement.amount;
             }
           });
         } else {
-          //user is not the one who paid, find what the user owe to the person who paid
-          const user = expense.splitDetails.find(
-            (split) => split.user === userId
-          );
-          if (user) {
-            userBalance = user.settlement.status ? 0 : -user.settlement.amount;
-          }
+          let totalSettledAmount = 0;
+          expense.splitDetails.forEach((split) => {
+            if (split && split.settlement && split.settlement.status) {
+              totalSettledAmount += split.settlement.amount;
+            }
+          });
+          userBalance = (expense.totalAmount ? expense.totalAmount : 0) - totalSettledAmount;
+      }
+      } else if (isParticipant) {
+        // If currentUser is not the one who paid, but is involved in the split
+        const user = expense.splitDetails.find(
+          (split) => split.user === userId
+        );
+        if (user) {
+          userBalance = user.settlement.status ? 0 : -user.settlement.amount;
         }
       } else {
-        // User is not a participant, create a settlement object with amount 0
+        // User is neither the payer nor a participant in the split
         userBalance = 0;
       }
 
@@ -145,12 +153,10 @@ const Event = (props) => {
                     <div>{item.expense.name}</div>
                   </Link>
                 </div>
-                <div className="amount">
-                  {item.settlement.toFixed(2) === "0.00" ? (
-                    <span className="settled"> Settled </span>
-                  ) : (
-                    `$${item.settlement.toFixed(2)}`
-                  )}
+                <div className={`amount ${item.settlement < 0 ? 'negative' : 'positive'}`}>
+                    {item.settlement.toFixed(2) === "0.00" ? 
+                    <span className="settled">Settled</span> : 
+                    `$${item.settlement.toFixed(2)}`}
                 </div>
               </div>
             ))}
