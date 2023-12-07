@@ -370,7 +370,7 @@ const AddExpense = (props) => {
             <br />
             <input
               name="name"
-              placeholder="Enter a name"
+              placeholder="Enter expense name"
               value={formData.name}
               onChange={handleInputChange}
             />
@@ -426,7 +426,7 @@ const AddExpense = (props) => {
             </select>
           </div>
           <div id="split">
-            <label>Available People:</label>
+            <label>Participants:</label>
             {validationMessages.selectedPeople && (
               <span style={{ color: "red" }}>
                 {validationMessages.selectedPeople}
@@ -464,7 +464,7 @@ const AddExpense = (props) => {
             </button>
           </div>
           <div>
-            <label>Selected People:</label>
+            <label>Selected participants:</label>
             <br />
             <div id="selected-container">
               {selectedPeople.map((person) => (
