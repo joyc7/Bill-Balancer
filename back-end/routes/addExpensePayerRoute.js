@@ -7,7 +7,6 @@ router.get("/EventMember/:eventId", async (req, res) => {
   try {
     //fetch all data
     const eventId = req.params.eventId;
-    console.log("eventId:", eventId);
     const eventMember = await Event.findById(eventId).populate("participants");
     if (!eventMember) {
       return res

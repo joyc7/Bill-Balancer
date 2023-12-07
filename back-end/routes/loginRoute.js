@@ -6,13 +6,6 @@ router.post("/", async function (req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
 
-  // if (!username || !password) {
-  //   res
-  //     .status(401)
-  //     .json({ success: false, message: `No username or password supplied.` });
-  //   next();
-  // }
-
   if (!username || !password) {
     return res
       .status(401)

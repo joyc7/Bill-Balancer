@@ -75,7 +75,6 @@ router.post(
         data: savedExpense,
       });
     } catch (error) {
-      console.log(error);
       res.status(500).json({ status: "Error", message: error.message });
     }
   }
