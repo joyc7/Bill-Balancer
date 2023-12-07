@@ -80,7 +80,7 @@ function Events({ isDarkMode }) {
       }
     }
     dataFetch();
-  }, []);
+  }, [decode.id]);
 
   useEffect(() => {
     console.log(decode.id);
@@ -98,7 +98,7 @@ function Events({ isDarkMode }) {
     };
 
     fetchSettlements();
-  }, []);
+  }, [decode.id]);
 
   function calculateAmounts(expenses, currentUserId) {
     let amountOwed = 0; // Amount the current user owes to others

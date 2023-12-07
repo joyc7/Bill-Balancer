@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Login.css";
 import userImage from "../images/user.png";
-import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
@@ -24,11 +24,8 @@ const Login = () => {
     }
   }, [showAlert]);
 
-  let [urlSearchParams] = useSearchParams();
   const [response, setResponse] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
-
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,11 +46,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND}/`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND}/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
     } catch (error) {

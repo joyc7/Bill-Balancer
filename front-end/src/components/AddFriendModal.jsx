@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import addFriendButton from "../images/plus-button.png";
 import { jwtDecode } from "jwt-decode";
 

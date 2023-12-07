@@ -98,7 +98,6 @@ const Home = ({ isDarkMode }) => {
         const currentUser = decodeToken(token);
 
         if (currentUser) {
-
           const expenseRes = await axios.get(
             `${process.env.REACT_APP_BACKEND}/settlement/from/${currentUser.id}`
           );
@@ -181,41 +180,41 @@ const Home = ({ isDarkMode }) => {
   }, []);
 
   const [settlements, setSettlements] = useState([]);
-  const fetchSettlementsForFriends = async () => {
-    if (!userData || !userData.friends) return;
-
-    let settlements = [];
-    for (const friend of userData.friends) {
-      try {
-        const fromUserToFriend = await axios.get(
-          `${process.env.REACT_APP_BACKEND}/settlement/from/${userData._id}/to/${friend._id}`
-        );
-        const fromFriendToUser = await axios.get(
-          `${process.env.REACT_APP_BACKEND}/settlement/from/${friend._id}/to/${userData._id}`
-        );
-
-        settlements.push({
-          friend: friend,
-          fromUserToFriend: fromUserToFriend.data,
-          fromFriendToUser: fromFriendToUser.data,
-        });
-      } catch (error) {
-        console.error(
-          "Error fetching settlements for friend:",
-          friend._id,
-          error
-        );
-        settlements.push({
-          friend: friend,
-          fromUserToFriend: [],
-          fromFriendToUser: [],
-        });
-      }
-    }
-    setSettlements(settlements);
-  };
 
   useEffect(() => {
+    const fetchSettlementsForFriends = async () => {
+      if (!userData || !userData.friends) return;
+
+      let settlements = [];
+      for (const friend of userData.friends) {
+        try {
+          const fromUserToFriend = await axios.get(
+            `${process.env.REACT_APP_BACKEND}/settlement/from/${userData._id}/to/${friend._id}`
+          );
+          const fromFriendToUser = await axios.get(
+            `${process.env.REACT_APP_BACKEND}/settlement/from/${friend._id}/to/${userData._id}`
+          );
+
+          settlements.push({
+            friend: friend,
+            fromUserToFriend: fromUserToFriend.data,
+            fromFriendToUser: fromFriendToUser.data,
+          });
+        } catch (error) {
+          console.error(
+            "Error fetching settlements for friend:",
+            friend._id,
+            error
+          );
+          settlements.push({
+            friend: friend,
+            fromUserToFriend: [],
+            fromFriendToUser: [],
+          });
+        }
+      }
+      setSettlements(settlements);
+    };
     fetchSettlementsForFriends();
   }, [userData]);
 

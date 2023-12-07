@@ -1,12 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import SplitModal from "./SplitModal";
 import "../styles/AddExpense.css";
 
 const AddExpense = (props) => {
-  const navigate = useNavigate();
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
   const [showModal, setShowModal] = useState(false);
@@ -243,7 +242,7 @@ const AddExpense = (props) => {
       }
     };
     fetchPeople();
-  }, []);
+  }, [eventId]);
 
   const handlePaidByChange = (event) => {
     const selectedUserId = event.target.value;
@@ -292,7 +291,7 @@ const AddExpense = (props) => {
       }
     };
     fetchAvailablePeople();
-  }, []);
+  }, [eventId]);
 
   const handleSelectPerson = (personId) => {
     const person = availablePeople.find((p) => p._id === personId);

@@ -14,15 +14,28 @@ function Expense({ isDarkMode }) {
   const { expenseId } = useParams();
 
   function reformatDate(dateStr) {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const date = new Date(dateStr);
-  
+
     const monthName = months[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear();
 
     return `${monthName} ${day} ${year}`;
-}
+  }
 
   const fetchData = async () => {
     try {
@@ -103,9 +116,6 @@ function Expense({ isDarkMode }) {
     return filteredExpenses;
   };
 
-  {
-    /* navigates to the previous page */
-  }
   const handleTitleClick = () => {
     navigate(-1);
   };

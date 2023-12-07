@@ -132,7 +132,7 @@ const Event = (props) => {
       }
     };
     fetchEvent();
-  }, []);
+  }, [eventId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
