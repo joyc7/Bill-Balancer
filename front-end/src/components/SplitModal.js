@@ -175,10 +175,10 @@ function SplitModal({
               <div key={participant._id} className="amountPerPerson">
                 <span className="participant-name">{participant.username}</span>
                 {activeTab === "equally" && (
-                <span className="participant-amount">
-                  {"$" + (totalAmount / participants.length).toFixed(2)}
+                  <span className="participant-amount">
+                    {"$" + (totalAmount / participants.length).toFixed(2)}
                   </span>
-                  )}
+                )}
                 {activeTab === "percentage" && (
                   <div className="percentageContent">
                     <input
@@ -203,15 +203,15 @@ function SplitModal({
                 )}
                 {activeTab === "amount" && (
                   <div className="amountContent">
-                  <div className="amountInputContainer">
-                    <span className="dollar-sign">$</span>
-                    <input
-                      type="number"
-                      className="participant-amount-input"
-                      value={participantAmounts[participant._id] || ""}
-                      onChange={(e) => handleAmountChange(e, participant._id)}
-                    />
-                  </div>
+                    <div className="amountInputContainer">
+                      <span className="dollar-sign">$</span>
+                      <input
+                        type="number"
+                        className="participant-amount-input"
+                        value={participantAmounts[participant._id] || ""}
+                        onChange={(e) => handleAmountChange(e, participant._id)}
+                      />
+                    </div>
                   </div>
                 )}
               </div>

@@ -66,11 +66,6 @@ const Home = ({ isDarkMode }) => {
   }
 
   useEffect(() => {
-    // const getTokenFromLocalStorage = () => {
-    //   const token = localStorage.getItem("token");
-    //   return token;
-    // };
-
     const decodeToken = (token) => {
       try {
         const currentUser = jwtDecode(token);
@@ -87,7 +82,6 @@ const Home = ({ isDarkMode }) => {
 
     const fetchData = async () => {
       try {
-        // const token = getTokenFromLocalStorage();
         const token = localStorage.getItem("token");
         if (!token) {
           console.error("No token found");
