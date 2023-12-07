@@ -44,6 +44,13 @@ router.post(
         }
 
         user.events.push(savedEvent._id); // Add the event ID to the user's events list
+
+        for (const friendId of req.body.Members) {
+          if (friendId !== userId && !user.friends.includes(friendId)) {
+            user.friends.push(friendId);
+          }
+        }
+
         await user.save();
         console.log(`Event added to user ${userId}`);
       }

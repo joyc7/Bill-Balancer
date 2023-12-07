@@ -1,12 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import SplitModal from "./SplitModal";
 import "../styles/AddExpense.css";
 
 const AddExpense = (props) => {
-  const navigate = useNavigate();
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
   const [showModal, setShowModal] = useState(false);
@@ -205,7 +204,6 @@ const AddExpense = (props) => {
       peopleSplit: peopleSplit,
       event: eventId, // make sure it is not "undefined"
     };
-    console.log(submissionData);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND}/add-expense`,
@@ -243,7 +241,7 @@ const AddExpense = (props) => {
       }
     };
     fetchPeople();
-  }, []);
+  }, [eventId]);
 
   const handlePaidByChange = (event) => {
     const selectedUserId = event.target.value;
@@ -292,7 +290,7 @@ const AddExpense = (props) => {
       }
     };
     fetchAvailablePeople();
-  }, []);
+  }, [eventId]);
 
   const handleSelectPerson = (personId) => {
     const person = availablePeople.find((p) => p._id === personId);
@@ -435,22 +433,35 @@ const AddExpense = (props) => {
               </span>
             )}
             <br />
-            <div>
-              <select id="available-container" size="5">
-                {Array.isArray(availablePeople) &&
-                  availablePeople.map((person) => (
-                    <option
-                      key={person._id}
-                      onClick={() => handleSelectPerson(person._id)}
-                    >
-                      {person.username}
-                    </option>
-                  ))}
-              </select>
-              <button type="button" onClick={handleSelectAll}>
-                Select All
-              </button>
+            <div id="available-container">
+              {Array.isArray(availablePeople) &&
+                availablePeople.map((person) => (
+                  <div
+                    key={person._id}
+                    onClick={() => handleSelectPerson(person._id)}
+                    style={{
+                      cursor: "pointer",
+                      margin: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={person.avatar}
+                      alt={person.username}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    {person.username}
+                  </div>
+                ))}
             </div>
+            <button type="button" onClick={handleSelectAll}>
+              Select All
+            </button>
           </div>
           <div>
             <label>Selected People:</label>
