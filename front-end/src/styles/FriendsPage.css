@@ -59,8 +59,9 @@
 }
 
 .add-friends-btn {
-  @apply w-32 h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
+  @apply h-10 rounded-lg bg-cyan-100 hover:bg-orange-100 active:bg-orange-200;
   @apply absolute mt-4 mr-3 top-5 right-5 p-1 px-2.5 border-none rounded-lg cursor-pointer;
+  width: auto;
 }
 
 /* Add styling for the pop-up window for add friends*/
