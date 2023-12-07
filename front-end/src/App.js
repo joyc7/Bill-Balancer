@@ -122,12 +122,13 @@ function App() {
 // dark mode should not affect Login and ForgotPassword page
 function AppContainer({ isDarkMode, children }) {
   const location = useLocation();
-  // check if the current route is either the login page or the forgot password page
+  // check if the current route is the login page, the forgot password page, or the signup page
   const isLoginPage = location.pathname === "/";
   const isForgotPasswordPage = location.pathname === "/forgot-password";
-  // disable dark mode on Login and ForgotPassword page
+  const isSignupPage = location.pathname === "/signup";
+  // disable dark mode on Login, ForgotPassword, and Signup page
   const containerClass =
-    isDarkMode && !isLoginPage && !isForgotPasswordPage
+    isDarkMode && !isLoginPage && !isForgotPasswordPage && !isSignupPage
       ? "container dark-mode"
       : "container";
   return <div className={containerClass}>{children}</div>;
