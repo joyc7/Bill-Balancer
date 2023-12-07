@@ -3,7 +3,7 @@ const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const { Expense } = require("../models/Expense.js");
 const { Settlement } = require("../models/Settlement.js");
-const Event = require("../models/Event");
+const { Event } = require("../models/Event");
 
 router.post(
   "/",
