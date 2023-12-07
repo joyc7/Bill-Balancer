@@ -13,9 +13,6 @@ function Events({ isDarkMode }) {
   const [amountOwed, setAmountOwed] = useState(0);
   const [amountOwedBy, setAmountOwedBy] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  //const[showFilter, setShowFilter] = useState(false);
-  //const[selectedFilter, setSelectedFilter] = useState('all');
-  //const[filteredEvents, setFilteredEvents] = useState([]);
 
   function reformatDate(dateStr) {
     const months = [
@@ -65,14 +62,11 @@ function Events({ isDarkMode }) {
         if (!decode.id) {
           console.error("No current user found in local storage.");
           return;
-        } else {
-          console.log(decode.id);
         }
         //requesting data from the mock API endpoint
         const response = await axios.get(
           `${process.env.REACT_APP_BACKEND}/events/for/${decode.id}`
         );
-        console.log(response);
         //return the data
         setEventData(response.data);
       } catch (error) {
@@ -83,13 +77,11 @@ function Events({ isDarkMode }) {
   }, [decode.id]);
 
   useEffect(() => {
-    console.log(decode.id);
     const fetchSettlements = async () => {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_BACKEND}/settlement/from/${decode.id}`
         );
-        console.log("Settlements:", response.data);
         setSettlements(response.data);
         // Process and use the fetched settlements here
       } catch (error) {
@@ -126,10 +118,6 @@ function Events({ isDarkMode }) {
       );
       setAmountOwed(amountOwed);
       setAmountOwedBy(amountOwedBy);
-      // Now you can use amountOwed and amountOwedBy in your component
-      console.log(
-        `Amount Owed: ${amountOwed}, Amount Owed By: ${amountOwedBy}`
-      );
     }
   }, [settlements, decode.id]);
 

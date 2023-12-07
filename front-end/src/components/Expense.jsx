@@ -42,11 +42,9 @@ function Expense({ isDarkMode }) {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND}/expense/ExpenseDetail/${expenseId}`
       );
-      console.log("Fetched Data:", response.data); // Debug
       const processedData = processExpenses(response.data, currentuserId);
       setExpensesData(response.data);
       setFilteredData(processedData);
-      console.log(":", processedData);
     } catch (error) {
       console.error("There was an error fetching the data:", error);
     }
@@ -58,10 +56,8 @@ function Expense({ isDarkMode }) {
         `${process.env.REACT_APP_BACKEND}/expenseStatus/${settlementId}`,
         { status: newStatus }
       );
-      console.log("Settlements updated:", response.data);
     } catch (error) {
       console.error("Error updating settlements:", error);
-      console.log(error.response.data);
     }
   };
 
