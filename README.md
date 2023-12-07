@@ -102,7 +102,15 @@ To run the unit tests, execute the following command:
 npm test
 ```
 
-### Step 6. Deployment to Digital Ocean Droplet
+### Step 7. CI/CD using GitHub Actions
+
+We have set up Continuous Integration and Continuous Deployment (CI/CD) using GitHub Actions. Every push to the main branch triggers automatic testing and deployment to our Digital Ocean Droplet.
+
+### Step 8. Docker Integration
+
+We have containerized our application using Docker. You can build and run the Docker containers for both the front end and back end with the provided Dockerfiles.
+
+## Deployment to Digital Ocean Droplet
 
 Front end address is `http://165.22.42.62:3000/`
 
