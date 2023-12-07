@@ -92,11 +92,11 @@ function Expense({ isDarkMode }) {
 
     if (expensesData.paidBy._id === userId) {
       if (!isParticipant) {
-        // If currentUser is not a participant, then the amount will be negative (owed by others)
+        // If currentUser is not a participant, then the amount will be positive (owed by others)
         filteredExpenses = expensesData.splitDetails.map(split => ({
           ...split,
           displayName: split.user.username,
-          amount: -split.settlement.amount
+          amount: split.settlement.amount
         }));
       } else {
         // If currentUser is also a participant
