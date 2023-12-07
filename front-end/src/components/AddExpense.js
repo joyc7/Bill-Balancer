@@ -204,7 +204,6 @@ const AddExpense = (props) => {
       peopleSplit: peopleSplit,
       event: eventId, // make sure it is not "undefined"
     };
-    console.log(submissionData);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND}/add-expense`,

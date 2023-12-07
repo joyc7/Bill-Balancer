@@ -87,14 +87,12 @@ const Event = (props) => {
 
   useEffect(() => {
     // fetch some mock data about expense
-    console.log("fetching the event");
     const fetchEvent = async () => {
       try {
         const result = await axios.get(
           `${process.env.REACT_APP_BACKEND}/event/${eventId}`
         );
         setData(result.data);
-        console.log(result.data);
       } catch (err) {
         console.error(err);
       }
