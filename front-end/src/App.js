@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { useLocation, BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  useLocation,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 import Event from "./components/Event";
 import "./index.css";
 import "./App.css";
@@ -34,14 +39,17 @@ function App() {
   };
 
   return (
-      <Router>
-        <AppContainer isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
+    <Router>
+      <AppContainer isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
         <Routes>
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={<Login onLoginSuccess={resetDarkModeOnLogin}/>} />
+          <Route
+            path="/"
+            element={<Login onLoginSuccess={resetDarkModeOnLogin} />}
+          />
           <Route
             path="/home"
             element={
@@ -106,8 +114,8 @@ function App() {
             }
           />
         </Routes>
-        </AppContainer>
-      </Router>
+      </AppContainer>
+    </Router>
   );
 }
 
@@ -118,9 +126,11 @@ function AppContainer({ isDarkMode, children }) {
   const isLoginPage = location.pathname === "/";
   const isForgotPasswordPage = location.pathname === "/forgot-password";
   // disable dark mode on Login and ForgotPassword page
-  const containerClass = isDarkMode && !isLoginPage && !isForgotPasswordPage ? "container dark-mode" : "container";
+  const containerClass =
+    isDarkMode && !isLoginPage && !isForgotPasswordPage
+      ? "container dark-mode"
+      : "container";
   return <div className={containerClass}>{children}</div>;
 }
-
 
 export default App;

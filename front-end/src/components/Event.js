@@ -95,57 +95,22 @@ const Event = (props) => {
 
   useEffect(() => {
     // fetch some mock data about expense
-    console.log("fetching the event");
     const fetchEvent = async () => {
       try {
         const result = await axios.get(
           `${process.env.REACT_APP_BACKEND}/event/${eventId}`
         );
         setData(result.data);
-        console.log(result.data);
       } catch (err) {
         console.error(err);
-
-        // make some backup fake data
-        const backupData = {
-          id: 2,
-          name: "LA Road Trip",
-          expenses: [
-            {
-              id: 1,
-              name: "Lunch",
-              amount: 358,
-              creator: "Jane",
-              date: "06/16/2023",
-            },
-            {
-              id: 2,
-              name: "Flights to LA",
-              amount: 261,
-              creator: "Tom",
-              date: "01/21/2023",
-            },
-            {
-              id: 3,
-              name: "Hotels",
-              amount: 170,
-              creator: "David",
-              date: "08/02/2023",
-            },
-          ],
-          description: "Road trip with friends",
-        };
-
-        setData(backupData);
       }
     };
     fetchEvent();
-  }, []);
+  }, [eventId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const currentUser = jwtDecode(token);
-    //const currentUserId = currentUser.id;
     if (data.expenses && currentUser) {
       const processedExpenses = processUserExpenses(
         data.expenses,
@@ -200,7 +165,6 @@ const Event = (props) => {
         <div className="addExpenseBtnDiv">
           <Link to={`/add-expense/${eventId}`} className="btn addExpenseBtn">
             {" "}
-            {/* <Link to="/add-expense" className="btn addExpenseBtn"> */}
             Add Expense
           </Link>
         </div>
