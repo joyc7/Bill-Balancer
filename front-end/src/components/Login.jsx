@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -39,8 +39,9 @@ const Login = () => {
     if (response.success && response.token) {
       console.log(`User successfully logged in: ${response.username}`);
       localStorage.setItem("token", response.token);
+      onLoginSuccess(); // reset isDarkMode to be false when login
     }
-  }, [response]);
+  }, [response, onLoginSuccess]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  useLocation,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 import Event from "./components/Event";
 import "./index.css";
 import "./App.css";
@@ -17,21 +22,37 @@ import Logout from "./components/Logout";
 
 function App() {
   // used to keep track of which specific event the user choose to see
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () =>
-    setIsDarkMode(
-      (prevMode) => !prevMode
-    ); /* global Dark Mode switch, controls for isDarkMode state */
+  const [event, setEvent] = useState({});
+
+  // initialize dark mode from local storage
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("darkMode", newMode);
+      return newMode;
+    });
+  };
+
+  const resetDarkModeOnLogin = () => {
+    setIsDarkMode(false);
+    localStorage.setItem("darkMode", "false");
+  };
 
   return (
-    <div className={`container ${isDarkMode ? "dark-mode" : ""}`}>
-      <Router>
+    <Router>
+      <AppContainer isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
         <Routes>
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={<Login />} />
+          <Route
+            path="/"
+            element={<Login onLoginSuccess={resetDarkModeOnLogin} />}
+          />
           <Route
             path="/home"
             element={
@@ -96,9 +117,23 @@ function App() {
             }
           />
         </Routes>
-      </Router>
-    </div>
+      </AppContainer>
+    </Router>
   );
+}
+
+// dark mode should not affect Login and ForgotPassword page
+function AppContainer({ isDarkMode, children }) {
+  const location = useLocation();
+  // check if the current route is either the login page or the forgot password page
+  const isLoginPage = location.pathname === "/";
+  const isForgotPasswordPage = location.pathname === "/forgot-password";
+  // disable dark mode on Login and ForgotPassword page
+  const containerClass =
+    isDarkMode && !isLoginPage && !isForgotPasswordPage
+      ? "container dark-mode"
+      : "container";
+  return <div className={containerClass}>{children}</div>;
 }
 
 export default App;
