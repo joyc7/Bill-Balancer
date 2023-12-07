@@ -1,17 +1,23 @@
 /* UserInfo.jsx - components of User Info(Account) Page */
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/UserInfo.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import emailjs from "emailjs-com";
 
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/");
+  };
 
   const redirectToForgotPassword = () => {
     navigate("/forgot-password");
@@ -22,28 +28,24 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     navigate("/");
   };
 
-  const sendEmail = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
-    const templateParams = {
-      from_name: data.name,
+    const body = {
+      user: data.name,
       message: message,
     };
 
-    emailjs
-      .send(
-        process.env.REACT_APP_EMAIL_SERVICE_ID,
-        process.env.REACT_APP_EMAIL_TEMPLATE_ID,
-        templateParams,
-        process.env.REACT_APP_EMAIL_USER_ID
-      )
-      .then(
-        (result) => {
-          window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
-        },
-        (error) => {
-          console.log(error.text);
-        }
+    try {
+      console.log("Submitting message:", body);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND}/sendMessage`,
+        body
       );
+      console.log(`Message sent:`, response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to send message:", error.response);
+    }
   };
 
   useEffect(() => {
@@ -52,8 +54,8 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         const token = localStorage.getItem("token");
         if (!token) {
           console.error("No token found");
-          navigate("/");
-          return null;
+          setIsLoggedIn(false);
+          return;
         }
         const decoded = jwtDecode(token);
         const userId = decoded.id;
@@ -69,7 +71,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
       }
     };
     fetchData();
-  }, [navigate]);
+  }, []);
 
   // This effect runs when the `isDarkMode` value changes
   useEffect(() => {
@@ -87,6 +89,16 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
   if (!data) {
     return <div>Loading user data...</div>;
   }
+
+  if (!isLoggedIn)
+    return (
+      <div>
+        <div className="text-center">Please log in to view pages!</div>
+        <button onClick={handleButtonClick} className="login-button">
+          Click here to log in
+        </button>
+      </div>
+    );
 
   return (
     <div className={`UserInfo-full-height ${isDarkMode ? "dark-mode" : ""}`}>
@@ -140,7 +152,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
             <li className="setting-item setting-item-feedback">
               <div className="contact-us-title">Contact us</div>
               <div className="chatbox-container">
-                <form onSubmit={sendEmail}>
+                <form onSubmit={sendMessage}>
                   <input
                     type="text"
                     id="userMessage"
