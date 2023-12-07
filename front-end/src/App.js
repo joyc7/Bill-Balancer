@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Event from "./components/Event";
 import "./index.css";
 import "./App.css";
@@ -19,18 +19,16 @@ function App() {
   // used to keep track of which specific event the user choose to see
   const [event, setEvent] = useState({});
   // save dark mode into local storage
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const toggleDarkMode = () => {
-    setIsDarkMode((prevMode) => {
-      const newMode = !prevMode;
-      localStorage.setItem("darkMode", newMode);
-      return newMode;
-    });
-  };
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleDarkMode = () =>
+    setIsDarkMode(
+      (prevMode) => !prevMode
+    );
+  console.log("Dark mode:", isDarkMode);
 
   return (
-    <div className={`container ${isDarkMode ? "dark-mode" : ""}`}>
       <Router>
+        <AppContainer isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
         <Routes>
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/logout" element={<Logout />} />
@@ -105,9 +103,21 @@ function App() {
             }
           />
         </Routes>
+        </AppContainer>
       </Router>
-    </div>
   );
 }
+
+// dark mode should not affect Login and ForgotPassword page
+function AppContainer({ isDarkMode, children }) {
+  const location = useLocation();
+  // check if the current route is either the login page or the forgot password page
+  const isLoginPage = location.pathname === "/";
+  const isForgotPasswordPage = location.pathname === "/forgot-password";
+  // disable dark mode on Login and ForgotPassword page
+  const containerClass = isDarkMode && !isLoginPage && !isForgotPasswordPage ? "container dark-mode" : "container";
+  return <div className={containerClass}>{children}</div>;
+}
+
 
 export default App;
