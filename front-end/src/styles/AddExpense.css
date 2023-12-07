@@ -101,5 +101,6 @@
 }
 
 .dark-mode .space-to-scroll {
-  @apply bg-gray-700;
+  @apply bg-gray-800;
+  height: 20px;
 }

@@ -101,7 +101,7 @@ const ForgotPassword = () => {
 
           <div className="mt-4">
             <p>
-              No need to rest?{" "}
+              No need to reset?{" "}
               <a href="/" className="forgot-password-link">
                 Login
               </a>

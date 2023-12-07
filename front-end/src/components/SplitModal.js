@@ -189,7 +189,7 @@ function SplitModal({
                         handlePercentageChange(e, participant._id)
                       }
                     />
-                    <span>% =</span>
+                    <span className="percentage-sign">%</span> <span className="equals-sign">=</span>
                     <span className="calculated-amount">
                       {" " +
                         "$" +
