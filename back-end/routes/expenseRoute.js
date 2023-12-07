@@ -8,7 +8,7 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
 
     const expenseSplit = await Expense.findById(expenseId)
       .populate("event")
-      .populate('paidBy', 'username')
+      .populate("paidBy", "username")
       .populate({
         path: "splitDetails",
         populate: {
@@ -28,7 +28,6 @@ router.get("/ExpenseDetail/:expenseId", async (req, res) => {
       return res.status(404).json({ message: "Expense not found" });
     }
     // Return the user's events
-    console.log(expenseSplit);
     res.json(expenseSplit);
   } catch (error) {
     console.error("Error fetching expense details:", error);

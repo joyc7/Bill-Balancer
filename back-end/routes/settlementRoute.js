@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Settlement } = require("../models/Settlement.js");
-const { Expense } = require("../models/Expense.js")
+const { Expense } = require("../models/Expense.js");
 
 // Route to get settlements for a specific user as 'settleFrom'
 router.get("/from/:userId", async (req, res) => {
@@ -9,7 +9,7 @@ router.get("/from/:userId", async (req, res) => {
     const userId = req.params.userId;
 
     const settlements = await Settlement.find({
-      $or: [{ settleFrom: userId }, { settleTo: userId }]
+      $or: [{ settleFrom: userId }, { settleTo: userId }],
     })
       .populate("settleTo")
       .populate("settleFrom")
@@ -18,13 +18,12 @@ router.get("/from/:userId", async (req, res) => {
         model: "Expense",
         populate: {
           path: "paidBy",
-          model: "User"
-        }
+          model: "User",
+        },
       })
       .populate("event");
 
     res.status(200).json(settlements);
-    console.log(settlements)
   } catch (error) {
     res
       .status(500)

@@ -29,11 +29,7 @@ router.post(
         expenses: [], // initialize this as empty
       });
 
-      console.log(newEvent);
-
       const savedEvent = await newEvent.save();
-
-      console.log("Event created:", savedEvent);
 
       // Fetch and update each participant
       for (const userId of req.body.Members) {
@@ -52,7 +48,6 @@ router.post(
         }
 
         await user.save();
-        console.log(`Event added to user ${userId}`);
       }
 
       res.status(201).json({

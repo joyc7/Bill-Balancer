@@ -9,11 +9,7 @@ router.post("/", async (req, res) => {
       user: req.body.user,
     });
 
-    console.log(newMessage);
-
     const savedMessage = await newMessage.save();
-
-    console.log("Event created:", savedMessage);
 
     res.status(201).json({
       status: "Success",
