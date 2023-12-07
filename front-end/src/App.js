@@ -18,13 +18,18 @@ import Logout from "./components/Logout";
 function App() {
   // used to keep track of which specific event the user choose to see
   const [event, setEvent] = useState({});
-  // save dark mode into local storage
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () =>
-    setIsDarkMode(
-      (prevMode) => !prevMode
-    );
-  console.log("Dark mode:", isDarkMode);
+  
+  // initialize dark mode from local storage
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("darkMode", newMode);
+      return newMode;
+    });
+  };
 
   return (
       <Router>
