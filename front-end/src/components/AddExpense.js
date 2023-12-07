@@ -433,22 +433,35 @@ const AddExpense = (props) => {
               </span>
             )}
             <br />
-            <div>
-              <select id="available-container" size="5">
-                {Array.isArray(availablePeople) &&
-                  availablePeople.map((person) => (
-                    <option
-                      key={person._id}
-                      onClick={() => handleSelectPerson(person._id)}
-                    >
-                      {person.username}
-                    </option>
-                  ))}
-              </select>
-              <button type="button" onClick={handleSelectAll}>
-                Select All
-              </button>
+            <div id="available-container">
+              {Array.isArray(availablePeople) &&
+                availablePeople.map((person) => (
+                  <div
+                    key={person._id}
+                    onClick={() => handleSelectPerson(person._id)}
+                    style={{
+                      cursor: "pointer",
+                      margin: "5px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={person.avatar}
+                      alt={person.username}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    {person.username}
+                  </div>
+                ))}
             </div>
+            <button type="button" onClick={handleSelectAll}>
+              Select All
+            </button>
           </div>
           <div>
             <label>Selected People:</label>
