@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import addFriendButton from "../images/plus-button.png";
 import { jwtDecode } from "jwt-decode";
 
-function AddFriendModal({ showModal, onClose }) {
-  const [userData, setUserData] = useState(null);
+function AddFriendModal({ showModal, onClose, currentUserFriends }) {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function handleSearchClick() {
-    setUserData(null);
+    setData([]);
     setError("");
     setLoading(true);
     const username = document.querySelector(".input-content").value;
@@ -18,13 +18,13 @@ function AddFriendModal({ showModal, onClose }) {
       );
       if (!response.ok) {
         if (response.status === 404) {
-          setError("User not found.");
+          setError("Users not found.");
         } else {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
       } else {
         const data = await response.json();
-        setUserData(data);
+        setData(data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -73,6 +73,10 @@ function AddFriendModal({ showModal, onClose }) {
       });
   }
 
+  const filteredData = data.filter(
+    (user) => user._id !== currentUserFriends._id
+  );
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -87,21 +91,29 @@ function AddFriendModal({ showModal, onClose }) {
         />
         <button onClick={handleSearchClick}>Search</button>
         {loading && <div>Loading...</div>}
-        {userData && (
-          <div className="add-friend-item">
-            <img
-              src={userData.avatar}
-              alt={`avatar`}
-              className="friend-avatar"
-            />
-            <span className="add-friend-name">{userData.username}</span>
-            <img
-              src={addFriendButton}
-              alt="Add friend"
-              className="add-friend-button"
-              style={{ width: "50px", height: "50px" }}
-              onClick={() => addFriend(userData._id)}
-            />
+        {data.length > 0 && (
+          <div className="user-list-container">
+            {filteredData.map((user) => (
+              <div key={user._id} className="add-friend-item">
+                <img
+                  src={user.avatar}
+                  alt={`avatar`}
+                  className="friend-avatar"
+                />
+                <span className="add-friend-name">{user.username}</span>
+                {currentUserFriends.friends.includes(user._id) ? (
+                  <span className="friend-already"></span>
+                ) : (
+                  <img
+                    src={addFriendButton}
+                    alt="Add friend"
+                    className="add-friend-button"
+                    style={{ width: "50px", height: "50px" }}
+                    onClick={() => addFriend(user._id)}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         )}
         {error && <div className="error-message">{error}</div>}
