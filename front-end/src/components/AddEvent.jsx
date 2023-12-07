@@ -10,6 +10,19 @@ function AddEvent({ addEvent, onClose }) {
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [selectedMember, setselectedMember] = useState([]);
   const [loading, setLoading] = useState(false);
+  
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1; // getMonth() returns 0-11
+    let day = today.getDate();
+  
+    // Add leading zeros to month and day if they are less than 10
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
+  
+    return `${year}-${month}-${day}`;
+  };
   const [errors, setErrors] = useState({
     eventName: false,
     Date: false,
@@ -18,7 +31,7 @@ function AddEvent({ addEvent, onClose }) {
   });
   const [eventData, seteventData] = useState({
     eventName: "",
-    Date: "",
+    Date: getCurrentDate(),
     Description: "",
     Members: [],
   });
