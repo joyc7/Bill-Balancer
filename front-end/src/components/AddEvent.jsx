@@ -110,12 +110,11 @@ function AddEvent({ addEvent, onClose }) {
     if (decodedUser && decodedUser.id) {
       friendsCL(decodedUser.id);
       setselectedMember((prevMembers) => {
-        // Check if the current user's ID is already in the selected members
-        if (prevMembers.some((member) => member.id === decodedUser.id)) {
-          return prevMembers;
+        // Correctly check if the user ID is already in the array
+        if (!prevMembers.includes(decodedUser.id)) {
+          return [...prevMembers, decodedUser.id];
         }
-        // Add the current user's ID to the selected members
-        return [...prevMembers, decodedUser.id];
+        return prevMembers;
       });
     } else {
     }

@@ -511,7 +511,7 @@ const AddExpense = (props) => {
           <div className="submitBtn">
             <button type="submit">Done</button>
           </div>
-          <div className="space-to-scroll"></div>
+          <div className="space-to-scrolls"></div>
         </form>
       </div>
       <SplitModal

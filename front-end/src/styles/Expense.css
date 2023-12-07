@@ -101,6 +101,14 @@
     @apply bg-gray-700 border-gray-600; 
 }
 
+.dark-mode .expense .expense-item .positive {
+    color: green;
+}
+
+.dark-mode .expense .expense-item .negative {
+    color: red;
+}
+
 .dark-mode .expense-item span:first-child,
 .dark-mode .expense-item span:nth-child(2),
 .dark-mode .expense-details {
