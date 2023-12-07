@@ -170,6 +170,7 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
             </li>
           </ul>
         </div>
+        <div className="navbar-placeholder" style={{ height: "4rem" }}></div>
         <Navbar isDarkMode={isDarkMode} />
       </div>
     </div>

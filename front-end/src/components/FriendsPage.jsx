@@ -247,6 +247,7 @@ function FriendsPage({ isDarkMode }) {
           currentUserFriends={currentUserFriends}
         />
       )}
+      <div className="navbar-placeholder" style={{ height: "4rem" }}></div>
 
       <Navbar />
     </div>
