@@ -21,9 +21,6 @@ import ForgotPassword from "./components/ForgotPassword";
 import Logout from "./components/Logout";
 
 function App() {
-  // used to keep track of which specific event the user choose to see
-  const [event, setEvent] = useState({});
-
   // initialize dark mode from local storage
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("darkMode") === "true"
