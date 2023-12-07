@@ -50,8 +50,8 @@
   background-color: #d32f2f;
 }
 
-.space-to-scroll {
-  height: 60px;
+.space-to-scrolls {
+    height: 60px;
 }
 
 /* Dark Mode for Add Expense Modal */
@@ -100,7 +100,8 @@
   @apply bg-red-600;
 }
 
-.dark-mode .space-to-scroll {
-  @apply bg-gray-800;
-  height: 40px;
+.dark-mode .space-to-scrolls {
+    @apply bg-gray-700; 
+    height: 60px;
+    
 }
