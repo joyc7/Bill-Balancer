@@ -337,6 +337,7 @@ const Home = ({ isDarkMode }) => {
           </Link>
         </div>
       </div>
+      <div className="navbar-placeholder" style={{ height: "4rem" }}></div>
       <Navbar />
     </div>
   );
