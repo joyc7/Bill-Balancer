@@ -22,10 +22,101 @@ Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contrib
 
 ## Instructions for Building and Testing
 
-To be updated
+### Step 1. Clone the [Group Bill Split Repo](https://github.com/agiledev-students-fall2023/4-final-project-group-bill-splitting-app) by
+
+```bash
+git clone https://github.com/agiledev-students-fall2023/4-final-project-group-bill-splitting-app.git
+```
+
+### Step 2. Make sure you have Node installed.
+
+Both the back-end and front-end should be running.
+
+### Step 3. Building and Running the Backend
+
+#### Navigate to the backend directory:
+
+```bash
+cd back-end
+```
+
+#### Install Dependencies
+
+Install the necessary Node.js packages for the backend:
+
+```bash
+npm install
+```
+
+#### Start the Server
+
+Run the following command to start the Express.js server:
+
+```bash
+nodemon server
+```
+
+You can open `http://localhost:3001` to see back end.<br>
+
+### Step 4. Building and Running the Frontend
+
+#### Navigate to the front-end directory
+
+```bash
+cd front-end
+```
+
+#### Install Dependencies
+
+Install the required packages using npm. These packages are essential for the app to function correctly:
+
+```bash
+npm install
+```
+
+#### Start the Application
+
+With all the dependencies in place, start the application by running:
+
+```bash
+npm start
+```
+
+### Step 5. Accessing the App
+
+Once the app is running, it will be available in development mode. Open your web browser and go to [http://localhost:3000](http://localhost:3000) to view the app.
+
+### Step 6. Unit tests
+
+#### Navigate to the back-end directory
+
+```bash
+cd back-end
+```
+
+#### Running Unit Tests
+
+To run the unit tests, execute the following command:
+
+```bash
+npm test
+```
+
+### Step 6. Deployment to Digital Ocean Droplet
+
+Front end address is `http://165.22.42.62:3000/`
+
+Back end address is `http://165.22.42.62:3001/`
 
 ## Additional Links
 
 - [User Experience Design](UX-DESIGN.md)
 
-## Notes
+## Project Roles
+
+| Week     | Product Owner | Scrum Master |
+| -------- | ------------- | ------------ |
+| Sprint 1 | Laura Zhao    | Elaine Zhang |
+| Sprint 2 | Joy Chen      | Cindy Liang  |
+| Sprint 3 | Allison Ji    | Joy Chen     |
+| Sprint 4 | Cindy Liang   | Allison Ji   |

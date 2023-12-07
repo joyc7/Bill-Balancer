@@ -60,10 +60,8 @@ function FriendDetailPage({ isDarkMode }) {
         `${process.env.REACT_APP_BACKEND}/expenseStatus/${settlementId}`,
         { status: newStatus }
       );
-      console.log("Settlements updated:", response.data);
     } catch (error) {
       console.error("Error updating settlements:", error);
-      console.log(error.response.data);
     }
   };
 
