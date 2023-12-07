@@ -105,6 +105,7 @@
 .dark-mode .select-members-popup,
 .dark-mode .add-members-content {
   @apply bg-gray-800;
+  @apply text-gray-400;
 }
 
 .dark-mode .Total_Balance_Section {
