@@ -31,6 +31,11 @@ function App() {
     });
   };
 
+  const resetDarkModeOnLogin = () => {
+    setIsDarkMode(false);
+    localStorage.setItem("darkMode", "false");
+  };
+
   return (
       <Router>
         <AppContainer isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}>
@@ -39,7 +44,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login onLoginSuccess={resetDarkModeOnLogin}/>} />
           <Route
             path="/home"
             element={
