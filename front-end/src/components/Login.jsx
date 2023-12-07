@@ -49,11 +49,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND}/`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND}/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(`Server response: ${JSON.stringify(response.data, null, 0)}`);
       setResponse(response.data);
     } catch (error) {

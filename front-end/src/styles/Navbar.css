@@ -24,7 +24,15 @@
 }
 
 .user-image {
-  @apply flex items-center flex-col mb-2;
+  @apply flex items-center flex-col mb-2 mt-3;
+}
+
+.user-image-home {
+  @apply flex items-center flex-col pb-2;
+}
+
+.user-image-user {
+  @apply flex items-center flex-col pb-2;
 }
 
 /* Apply dark mode styles to the navbar */
