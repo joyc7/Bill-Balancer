@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User.js");
-const Event = require("../models/Event.js");
+const { Event } = require("../models/Event.js");
 
 router.get("/EventMember/:eventId", async (req, res) => {
   try {

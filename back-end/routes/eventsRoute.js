@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const { User } = require("../models/User.js");
-const Event = require("../models/Event.js");
+const { Event } = require("../models/Event.js");
 
 router.get("/for/:userId", async (req, res) => {
   try {
