@@ -30,6 +30,14 @@ header {
     @apply inline-block m-auto mr-4;
 }
 
+.negative {
+    color: red;
+}
+
+.positive {
+    color: green;
+}
+
 .settled{
     @apply text-green-500
 }
