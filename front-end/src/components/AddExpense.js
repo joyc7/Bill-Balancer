@@ -504,7 +504,7 @@ const AddExpense = (props) => {
           )}
           <div className="splitMethods">
             <button onClick={handleSplitMethodClick}>
-              {splitMethod === "equally" ? "Equally" : "By " + splitMethod}
+              {splitMethod === "equally" ? "Equally" : splitMethod}
             </button>
             {amountError && <div style={{ color: "red" }}>{amountError}</div>}
           </div>
