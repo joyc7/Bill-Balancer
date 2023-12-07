@@ -66,6 +66,18 @@
     @apply whitespace-nowrap;
 }
 
+.percentage-sign {
+    margin-right: 3px;
+}
+
+.equals-sign {
+    padding-right: 4px; 
+}
+
+.participant-percentage-input {
+    margin-right: -4px;
+}
+
 /* Dark Mode for Split Modal */
 .dark-mode .split-modal-content {
     @apply bg-gray-900; 
