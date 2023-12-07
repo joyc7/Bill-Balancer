@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-const Event = require("../models/Event.js");
+const { Event } = require("../models/Event.js");
 const { User } = require("../models/User.js");
 
 router.post(

@@ -54,11 +54,7 @@ function App() {
           <Route
             path="/event/:eventId"
             element={
-              <Event
-                event={event}
-                isDarkMode={isDarkMode}
-                toggleDarkMode={toggleDarkMode}
-              />
+              <Event isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             }
           />
           <Route

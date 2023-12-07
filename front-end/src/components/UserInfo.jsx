@@ -10,7 +10,14 @@ import { jwtDecode } from "jwt-decode";
 function UserInfo({ isDarkMode, toggleDarkMode }) {
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/");
+  };
 
   const redirectToForgotPassword = () => {
     navigate("/forgot-password");
@@ -25,18 +32,20 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
     e.preventDefault();
     const body = {
       user: data.name,
-      message: message
+      message: message,
     };
-    
+
     try {
-      console.log('Submitting message:', body);
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND}/sendMessage`, body);
+      console.log("Submitting message:", body);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND}/sendMessage`,
+        body
+      );
       console.log(`Message sent:`, response.data);
       window.location.reload();
     } catch (error) {
-        console.error('Failed to send message:', error.response);
+      console.error("Failed to send message:", error.response);
     }
-    
   };
 
   useEffect(() => {
@@ -45,8 +54,8 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
         const token = localStorage.getItem("token");
         if (!token) {
           console.error("No token found");
-          navigate("/");
-          return null;
+          setIsLoggedIn(false);
+          return;
         }
         const decoded = jwtDecode(token);
         const userId = decoded.id;
@@ -80,6 +89,16 @@ function UserInfo({ isDarkMode, toggleDarkMode }) {
   if (!data) {
     return <div>Loading user data...</div>;
   }
+
+  if (!isLoggedIn)
+    return (
+      <div>
+        <div className="text-center">Please log in to view pages!</div>
+        <button onClick={handleButtonClick} className="login-button">
+          Click here to log in
+        </button>
+      </div>
+    );
 
   return (
     <div className={`UserInfo-full-height ${isDarkMode ? "dark-mode" : ""}`}>
