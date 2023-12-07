@@ -15,25 +15,33 @@ function Events({ isDarkMode }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   function reformatDate(dateStr) {
-
     const months = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
-  
+
     // Create a new Date object in local time zone
     const date = new Date(dateStr);
-  
+
     // Convert it back to UTC
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-  
+
     const monthName = months[date.getUTCMonth()];
     const day = date.getUTCDate();
     const year = date.getUTCFullYear();
 
     return `${monthName} ${day} ${year}`;
   }
-
 
   // Toggle the 'body-dark-mode' class on the body element
   useEffect(() => {
