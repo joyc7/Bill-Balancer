@@ -11,28 +11,26 @@ const Event = (props) => {
   const isDarkMode = props.isDarkMode;
   const { eventId } = useParams();
 
+  
   function reformatDate(dateStr) {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const date = new Date(dateStr);
 
-    const monthName = months[date.getMonth()];
-    const day = date.getDate();
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
+  
+    // Create a new Date object in local time zone
+    const date = new Date(dateStr);
+  
+    // Convert it back to UTC
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+  
+    const monthName = months[date.getUTCMonth()];
+    const day = date.getUTCDate();
 
     return `${monthName} ${day}`;
   }
+
 
   // This effect runs when the `isDarkMode` value changes
   useEffect(() => {
