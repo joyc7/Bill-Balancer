@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function FriendsPage({ isDarkMode }) {
   const [userData, setUserData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const [currentUserFriends, setCurrentUserFriends] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
 
@@ -46,7 +46,11 @@ function FriendsPage({ isDarkMode }) {
         const result = await axios.get(
           `${process.env.REACT_APP_BACKEND}/friends/${userId}`
         );
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND}/friends/for-display-in-modal/${userId}`
+        );
         setUserData(result.data);
+        setCurrentUserFriends(response.data);
       } catch (err) {
         console.error(err);
       }
@@ -174,7 +178,7 @@ function FriendsPage({ isDarkMode }) {
 
       <input
         type="text"
-        placeholder="Search for a friend..."
+        placeholder="Seeking connected friends..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 search-input"
@@ -240,6 +244,7 @@ function FriendsPage({ isDarkMode }) {
             setShowModal(false);
             window.location.reload();
           }}
+          currentUserFriends={currentUserFriends}
         />
       )}
 
